@@ -3,10 +3,11 @@
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
-#from control import matlab
+from control import matlab
 from scipy.signal import argrelmax
 from matplotlib import rcParams
-#import spectrum
+from cycler import cycler
+import spectrum
 from matplotlib.colors import LogNorm
 import matplotlib
 import matplotlib.pyplot as plt
@@ -14,7 +15,7 @@ import matplotlib.pyplot as plt
 #plt.grid(which='major',color='gray',linestyle=':',alpha=1)
 #plt.grid(which='minor',color='gray',linestyle=':',alpha=1)
 param ={
-    'font.family'       : 'Arial', #使用するフォント
+    'font.family'       : 'sans-serif', #使用するフォント
     'xtick.direction'   : 'in', #x軸の目盛線が内向き('in')か外向き('out')か双方向か('inout')
     'ytick.direction'   : 'in', #y軸の目盛線が内向き('in')か外向き('out')か双方向か('inout')
     'xtick.major.width' : 1.0, #x軸主目盛り線の線幅
@@ -40,7 +41,7 @@ def plotSpectrogram(data,ave):
     vmax = data._Sxx.max()
     vmin = vmax/1.e3        
     enbw = spectrum.enbw(spectrum.create_window(data._nFFT, 'hanning'))*data._fs/data._nFFT
-    print(enbw)
+    print enbw
     text = 'StartGPSTime:{0}, Average:{1}, Overrap:50%, Bin:{3:3.2f} sec,' \
            'Window:Hanning, ENBW:{2:3.2e} Hz'.format(data._gps,ave,enbw,data._duration/ave*data._ovlp)
     fig = plt.figure()    
@@ -74,7 +75,7 @@ def MultiPlot_ACCoupling(data,label,filename,legend):
     一枚のFigureの上に複数のグラフを載せる。
     '''
     if len(data) != 3:
-        print('[Error] please 3 channels',len(data))
+        print '[Error] please 3 channels',len(data)
         exit()
     fig = plt.figure()
     fig.subplots_adjust(right=0.75)
@@ -155,7 +156,7 @@ def MultiBodePlot(f,sys,fn,label,style):
     N = len(sys)
     mag, phase, f = matlab.bode(sys,f,Plot=False,dB=False)
     val, idx = getNearestValue(f,1.0)
-    print(mag[idx])
+    print mag[idx]
     # Start Graph
     fig = plt.figure()
     fig, axes = plt.subplots(nrows=2, ncols=1,figsize=(8,5))
@@ -250,36 +251,3 @@ def readDiaggui_PSD(filename):
     f,psd = data[1:,0],data[1:,1]*c2V
     return f,psd
 
-
-def mpplot_plot(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
-    ax.plot(x,y,label=legend,color='k',linewidth=0.8)
-    ax.set_ylim(-5e-5,5e-5)
-    ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
-    ax.legend()
-    return ax
-
-def subplot33(data,fname,label):
-    matplotlib.rc('font',family='Arial')
-    fig, ax = plt.subplots(3, 3, figsize=(14, 10))
-    fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
-    ax_ = ax.reshape(1,9)[0]
-    for i in range(len(ax_)):
-        ax_[i] = mpplot_plot(
-            ax_[i],
-            data[i][0],
-            data[i][1],           
-            xlabel='Time',
-            ylabel='Value',
-            legend=label[i]            
-        )        
-    for i in filter(lambda x:x<6,range(6)):
-        plt.setp(ax_[i].get_xticklabels(),visible=False)
-    for i in filter(lambda x:(x%3)!=0,range(9)):
-        plt.setp(ax_[i].get_yticklabels(),visible=False)
-    for i in filter(lambda x:x==7,range(9)):
-        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
-    for i in filter(lambda x:x==3,range(9)):
-        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
-    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
-    plt.savefig(fname)
-    plt.close()    

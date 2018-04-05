@@ -3,11 +3,9 @@
 import numpy as np
 from scipy import signal
 import mpplot as mpp
-import platform
-if platform.system() == 'Linux':
-    #from gwpy.timeseries import TimeSeries
-    #from glue.lal import Cache
-    import nds2 # if you use mac , please comment out
+from gwpy.timeseries import TimeSeries
+from glue.lal import Cache
+import nds2
 import numpy as np
 import pickle
 
@@ -35,7 +33,7 @@ def fetch_data(start,end,chlst):
     >>> fetch_data(1205201472,1205205568,channel)
     <list of the numpy array>
     '''
-    conn = nds2.connection('10.68.10.122', 8088) # nds1
+    conn = nds2.connection('10.68.10.121', 8088) # nds0
     buffers = conn.fetch(start,end,chlst)
     data = [b.data for b in buffers]
     return data
@@ -48,6 +46,7 @@ def load(fn):
     with open(fn, 'rb') as f:
         data_ = pickle.load(f)
     return data_
+
 
 
 class data(object):
@@ -84,15 +83,15 @@ class data(object):
         self._ksd,self._qsd = self._csd.real,self._csd.imag
     
     def _getTimeSeriese(self,data_from='txt'):
-        if data_from == 'txt':
+        if data_from='txt':
             self.timeseriese = np.loadtxt(self._filepath)
-        elif data_from == 'gwf':
+        elif data_from='gwf':
             gwf_cache = '/Users/miyo/Documents/KAGRA/data/frames/K-K1_C.iKAGRA.cache'
             with open(gwf_cache, 'r') as fobj:
                 cache = Cache.fromfile(fobj)
             data = TimeSeries.read(cache,self._channelname,self._gps,self._gps+self._duration)       
             self.timeseriese = data.value
-        elif data_from == 'gif':
+        elif data_from = 'gif':
             dtime = mptime.gps2JST(self._gps)
             data  = gif.read(dtime ,self._duration,self._channelname)
             
@@ -144,3 +143,4 @@ class data(object):
             mpp.CoherencePlot(self,'coherence_micns',ave=ave,cl=99.99)
 
 
+if __name__            
