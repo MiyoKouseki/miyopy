@@ -24,44 +24,52 @@ datatype = {
 
 filename_format = {
     #ChannelName                   : Format , Must replace <filename>.
-    'GIF_X500_TEMP'                : '/NAS/cRIO01_data/<filename>.AD00',
-    'GIF_X500_HUMD'                : '/NAS/cRIO01_data/<filename>.AD01',
-    'GIF_X500_BARO'                : '/NAS/cRIO01_data/<filename>.AD02',
-    'GIF_X500_VACU'                : '/NAS/cRIO01_data/<filename>.AD03',
-    'GIF_X500_04'                  : '/NAS/cRIO01_data/<filename>.AD04',
-    'GIF_X500_05'                  : '/NAS/cRIO01_data/<filename>.AD05',
-    'GIF_X500_06'                  : '/NAS/cRIO01_data/<filename>.AD06',
-    'GIF_X500_07'                  : '/NAS/cRIO01_data/<filename>.AD07',        
-    'GIF_X2000_TEMP'               : '/NAS/cRIO02_data/<filename>.AD00',
-    'GIF_X2000_HUMD'               : '/NAS/cRIO02_data/<filename>.AD01',
-    'GIF_X2000_BARO'               : '/NAS/cRIO02_data/<filename>.AD02',
-    'GIF_X2000_VACU'               : '/NAS/cRIO02_data/<filename>.AD03',
-    'GIF_X2000_04'                 : '/NAS/cRIO02_data/<filename>.AD04',
-    'GIF_X2000_05'                 : '/NAS/cRIO02_data/<filename>.AD05',
-    'GIF_X2000_06'                 : '/NAS/cRIO02_data/<filename>.AD06',
-    'GIF_X2000_07'                 : '/NAS/cRIO02_data/<filename>.AD07',
-
-    'GIF_X1500_00'                 : '/NAS/cRIO03_data/<filename>.AD00',
-    'GIF_X1500_01'                 : '/NAS/cRIO03_data/<filename>.AD01',
-    'GIF_X1500_02'                 : '/NAS/cRIO03_data/<filename>.AD02',
-    'GIF_X1500_03'                 : '/NAS/cRIO03_data/<filename>.AD03',
-    'GIF_X1500_04'                 : '/NAS/cRIO03_data/<filename>.AD04',
-    'GIF_X1500_05'                 : '/NAS/cRIO03_data/<filename>.AD05',
-    'GIF_X1500_06'                 : '/NAS/cRIO03_data/<filename>.AD06',
-    'GIF_X1500_07'                 : '/NAS/cRIO03_data/<filename>.AD07',
-    
-    'GIF_PD_PWAVE_PXI01_50k'       : '/NAS/PXI1_data/50000Hz/<filename>.AD00',
-    'GIF_PD_SWAVE_PXI01_50k'       : '/NAS/PXI1_data/50000Hz/<filename>.AD01', 
-    'GIF_PD_INPUTWAVE_PXI01_50k'   : '/NAS/PXI1_data/50000Hz/<filename>.AD02', 
-    'GIF_PD_ABSORP_PXI01_50k'      : '/NAS/PXI1_data/50000Hz/<filename>.AD03',  
-    'GIF_PD_PWAVE_PXI01_5k'        : '/NAS/PXI1_data/5000Hz/<filename>.AD00',  
-    'GIF_PD_SWAVE_PXI01_5k'        : '/NAS/PXI1_data/5000Hz/<filename>.AD01',  
-    'GIF_PD_INPUTWAVE_PXI0_5k'     : '/NAS/PXI1_data/5000Hz/<filename>.AD02',  
-    'GIF_PD_ABSORP_PXI0_5k'        : '/NAS/PXI1_data/5000Hz/<filename>.AD03',    
-    'GIF_CALC_PHASE'               : '/data1/PHASE/50000Hz/<filename>.PHASE',
-    'GIF_CALC_STRAIN'               : '/data1/PHASE/50000Hz/<filename>.STRAIN',
-    'GIF_CALC_ZOBUN'               : '/data1/PHASE/50000Hz/<filename>.ZOBUN',
-    'GIF_CALC_SQRT'                : '/data1/PHASE/50000Hz/<filename>.SQRT',    
+    'X500_TEMP'                : '/NAS/cRIO01_data/<filename>.AD00',
+    'X500_HUMD'                : '/NAS/cRIO01_data/<filename>.AD01',
+    'X500_BARO'                : '/NAS/cRIO01_data/<filename>.AD02',
+    'X500_VACU'                : '/NAS/cRIO01_data/<filename>.AD03',
+    'X500_04'                  : '/NAS/cRIO01_data/<filename>.AD04',
+    'X500_05'                  : '/NAS/cRIO01_data/<filename>.AD05',
+    'X500_06'                  : '/NAS/cRIO01_data/<filename>.AD06',
+    'X500_07'                  : '/NAS/cRIO01_data/<filename>.AD07',        
+    'X2000_TEMP'               : '/NAS/cRIO02_data/<filename>.AD00',
+    'X2000_HUMD'               : '/NAS/cRIO02_data/<filename>.AD01',
+    'X2000_BARO'               : '/NAS/cRIO02_data/<filename>.AD02',
+    'X2000_VACU'               : '/NAS/cRIO02_data/<filename>.AD03',
+    'X2000_04'                 : '/NAS/cRIO02_data/<filename>.AD04',
+    'X2000_05'                 : '/NAS/cRIO02_data/<filename>.AD05',
+    'X2000_06'                 : '/NAS/cRIO02_data/<filename>.AD06',
+    'X2000_07'                 : '/NAS/cRIO02_data/<filename>.AD07',
+    #
+    'X1500_TR240velEW'	   : '/NAS/cRIO03_data/<filename>.AD00',
+    'X1500_01'         	   : '/NAS/cRIO03_data/<filename>.AD01',
+    'X1500_TR240velNS'     : '/NAS/cRIO03_data/<filename>.AD02',
+    'X1500_TR240velUD'     : '/NAS/cRIO03_data/<filename>.AD03',
+    'X1500_TR240posEW'     : '/NAS/cRIO03_data/<filename>.AD04',
+    'X1500_TR240posNS'     : '/NAS/cRIO03_data/<filename>.AD05',
+    'X1500_TR240posUD'     : '/NAS/cRIO03_data/<filename>.AD06',
+    'X1500_07'             : '/NAS/cRIO03_data/<filename>.AD07',
+    'X1500_CMG3TvelEW'     : '/NAS/cRIO03_data/<filename>.AD08',
+    'X1500_CMG3TvelNS'     : '/NAS/cRIO03_data/<filename>.AD09',
+    'X1500_CMG3TvelUD'     : '/NAS/cRIO03_data/<filename>.AD10',
+    'X1500_11'             : '/NAS/cRIO03_data/<filename>.AD11',
+    'X1500_CMG3TposEW'     : '/NAS/cRIO03_data/<filename>.AD12',
+    'X1500_CMG3TposNS'     : '/NAS/cRIO03_data/<filename>.AD13',
+    'X1500_CMG3TposUD'     : '/NAS/cRIO03_data/<filename>.AD14',
+    'X1500_15'             : '/NAS/cRIO03_data/<filename>.AD15',    
+    #    
+    'PD_PWAVE_PXI01_50k'       : '/NAS/PXI1_data/50000Hz/<filename>.AD00',
+    'PD_SWAVE_PXI01_50k'       : '/NAS/PXI1_data/50000Hz/<filename>.AD01', 
+    'PD_INPUTWAVE_PXI01_50k'   : '/NAS/PXI1_data/50000Hz/<filename>.AD02', 
+    'PD_ABSORP_PXI01_50k'      : '/NAS/PXI1_data/50000Hz/<filename>.AD03',  
+    'PD_PWAVE_PXI01_5k'        : '/NAS/PXI1_data/5000Hz/<filename>.AD00',  
+    'PD_SWAVE_PXI01_5k'        : '/NAS/PXI1_data/5000Hz/<filename>.AD01',  
+    'PD_INPUTWAVE_PXI0_5k'     : '/NAS/PXI1_data/5000Hz/<filename>.AD02',  
+    'PD_ABSORP_PXI0_5k'        : '/NAS/PXI1_data/5000Hz/<filename>.AD03',    
+    'CALC_PHASE'               : '/data1/PHASE/50000Hz/<filename>.PHASE',
+    'CALC_STRAIN'               : '/data1/PHASE/50000Hz/<filename>.STRAIN',
+    'CALC_ZOBUN'               : '/data1/PHASE/50000Hz/<filename>.ZOBUN',
+    'CALC_SQRT'                : '/data1/PHASE/50000Hz/<filename>.SQRT',    
     'CLO_CALC_STRAIN_LIN'          : '/data2/CLIO/LIN/<filename>.LIN',
     'CLO_CALC_STRAIN_SHR'          : '/data2/CLIO/SHR/<filename>.SHR',
     }
@@ -79,8 +87,9 @@ def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
         end = dtime + duration
         dtime_ = []
         while True:
-            dtime += datetime.timedelta(seconds=60)
             dtime_ += [dtime]
+            dtime += datetime.timedelta(seconds=60)
+            print dtime,end
             if dtime>end:
                 break
         #
@@ -109,7 +118,7 @@ def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
         exit()
         return None
     
-def fromfiles(fname,dtype):
+def fromfiles(fnames,dtype):
     ''' get numpy array from files
         
     fnameに格納されているファイルパスを順番に読み込んで、1次元のnumpy.arrayにする関数。
@@ -121,7 +130,7 @@ def fromfiles(fname,dtype):
     dtype : データタイプ。numpy.dtype
     '''    
     try:
-        data = np.array([np.fromfile(fname,dtype=dtype) for fname in fname])
+        data = np.array([np.fromfile(fname,dtype=dtype) for fname in fnames])
         shape = data.shape
         data = np.resize(data, (1,shape[0]*shape[1]))[0]
         return data
@@ -145,6 +154,9 @@ def read(dtime,duration,chname):
     chname : チャンネル名。
     '''
     fname = findFiles(dtime,duration,chname)
+    print fname
+    print len(fname)
+    #exit()
     try:
         DataLocation = filename_format[chname].split('<filename>')[0]
         info  = datatype[DataLocation]
@@ -161,10 +173,10 @@ def read(dtime,duration,chname):
         return None
     
 def test_main():
-    #data = read(dtime=1199977218,duration=121,chname='GIF_X500_HUMD')
-    data = read('2018-03-26 18:00:00',1024,'GIF_X1500_00')
+    #data = read(dtime=1199977218,duration=121,chname='X500_HUMD')
+    data = read('2018-03-26 18:00:00',1024,'X1500_00')
     print data
-    #data = read(1199977218,320,'GIF_CALC_STRAIN')
+    #data = read(1199977218,320,'CALC_STRAIN')
     import matplotlib.pyplot as plt
     plt.plot(data)
     plt.savefig('hgoe.png')
@@ -180,7 +192,7 @@ if __name__ == '__main__':
     test_main()
     exit()
     # Gwpyで読み込もうとしたらしいけど、もうこの方法は使わないことにする。
-    #strain = TimeSeries.read('/Users/miyo/KAGRA/GIF/data1/PHASE/50000Hz/2018/01/15/00/1801150014.STRAIN', 'GIF_CALC_STRAIN',1198306368,1198306400,format='gif')
+    #strain = TimeSeries.read('/Users/miyo/KAGRA/GIF/data1/PHASE/50000Hz/2018/01/15/00/1801150014.STRAIN', 'CALC_STRAIN',1198306368,1198306400,format='gif')
     print 'value[-1]',strain.value[-1]
     print 'unit',strain.unit
     print 'sample_rate',strain.sample_rate
