@@ -1,9 +1,15 @@
 #
 #! coding:utf-8
-import numpy as np
 import traceback
+import numpy as np
+import datetime
+from datetime import datetime as dt
+#from sys import exit
+from astropy.time import Time
+from datetime import datetime as dt
 
-from gifutils import checkParams
+
+
 
 Hz = 1
 byte = 1
@@ -74,9 +80,60 @@ filename_format = {
     'CLO_CALC_STRAIN_SHR'          : '/data2/CLIO/SHR/<filename>.SHR',
     }
 
-from datetime import datetime as dt
-import datetime
-from datetime import date
+
+
+
+
+
+
+def astroTime2JSTdatetime(Time):
+    return dt.strptime(str(Time), '%Y-%m-%d %H:%M:%S')
+    
+def gps2JSTdatetime(gps):
+    gps = gps + 60*60*9    
+    t = Time(gps,format='gps')
+    t.format = 'datetime'
+    dtime = dt.strptime(str(t), '%Y-%m-%d %H:%M:%S')
+    return dtime
+
+def convert_datetime(dtime):
+    strformat = '%Y-%m-%d %H:%M:%S'
+    if  isinstance(dtime,dt):
+        pass
+    elif isinstance(dtime,str):
+        try:
+            dtime     = dt.strptime(dtime,strformat)
+        except ValueError as e:
+            print 'DatetimeStringFormatError:',e
+            dtime = None                            
+    elif isinstance(dtime,int):
+        dtime = gps2JSTdatetime(dtime)
+    elif isinstance(dtime,Time):
+        astroTime2JSTdatetime(dtime)
+    else:
+        dtime = None
+    return dtime
+
+
+
+def checkParams(*params) :
+    import inspect
+    import functools
+    import itertools
+    def deco(func):
+        @functools.wraps(func)
+        def wrapper(*funcargs,**funckwars) :
+            for i,par in enumerate(zip(funcargs,params)):
+                if not isinstance(par[0],par[1]):
+                    #print 'Warning',func.__name__,':',par[0],'!=',par[1]
+                    if params[i] == dt:
+                        funcargs = list(funcargs)
+                        funcargs[i] = convert_datetime(funcargs[i])
+            return func(*funcargs,**funckwars)
+        return wrapper
+    return deco
+
+
 
 @checkParams(dt,int,str)    
 def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
@@ -138,37 +195,39 @@ def fromfiles(fnames,dtype):
         print e
         print 'No data'
         exit()
+
+
+def readGIFdata(dtime,duration,chname):    
+    '''Read binay data
     
+    GIFのバイナリファイルを読み込むための関数。                
     
-def test_main():
-    #data = read(dtime=1199977218,duration=121,chname='X500_HUMD')
-    data = read('2018-03-26 18:00:00',1024,'X1500_00')
-    print data
-    #data = read(1199977218,320,'CALC_STRAIN')
-    import matplotlib.pyplot as plt
-    plt.plot(data)
-    plt.savefig('hgoe.png')
-    plt.close()
-    #plt.show()
+    Parameter
+    ---------------
     
-if __name__ == '__main__':
-    #'/Users/miyo/KAGRA/GIF/data1/PHASE/50000Hz/2018/01/15/00/1801150014.STRAIN'
-    #gwf_cache = '/Users/miyo/KAGRA/GIF/DATA/gwpy.cache'
-    #with open(gwf_cache, 'r') as fobj:
-    #    cache = Cache.fromfile(fobj)
-    #
-    test_main()
-    exit()
-    # Gwpyで読み込もうとしたらしいけど、もうこの方法は使わないことにする。
-    #strain = TimeSeries.read('/Users/miyo/KAGRA/GIF/data1/PHASE/50000Hz/2018/01/15/00/1801150014.STRAIN', 'CALC_STRAIN',1198306368,1198306400,format='gif')
-    print 'value[-1]',strain.value[-1]
-    print 'unit',strain.unit
-    print 'sample_rate',strain.sample_rate
-    print 'times[-1]',strain.times[-1]
-    print 't0',strain.t0
-    print 'dt',strain.dt
-    print 'name',strain.name
-    print 'channel',strain.channel
-    print 'dtype',strain.dtype
-    #print 'copy',strain.copy    
-    
+    dtime : 開始時刻。datetime,str,gpsに対応している。
+
+    duration : データ長さ。秒。
+
+    chname : チャンネル名。
+    '''
+    fname = findFiles(dtime,duration,chname)
+    print fname
+    print len(fname)
+    #exit()
+    try:
+        DataLocation = filename_format[chname].split('<filename>')[0]
+        info  = datatype[DataLocation]
+        dtype = info[1]
+        c2V   = info[2]
+        data = fromfiles(fname,dtype=dtype)*c2V
+        return data
+    except KeyError as e:
+        traceback.print_exc()
+        return None
+    except Exception as e:
+        traceback.print_exc()
+        exit()
+        return None
+
+
