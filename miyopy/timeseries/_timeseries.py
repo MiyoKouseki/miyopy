@@ -1,19 +1,8 @@
 #
 #! coding:utf-8
-import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib.animation as animation
-import matplotlib
-import numpy as np
-from  check_fw import is_record_in_fw0
-import sys
-sys.path.append("../../../lib/miyopy/miyopy")
 
-from mpio import fetch_data, dump, load
-import mpplot
-from _timeseries import *
-    
+
+
 class TimeSeries():
     def __init__(self,start,duration):       
         self.chlst_fname = '1.chlst'
