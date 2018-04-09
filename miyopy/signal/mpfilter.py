@@ -5,14 +5,16 @@ from scipy.signal import butter, lfilter
 from control import matlab
 
 
+def decimate(data,fs_befor,fs_after):
+    from scipy.signal import decimate
+    data_ = decimate(data,int(fs_befor/fs_after))
+    return data_
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
     nyq = 0.5 * fs
-    low = lowcut / nyq
-    high = highcut / nyq
+    low = lowcut/nyq
+    high = highcut/nyq
     b, a = butter(order, [low, high], btype='band')
-    #b, a = butter(order, low, btype='low')
-    #b, a = butter(order, high, btype='high')
     y = lfilter(b, a, data)
     return y
 

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 def ax_plot(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
     ax.plot(x,y,label=legend,color='k',linewidth=0.8)
-    ax.set_ylim(-5e-6,5e-6)
+    #ax.set_ylim(-5e-9,5e-9)
     ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
     ax.legend()
     return ax
@@ -75,7 +75,7 @@ def subplot32(data,fname,label):
             xlabel='Time',
             ylabel='Value',
             legend=label[i]            
-        )
+        )        
     '''
     for i in filter(lambda x:x<6,range(6)):
         plt.setp(ax_[i].get_xticklabels(),visible=False)
