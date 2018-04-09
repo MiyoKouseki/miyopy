@@ -7,9 +7,9 @@ from datetime import datetime as dt
 #from sys import exit
 from astropy.time import Time
 from datetime import datetime as dt
-
-
-
+from scipy import signal
+#from miyopy.signal import butter_bandpass_filter
+import miyopy.signal.mpfilter as mpf
 
 Hz = 1
 byte = 1
@@ -80,12 +80,6 @@ filename_format = {
     'CLO_CALC_STRAIN_SHR'          : '/data2/CLIO/SHR/<filename>.SHR',
     }
 
-
-
-
-
-
-
 def astroTime2JSTdatetime(Time):
     return dt.strptime(str(Time), '%Y-%m-%d %H:%M:%S')
     
@@ -94,6 +88,12 @@ def gps2JSTdatetime(gps):
     t = Time(gps,format='gps')
     t.format = 'datetime'
     dtime = dt.strptime(str(t), '%Y-%m-%d %H:%M:%S')
+    return dtime
+
+def gps2JST(gps):
+    from astropy.time import Time
+    t_gps = Time(gps+60*60*9, format='gps')
+    dtime = dt.strptime(t_gps.utc.iso.split('.')[0],'%Y-%m-%d %H:%M:%S')
     return dtime
 
 def convert_datetime(dtime):
@@ -108,37 +108,36 @@ def convert_datetime(dtime):
             dtime = None                            
     elif isinstance(dtime,int):
         dtime = gps2JSTdatetime(dtime)
+        dtime = gps2UTC(dtime)        
     elif isinstance(dtime,Time):
         astroTime2JSTdatetime(dtime)
     else:
         dtime = None
     return dtime
 
-
-
-def checkParams(*params) :
-    import inspect
-    import functools
-    import itertools
-    def deco(func):
-        @functools.wraps(func)
-        def wrapper(*funcargs,**funckwars) :
-            for i,par in enumerate(zip(funcargs,params)):
-                if not isinstance(par[0],par[1]):
-                    #print 'Warning',func.__name__,':',par[0],'!=',par[1]
-                    if params[i] == dt:
-                        funcargs = list(funcargs)
-                        funcargs[i] = convert_datetime(funcargs[i])
-            return func(*funcargs,**funckwars)
-        return wrapper
-    return deco
-
-
-
-@checkParams(dt,int,str)    
 def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
-    def getfname(dtime):        
+    strformat = '%Y-%m-%d %H:%M:%S'
+    if  isinstance(dtime,dt):
         pass
+    elif isinstance(dtime,str):
+        try:
+            dtime = dt.strptime(dtime,strformat)
+        except ValueError as e:
+            print 'DatetimeStringFormatError:',e
+            dtime = None                            
+    elif isinstance(dtime,int):
+        gps = dtime
+        dtime = gps2JST(dtime)
+        #print gps,dtime
+    elif isinstance(dtime,Time):
+        astroTime2JSTdatetime(dtime)
+    else:
+        dtime = None
+    #
+    dtime_start = gps - dtime.second
+    #print gps, dtime_start
+    dtime =  dtime - datetime.timedelta(seconds=dtime.second)    
+    #
     try:
         duration = datetime.timedelta(seconds=duration)
         end = dtime + duration
@@ -146,8 +145,7 @@ def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
         while True:
             dtime_ += [dtime]
             dtime += datetime.timedelta(seconds=60)
-            print dtime,end
-            if dtime>end:
+            if dtime > end:
                 break
         #
         minutes = len(dtime_)
@@ -159,9 +157,7 @@ def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
         dtime_str = map(strftime,dtime)
         fname = map(getfname,dtime_str)
         fname = map(hoge,fname)
-        #print fname
-        #
-        return fname
+        return fname,dtime_start,len(fname)*60
     except KeyError as e:
         print 'KeyError',e
         print 'example) Available Channel Name'
@@ -173,17 +169,17 @@ def findFiles(dtime,duration,chname,prefix='/Users/miyo/KAGRA/DATA/'):
     except Exception as e:
         print traceback.format_exc()
         exit()
-        return None
+        return None    
     
 def fromfiles(fnames,dtype):
     ''' get numpy array from files
-        
+    
     fnameに格納されているファイルパスを順番に読み込んで、1次元のnumpy.arrayにする関数。
     Parameter
     --------------
-
+    
     fname : ファイルパス。絶対パス。
-
+    
     dtype : データタイプ。numpy.dtype
     '''    
     try:
@@ -195,9 +191,8 @@ def fromfiles(fnames,dtype):
         print e
         print 'No data'
         exit()
-
-
-def readGIFdata(dtime,duration,chname):    
+        
+def readGIFdata(gps,duration,chname,fs=8):    
     '''Read binay data
     
     GIFのバイナリファイルを読み込むための関数。                
@@ -205,22 +200,27 @@ def readGIFdata(dtime,duration,chname):
     Parameter
     ---------------
     
-    dtime : 開始時刻。datetime,str,gpsに対応している。
+    gps : 開始時刻。datetime,str,gpsに対応している。
 
     duration : データ長さ。秒。
 
     chname : チャンネル名。
     '''
-    fname = findFiles(dtime,duration,chname)
-    print fname
-    print len(fname)
-    #exit()
+    
+    fname,tstart,tlen = findFiles(gps,duration,chname)
     try:
         DataLocation = filename_format[chname].split('<filename>')[0]
-        info  = datatype[DataLocation]
+        info = datatype[DataLocation]
         dtype = info[1]
-        c2V   = info[2]
+        fs_ = info[0][0]
+        c2V = info[2]
+        idx = [(gps-tstart)*fs_,(gps+duration-tstart)*fs_]
         data = fromfiles(fname,dtype=dtype)*c2V
+        print data
+        data = data[idx[0]:idx[1]]
+        #data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)                
+        #data = mpf.butter_bandpass_filter(data, 0.05, 0.5, fs, order=1)
+        #data = signal.detrend(data)         
         return data
     except KeyError as e:
         traceback.print_exc()
@@ -229,5 +229,4 @@ def readGIFdata(dtime,duration,chname):
         traceback.print_exc()
         exit()
         return None
-
 

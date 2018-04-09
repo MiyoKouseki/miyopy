@@ -2,7 +2,10 @@
 #! coding:utf-8
 
 import os
+from scipy import signal
+import miyopy.signal.mpfilter as mpf
 
+#
 data_prefix = '/Users/miyo/Dropbox/KagraMiyo/GIF/data/'
 import numpy as np
 import pickle
@@ -40,12 +43,18 @@ def getpicklefname(start,duration,chlst_num):
     return pickle_fname,[start-info[i][0],end-info[i][0]]
 
 def readKAGRAdata(start,duration,channel):
-    print start,duration
+    print start,duration,channel
     chlst_fname = '1.chlst'
     chlst_num = chlst_fname.split('.chlst')[0]
     pickle_fname,idx = getpicklefname(start,duration,chlst_num)
     _,chdic = _loadchlst(chlst_fname)    
     data = load(pickle_fname)
     data = data[chdic[channel]]
-    data = data[16*idx[0]:16*idx[1]]
+    fs_ = 16
+    fs = 8
+    # data = mpf.butter_bandpass_filter(data, 0.05, 0.5, fs, order=1)
+    data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
+    data = signal.detrend(data)
+    data = list(data)
+    data = data[fs*idx[0]:fs*idx[1]]
     return data
