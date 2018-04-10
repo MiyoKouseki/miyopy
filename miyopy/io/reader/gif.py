@@ -205,8 +205,7 @@ def readGIFdata(gps,duration,chname,fs=8):
     duration : データ長さ。秒。
 
     chname : チャンネル名。
-    '''
-    
+    '''    
     fname,tstart,tlen = findFiles(gps,duration,chname)
     try:
         DataLocation = filename_format[chname].split('<filename>')[0]
@@ -229,4 +228,3 @@ def readGIFdata(gps,duration,chname,fs=8):
         traceback.print_exc()
         exit()
         return None
-
