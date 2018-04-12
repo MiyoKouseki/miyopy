@@ -3,14 +3,15 @@
 
 
 import numpy
-
 from astropy.units import Quantity
+from astropy import units 
+
 
 class Array(Quantity):    
-    """Array holding data with a unit, and other metadata
-    This `Array` holds the input data and a standard set of metadata
-    properties associated with GW data. 
-    このArrayクラスはnumpy.ndarrayをベースにして、その他データ処理に必要な基本的なメタデータを付け加えている。ちなみにかなりの部分はGwpyのArrayからコピーしてきて、( copied from array.py in gwpy)
+    """
+    このArrayクラスは、numpy.ndarrayをベースにして各種データ処理に必要なメタデータを以下のパラメータに付与している。
+
+    かなりの部分はGwpyのArrayをお手本につくった。まだライセンスの扱いについてよく知らないので、プライベートリポジトリにした。
 
     Parameters
     ----------
@@ -64,7 +65,8 @@ class Array(Quantity):
 
         # parse unit with forgiveness
         if unit is not None:
-            unit = parse_unit(unit, parse_strict='warn')
+            #unit = parse_unit(unit, parse_strict='warn')
+            unit = unit
 
         # create new array
         new = super(Array, cls).__new__(cls, value, unit=unit, dtype=dtype,
@@ -317,7 +319,8 @@ class Array(Quantity):
     @unit.setter
     def unit(self, unit):
         if not hasattr(self, '_unit') or self._unit is None:
-            self._unit = parse_unit(unit)
+            #self._unit = parse_unit(unit)
+            self._unit = unit
         else:
             raise AttributeError(
                 "Can't set attribute. To change the units of this %s, use the "
@@ -355,28 +358,7 @@ class Array(Quantity):
                 value, check_precision=check_precision)
     _to_own_unit.__doc__ = Quantity._to_own_unit.__doc__
 
-    def override_unit(self, unit, parse_strict='raise'):
-        """Forcefully reset the unit of these data
-        Use of this method is discouraged in favour of `to()`,
-        which performs accurate conversions from one unit to another.
-        The method should really only be used when the original unit of the
-        array is plain wrong.
-        Parameters
-        ----------
-        unit : `~astropy.units.Unit`, `str`
-            the unit to force onto this array
-        parse_strict : `str`, optional
-            how to handle errors in the unit parsing, default is to
-            raise the underlying exception from `astropy.units`
-        Raises
-        ------
-        ValueError
-            if a `str` cannot be parsed as a valid unit
-        """
-        self._unit = parse_unit(unit, parse_strict=parse_strict)
 
 
 if __name__=='__main__':
-    a = Array([1,2,3,4,5,6,7,8],unit='m')
-    #print ', '.join(dir(a))
-    print a.unit   
+    a = Array([1,2,3,4,5,6,7,8],unit='m',)

@@ -131,8 +131,8 @@ def MultiLogLogPlot(datalist,label,filename):
     plt.ylabel(label[1])
     plt.title(filename)
     plt.ylim(1e-8,1e4)
-    #plt.savefig(filename+'.png')
-    #plt.close()
+    plt.savefig(filename+'.png')
+    plt.close()
     #return plt
 
 def MultiSemiLogyPlot(data,label,style,filename,legend,lim):

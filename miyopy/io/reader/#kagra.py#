@@ -39,8 +39,8 @@ def getpicklefname(start,tlen,chlst_num=1):
     info = map(lambda x:x.split('_'),info)
     info = map(lambda x:strList2intList(x),info)
     for i,inf in enumerate(info):
-        #print inf,start,tlen,inf[0]<start
-        if ((start+tlen)-inf[0]<=inf[1])and(inf[0]<=start):
+        print inf,
+        if ((start+tlen)-inf[0]<=inf[1])and(inf[0]<start):
             pickle_fname = DATAdir + '{0}_{1}_{2}.pickle'.format(info[i][0],info[i][1],info[i][2])            
             return pickle_fname,[start-info[i][0],(start+tlen)-info[i][0]]
 
