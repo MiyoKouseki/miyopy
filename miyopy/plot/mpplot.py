@@ -10,6 +10,7 @@ from matplotlib import rcParams
 from matplotlib.colors import LogNorm
 import matplotlib
 import matplotlib.pyplot as plt
+import spectrum
 
 #plt.grid(which='major',color='gray',linestyle=':',alpha=1)
 #plt.grid(which='minor',color='gray',linestyle=':',alpha=1)
@@ -57,7 +58,7 @@ def plotSpectrogram(data,ave):
     ax2.set_ylabel(data._unit)
     ax2.grid(which='major',color='gray',linestyle=':',alpha=1)
     ax2.grid(which='minor',color='gray',linestyle=':',alpha=1)
-    ax2.legend(bbox_to_anchor=(0., 1.05, 1, 0.2),mode="expand", borderaxespad=0.)        
+    ax2.legend(bbox_to_anchor=(0., 1.05, 1, 0.2),mode="expand", borderaxespad=0.) 
     ax3 = fig.add_axes([0.85, 0.13, 0.03, 0.57])  # colorbar
     ax3.yaxis.set_label_position("right")
     ax3.set_ylabel('PSD [dB]')
@@ -65,8 +66,8 @@ def plotSpectrogram(data,ave):
     ax4 = fig.text(0.08, 0.02, text)              # footter
     im = ax1.pcolormesh(data._t, data._f, data._Sxx,norm=LogNorm(vmin=vmin, vmax=vmax))
     fig.colorbar(im, cax=ax3,label='Normalized ASD [{0}/rtHz]'.format(data._unit))
-    #plt.savefig('Coherence_'+data._name+'.png')
-    #plt.close()
+    plt.savefig('huge.png')
+    plt.close()
     #return fig
 
 def MultiPlot_ACCoupling(data,label,filename,legend):
@@ -123,14 +124,28 @@ def MultiPlot(data,label,style,filename,legend,lim):
     plt.savefig(filename+'.png')
     plt.close()
 
-def MultiLogLogPlot(datalist,label,filename):
+    
+def LogLogPlot(datalist,lim,label=['xlabel','ylabel'],filename='./noname',**kwargs):
+    if not isinstance(datalist,list):
+        datalist = [datalist]        
     for data in datalist:
-        plt.loglog(data._f,data.psd,label=data._name,linewidth=0.5)
-    plt.legend()
+        if data._name=='Xarm_Strainmeter':
+            plt.loglog(data._f,data.psd,label=data._name,linewidth=2.0)
+        #elif data._name=='Baro_x500':
+        #    plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0,color='brown')
+        else:
+            plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0)
+    #noise = np.loadtxt('/Users/miyo/Dropbox/KagraMiyo/GIF/github/param/error_signal.txt')
+    #print noise[:,1]
+    #plt.loglog(noise[:,0],noise[:,1],label='Freq Noise',linewidth=1.0)
+    #print '!'
+    plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0)            
+    plt.legend(fontsize=10)
     plt.xlabel(label[0])
     plt.ylabel(label[1])
-    plt.title(filename)
-    plt.ylim(1e-8,1e4)
+    plt.title(filename[2:],fontsize=20)
+    plt.ylim(lim[1])
+    plt.xlim(lim[0])
     plt.savefig(filename+'.png')
     plt.close()
     #return plt
@@ -196,8 +211,9 @@ def confidential_peak_index(data,cl):
     cidx = np.where(data>cl)
     cpidx = np.intersect1d(pidx,cidx)
     return cpidx
-    
-def CoherencePlot(data,fn,ave,cl,unwrap=True,xlim=(1e0,1e3)):
+
+
+def CoherencePlot(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):
     fig = plt.figure()
     ax1 = fig.add_axes([0.12, 0.43, 0.80, 0.47])  # coherence
     ax2 = fig.add_axes([0.12, 0.13, 0.80, 0.25])  # phase
@@ -208,8 +224,8 @@ def CoherencePlot(data,fn,ave,cl,unwrap=True,xlim=(1e0,1e3)):
     #ax1.grid(True, which="minor",linestyle=':')
     clfunc = lambda a: 1.0-(1.0-a/100.0)**(1./(ave-1))
     ax1.semilogx(data._f,data._coh,linewidth=0.5,label='a',color='black') #for multi
-    cpidx = confidential_peak_index(data._coh,clfunc(cl))
-    ax1.semilogx(data._f[cpidx],data._coh[cpidx],'ro',markersize=4)
+    #cpidx = confidential_peak_index(data._coh,clfunc(cl))
+    #ax1.semilogx(data._f[cpidx],data._coh[cpidx],'ro',markersize=4)
     ax1.set_ylabel("Coherence")
     ax1.legend(bbox_to_anchor=(0., 1.05, 1, 0.1),mode="expand", borderaxespad=0.,ncol=1)
     ax1.plot(data._f,np.ones(len(data._f))*clfunc(cl),'k--',linewidth=1)
@@ -236,16 +252,125 @@ def CoherencePlot(data,fn,ave,cl,unwrap=True,xlim=(1e0,1e3)):
     enbw   = spectrum.enbw(spectrum.create_window(nFFT, 'hanning'))*data._fs/nFFT
     text = '''StartGPSTime:{0}, Average:{1}, Overrap:50%, Window:Hanning, ENBW:{2:3.2e} Hz'''.format(123,ave,enbw)
     ax3 = fig.text(0.08, 0.02, text)              # footter
-    #plt.savefig(fn)
-    #plt.close()
+    fname = 'Coherence_{0}-{1}.png'.format(data._name,data._nameB)
+    print fname
+    plt.title(fname)
+    plt.savefig(fname)
+    plt.close()
     #return fig
+
     
 def TF_V2Vel(f):
     H_V2vel, phase, omega = matlab.bode(1/H,f*(2.*np.pi),Plot=False,dB=False)
     return H_V2vel
+
 
 def readDiaggui_PSD(filename):
     # return ( Frequency[Hz], PSD [Volt/rtHz] )
     data  = np.loadtxt(filename)
     f,psd = data[1:,0],data[1:,1]*c2V
     return f,psd
+
+
+def ax_plot(ax,x,y,xlabel=None,ylabel=None,legend='None',ylim=[-1e-5,1e-5]):    
+    ax.plot(x,y,label=legend,color='k',linewidth=0.8)
+    ax.set_ylim(ylim[0],ylim[1])
+    ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
+    ax.legend()
+    return ax
+
+
+def ax_spectrogram(ax,x,y,xlabel=None,ylabel=None,legend='None',ylim=[-1e-5,1e-5]):    
+    ax.plot(x,y,label=legend,color='k',linewidth=0.8)
+    #ax.set_ylim(ylim[0],ylim[1])
+    ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
+    ax.legend()
+    return ax
+
+
+def subplot33(data,fname,ylim=[-1e-5,1e-5],title='No Title',**kwargs):
+    matplotlib.rc('font',family='Arial')
+    fig, ax = plt.subplots(3, 3, figsize=(17, 10))
+    fig.suptitle(title,fontsize=25,fontname='Arial')
+    ax_ = ax.reshape(1,9)[0]
+    plot = ax_plot
+    for i in range(len(ax_)):
+        ax_[i] = plot(
+            ax_[i],
+            data[i]._time,
+            data[i].timeseries,           
+            xlabel='Time',
+            ylabel='Value',
+            legend=data[i]._name,
+            ylim=ylim
+        )        
+    for i in filter(lambda x:x<6,range(6)):
+        plt.setp(ax_[i].get_xticklabels(),visible=False)
+    for i in filter(lambda x:(x%3)!=0,range(9)):
+        plt.setp(ax_[i].get_yticklabels(),visible=False)
+    for i in filter(lambda x:x==7,range(9)):
+        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
+    for i in filter(lambda x:x==3,range(9)):
+        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
+    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
+    plt.savefig(fname)
+    plt.close()
+
+    
+def subplot31(data,fname,label):
+    matplotlib.rc('font',family='Arial')
+    fig, ax = plt.subplots(3, 1, figsize=(14, 10))
+    fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
+    ax_ = ax.reshape(1,3)[0]
+    for i in range(len(ax_)):
+        ax_[i] = ax_plot(
+            ax_[i],
+            data[i][0],
+            data[i][1],           
+            xlabel='Time',
+            ylabel='Value',
+            legend=label[i]            
+        )
+    '''
+    for i in filter(lambda x:x<6,range(6)):
+        plt.setp(ax_[i].get_xticklabels(),visible=False)
+    for i in filter(lambda x:(x%3)!=0,range(9)):
+        plt.setp(ax_[i].get_yticklabels(),visible=False)
+    for i in filter(lambda x:x==7,range(9)):
+        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
+    for i in filter(lambda x:x==3,range(9)):
+        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
+'''
+    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
+    plt.savefig(fname)
+    plt.close()    
+
+def subplot32(data,fname,label):
+    matplotlib.rc('font',family='Arial')
+    fig, ax = plt.subplots(2, 3, figsize=(14, 7))
+    fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
+    ax_ = ax.reshape(1,6)[0]
+    for i in range(len(ax_)):
+        ax_[i] = ax_plot(
+            ax_[i],
+            data[i][0],
+            data[i][1],           
+            xlabel='Time',
+            ylabel='Value',
+            legend=label[i]            
+        )        
+    '''
+    for i in filter(lambda x:x<6,range(6)):
+        plt.setp(ax_[i].get_xticklabels(),visible=False)
+    for i in filter(lambda x:(x%3)!=0,range(9)):
+        plt.setp(ax_[i].get_yticklabels(),visible=False)
+    for i in filter(lambda x:x==7,range(9)):
+        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
+    for i in filter(lambda x:x==3,range(9)):
+        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
+'''
+    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
+    plt.savefig(fname)
+    plt.close()    
+    
+

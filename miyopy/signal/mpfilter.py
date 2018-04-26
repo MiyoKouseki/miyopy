@@ -7,7 +7,9 @@ from control import matlab
 
 def decimate(data,fs_befor,fs_after):
     from scipy.signal import decimate
+    #print 'a  ',data, len(data)
     data_ = decimate(data,int(fs_befor/fs_after))
+    #print 'b  ',data_,len(data_)
     return data_
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):

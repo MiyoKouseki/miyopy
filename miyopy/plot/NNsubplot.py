@@ -3,18 +3,27 @@ import matplotlib.pyplot as plt
 
 def ax_plot(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
     ax.plot(x,y,label=legend,color='k',linewidth=0.8)
-    #ax.set_ylim(-5e-5,5e-5)
+    #ax.set_ylim(-1e-6,1e-6)
     ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
     ax.legend()
     return ax
+
+def ax_spectrogram(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
+    ax.plot(x,y,label=legend,color='k',linewidth=0.8)
+    #ax.set_ylim(-5e-6,5e-6)
+    ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
+    ax.legend()
+    return ax
+
 
 def subplot33(data,fname,label):
     matplotlib.rc('font',family='Arial')
     fig, ax = plt.subplots(3, 3, figsize=(17, 10))
     fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
     ax_ = ax.reshape(1,9)[0]
+    plot = ax_plot
     for i in range(len(ax_)):
-        ax_[i] = ax_plot(
+        ax_[i] = plot(
             ax_[i],
             data[i][0],
             data[i][1],           

@@ -11,6 +11,7 @@ from scipy import signal
 #from miyopy.signal import butter_bandpass_filter
 import miyopy.signal.mpfilter as mpf
 
+
 Hz = 1
 byte = 1
 #from gwpy.timeseries import TimeSeries
@@ -80,12 +81,52 @@ fname_fmt={
     'CLIO_CALC_STRAIN_SHR':'/data2/CLIO/SHR/<filename>.SHR',
 }
     
-class gifdatafile(object):
+class gifdatatype(object):
     def __init__(self,chname,t0):
-        self.chname = None
-        self.t0 = None
-        self.path_to_file = None        
+        self.chname = chname
+        self.t0 = t0
+        DataLocation = fname_fmt[chname].split('<filename>')[0]
+        info = datatype[DataLocation]        
+        self.dtype = info[1]
+        self.byte = info[0][1]
+        self.fs = info[0][0]
+        self.c2V = info[2]
+        self.get_path_to_file(t0)
 
+    def get_path_to_file(self):
+        '''ファイルがある場所を調べる関数
+
+        Parameter
+        ---------
+        gpstime: int
+            開始時刻。GPS時間で指定。
+        tlen: int
+            長さ。秒で指定。
+        chname:str
+            チャンネル名。fname_fmtで指定されている名前を指定。
+        prefix: str
+            GIFデータが保存されているローカルディレクトリ。
+        '''        
+        assert (gps%60)==18,'{0}%60={1}'.format(gps,gps%60)
+        date = to_JSTdatetime(gps)
+        date_str = date.strftime('%Y/%m/%d/%H/%y%m%d%H%M')
+        try:
+            self.fname = fname_fmt[chname].replace('<filename>',date_str)
+            self.path_to_file = prefix[:-1] + self.fname    
+            return self.path_to_file            
+        except KeyError as e:
+            print type(e),e
+            for key in fname_fmt.keys():
+                print key
+                exit()
+
+    def readfile(self):
+        pass
+
+
+
+        
+        
 def to_JSTdatetime(jst):
     if isinstance(jst,str):
         jst = Time(gps).to_datetime()
@@ -122,8 +163,15 @@ def path_to_file(gps,chname,prefix):
     assert (gps%60)==18,'{0}%60={1}'.format(gps,gps%60)
     date = to_JSTdatetime(gps)
     date_str = date.strftime('%Y/%m/%d/%H/%y%m%d%H%M')
-    fname = fname_fmt[chname].replace('<filename>',date_str)
+    try:
+        fname = fname_fmt[chname].replace('<filename>',date_str)
+    except KeyError as e:
+        print type(e),e
+        for key in fname_fmt.keys():
+            print key
+        exit()
     path_to_file = prefix[:-1] + fname
+    
     return path_to_file
 
 def findFiles(gpstime,tlen,chname,prefix='/Users/miyo/KAGRA/DATA/'):
@@ -149,7 +197,7 @@ def findFiles(gpstime,tlen,chname,prefix='/Users/miyo/KAGRA/DATA/'):
     '''
     s_ = 60*(gpstime/60)+18
     e_ = 60*((gpstime+tlen)/60)+18
-    fnames_gps = np.arange(s_,e_,60)
+    fnames_gps = np.arange(s_,e_+60,60)
     fnames = [path_to_file(gps,chname,prefix) for gps in fnames_gps]
     return fnames
 
@@ -174,6 +222,7 @@ def fromfiles(fnames,chname):
     byte = info[0][1]
     fs = info[0][0]
     c2V = info[2]
+    gifdata = gifdatatype(chname,)
     try:
         data = np.array([np.fromfile(fname,dtype=dtype) for fname in fnames])
         shape = data.shape
@@ -222,6 +271,17 @@ def check_filesize(fnames,chname):
         exit()
     else:
         return True
+
+def check_nan(data,fname,chname):
+    if True in np.isnan(data):
+        idx = np.where(np.isnan(data)==True)[0]
+        print '[Warning] found nan value. did zero padding'
+        print '\t Continuing..'
+        data[idx] = 0.0
+    else:
+        pass    
+    return data
+
     
 def readGIFdata(gps,tlen,chname,fs=8):    
     '''指定された期間のGIFデータを取ってくる関数。
@@ -239,9 +299,10 @@ def readGIFdata(gps,tlen,chname,fs=8):
     fs : int
         サンプリングを指定。1/4,1/2,1,2,4,8まで対応。
     '''
-    fnames = findFiles(gps,tlen,chname)
+    fnames = findFiles(gps,tlen,chname) 
     check_filesize(fnames,chname)
     data = fromfiles(fnames,chname)
+    data = check_nan(data,fnames,chname)
     # ------------------綺麗にしたい
     DataLocation = fname_fmt[chname].split('<filename>')[0]
     info = datatype[DataLocation]
@@ -252,13 +313,17 @@ def readGIFdata(gps,tlen,chname,fs=8):
     s_ = 60*(gps/60)+18
     e_ = 60*((gps+tlen)/60)+18
     # ------------------
+    idx = [(gps-s_)*fs_,(gps+tlen-s_)*fs_]
+    data = data[idx[0]:idx[1]]*c2V
+    if len(data)/fs_!=tlen:
+        print 'error: tlen do not match'
+        print len(data)/fs_,'!=',tlen
+        exit()
     try:
-        idx = [(gps-s_)*fs_,(gps+tlen-s_)*fs_]
-        print idx
-        data = data[idx[0]:idx[1]]
-        data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)        
+        data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
         #data = mpf.butter_bandpass_filter(data, 0.05, 0.5, fs, order=1)
-        #data = signal.detrend(data)         
+        #data = signal.detrend(data)
+        #data = signal.detrend(data,type='linear')
         return data
     except KeyError as e:
         traceback.print_exc()
