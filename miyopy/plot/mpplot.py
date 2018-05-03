@@ -70,29 +70,30 @@ def plotSpectrogram(data,ave):
     plt.close()
     #return fig
 
-def MultiPlot_ACCoupling(data,label,filename,legend):
+    
+def MultiPlot_new(data,label,filename,legend):
     '''
     一枚のFigureの上に複数のグラフを載せる。
     '''
     if len(data) != 3:
         print('[Error] please 3 channels',len(data))
         exit()
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10,5))
     fig.subplots_adjust(right=0.75)
     host = fig.add_subplot(1, 1, 1)
-    host.set_xlabel(label[0][0])
-    host.set_ylabel(label[0][1])
+    host.set_xlabel(label[0])
+    host.set_ylabel(label[1])
     ax1 = host.twinx()
     ax2 = host.twinx()
-    ax1.set_ylabel(label[0][1])
-    ax2.set_ylabel(label[0][1])
+    ax1.set_ylabel(label[1])
+    ax2.set_ylabel(label[1])   
     i = 0
-    p1, = host.plot(data[i][0],data[i][1],label=legend[i],linewidth=0.5,color='r')
+    p1, = host.plot(data[i]._time,data[i].timeseries,label=legend[i],linewidth=0.5,color='r')
     i = 1
-    p2, = ax1.plot(data[i][0],data[i][1],label=legend[i],linewidth=0.5,color='b')
+    p2, = ax1.plot(data[i]._time,data[i].timeseries,label=legend[i],linewidth=0.5,color='b')
     i = 2
     ax2.spines["right"].set_position(("axes", 1.2))
-    p3, = ax2.plot(data[i][0],data[i][1],label=legend[i],linewidth=0.5,color='g')
+    p3, = ax2.plot(data[i]._time,data[i].timeseries,label=legend[i],linewidth=0.5,color='g')
     #host.legend((ax), ("post","keyword"), loc=0, shadow=True)
     for ax in [ax1, ax2]:
         ax.set_frame_on(True)
@@ -109,9 +110,9 @@ def MultiPlot_ACCoupling(data,label,filename,legend):
     ax1.tick_params(axis='y', colors=p2.get_color())
     ax2.tick_params(axis='y', colors=p3.get_color())
     plt.title(filename)
-    plt.savefig(filename+'.png')
+    print filename
+    plt.savefig(filename)
     plt.close()
-
 
 def MultiPlot(data,label,style,filename,legend,lim):
     for i in range(len(data)):
@@ -121,25 +122,26 @@ def MultiPlot(data,label,style,filename,legend,lim):
     plt.xlabel(label[0])
     plt.ylabel(label[1])
     plt.title(filename)
-    plt.savefig(filename+'.png')
+    plt.savefig(filename)
     plt.close()
 
     
 def LogLogPlot(datalist,lim,label=['xlabel','ylabel'],filename='./noname',**kwargs):
     if not isinstance(datalist,list):
-        datalist = [datalist]        
-    for data in datalist:
-        if data._name=='Xarm_Strainmeter':
+        datalist = [datalist]
+    print 'LogLogPlot..'
+    for i,data in enumerate(datalist):
+        print '\t',i,data._name
+        if i==0:
             plt.loglog(data._f,data.psd,label=data._name,linewidth=2.0)
         #elif data._name=='Baro_x500':
         #    plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0,color='brown')
         else:
-            plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0)
+            plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0,alpha=0.9)
     #noise = np.loadtxt('/Users/miyo/Dropbox/KagraMiyo/GIF/github/param/error_signal.txt')
     #print noise[:,1]
     #plt.loglog(noise[:,0],noise[:,1],label='Freq Noise',linewidth=1.0)
     #print '!'
-    plt.loglog(data._f,data.psd,label=data._name,linewidth=1.0)            
     plt.legend(fontsize=10)
     plt.xlabel(label[0])
     plt.ylabel(label[1])
@@ -213,9 +215,9 @@ def confidential_peak_index(data,cl):
     return cpidx
 
 
-def CoherencePlot(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):
+def CoherencePlot(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):    
     fig = plt.figure()
-    ax1 = fig.add_axes([0.12, 0.43, 0.80, 0.47])  # coherence
+    ax1 = fig.add_axes([0.12, 0.43, 0.80, 0.47])  # coherence    
     ax2 = fig.add_axes([0.12, 0.13, 0.80, 0.25])  # phase
     #ax1.set_xlim(xlim[0],xlim[1])
     #ax2.set_xlim(xlim[0],xlim[1])
@@ -223,11 +225,15 @@ def CoherencePlot(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):
     #ax1.grid(True, which="major",linestyle=':')
     #ax1.grid(True, which="minor",linestyle=':')
     clfunc = lambda a: 1.0-(1.0-a/100.0)**(1./(ave-1))
-    ax1.semilogx(data._f,data._coh,linewidth=0.5,label='a',color='black') #for multi
+    ax1.semilogx(data._f,data._coh,
+                 linewidth=0.5,
+                 label=data._nameB+' / '+data._name,
+                 color='black') #for multi
     #cpidx = confidential_peak_index(data._coh,clfunc(cl))
     #ax1.semilogx(data._f[cpidx],data._coh[cpidx],'ro',markersize=4)
     ax1.set_ylabel("Coherence")
-    ax1.legend(bbox_to_anchor=(0., 1.05, 1, 0.1),mode="expand", borderaxespad=0.,ncol=1)
+    ax1.legend()
+    #ax1.legend(bbox_to_anchor=(0., 1.05, 1, 0.1),mode="expand", borderaxespad=0.,ncol=1)
     ax1.plot(data._f,np.ones(len(data._f))*clfunc(cl),'k--',linewidth=1)
     ax1.text(data._f[1], clfunc(cl)*0.9, '{0:3.2f}%'.format(cl),bbox={'facecolor':'w', 'alpha':0.9, 'pad':0.5})# footter
     # Phase
@@ -252,10 +258,9 @@ def CoherencePlot(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):
     enbw   = spectrum.enbw(spectrum.create_window(nFFT, 'hanning'))*data._fs/nFFT
     text = '''StartGPSTime:{0}, Average:{1}, Overrap:50%, Window:Hanning, ENBW:{2:3.2e} Hz'''.format(123,ave,enbw)
     ax3 = fig.text(0.08, 0.02, text)              # footter
-    fname = 'Coherence_{0}-{1}.png'.format(data._name,data._nameB)
-    print fname
-    plt.title(fname)
-    plt.savefig(fname)
+    fig.suptitle(fn)                
+    print 'saved',fn
+    plt.savefig(fn+'.png')    
     plt.close()
     #return fig
 

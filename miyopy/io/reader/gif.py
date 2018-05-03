@@ -10,7 +10,7 @@ from datetime import datetime as dt
 from scipy import signal
 #from miyopy.signal import butter_bandpass_filter
 import miyopy.signal.mpfilter as mpf
-
+from miyopy.types import Timeseries
 
 Hz = 1
 byte = 1
@@ -222,7 +222,7 @@ def fromfiles(fnames,chname):
     byte = info[0][1]
     fs = info[0][0]
     c2V = info[2]
-    gifdata = gifdatatype(chname,)
+    #gifdata = gifdatatype(chname,)
     try:
         data = np.array([np.fromfile(fname,dtype=dtype) for fname in fnames])
         shape = data.shape
@@ -283,7 +283,7 @@ def check_nan(data,fname,chname):
     return data
 
     
-def readGIFdata(gps,tlen,chname,fs=8):    
+def readGIFdata(gps,tlen,chname,fs=8,plot=False,detrend=False,name=None):    
     '''指定された期間のGIFデータを取ってくる関数。
     
     GIFのバイナリファイルを読み込むための関数。                
@@ -321,9 +321,7 @@ def readGIFdata(gps,tlen,chname,fs=8):
         exit()
     try:
         data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
-        #data = mpf.butter_bandpass_filter(data, 0.05, 0.5, fs, order=1)
-        #data = signal.detrend(data)
-        #data = signal.detrend(data,type='linear')
+        data = Timeseries(data,fs=8,plot=True,detrend=True,name=name)    
         return data
     except KeyError as e:
         traceback.print_exc()

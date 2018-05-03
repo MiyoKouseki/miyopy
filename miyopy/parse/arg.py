@@ -17,8 +17,8 @@ def get_gpstime(events):
     try:
         event = sys.argv[1]
         t0, tlen = events[event]
-        title = '../event/{0}'.format(event)
-        cmd = 'mkdir -p {0}'.format(title)
+        workplace = '../event/{0}/'.format(event)
+        cmd = 'mkdir -p {0}'.format(workplace)
         ret = subprocess.check_call( cmd.split(" ") )        
     except IndexError as e:
         print type(e),e
@@ -32,4 +32,4 @@ def get_gpstime(events):
         print 'Please use argvs bellow;'
         print '\n'.join(events.keys())
         exit()
-    return t0,tlen,title
+    return t0,tlen,workplace
