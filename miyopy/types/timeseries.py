@@ -2,50 +2,69 @@
 #! coding:utf-8
 import numpy as np
 from scipy import signal
-import miyopy.plot.mpplot as mpplot
+import miyopy.plot as mpplot
 
 
 class Timeseries(object):
-    def __init__(self,value,name='None',fs=8,t0=None,plot=False,unit=None):
+    def __init__(self,value,name='None',fs=8,t0=None,plot=False,unit=None,detrend=True):
         self._fs = fs
         self._unit = unit
         self._name = name
         self._t0 = t0
         self._dt = 1.0/self._fs
         self.timeseries = value
-        if plot:
-            import matplotlib.pyplot as plt
-            print 'plotting.. as ./tmp_{0}.png'.format(self._name)
-            plt.plot(self._time,self._timeseries_nodetrend)
-            plt.savefig('./tmp_{0}.png'.format(self._name))
-            plt.close()
-        pass
+        if detrend*plot:
+            self._detrend()
+        if detrend:
+            self.timeseries = signal.detrend(self.timeseries)            
+
+    def _detrend(self):
+        import matplotlib.pyplot as plt
+        print 'plotting.. as ./tmp_{0}.png'.format(self._name)
+        value = self.timeseries - self.timeseries[0]
+        value_detrend = signal.detrend(value)
+        trend = value - value_detrend
+        plt.plot(self._time,value,label='value')
+        plt.plot(self._time,value_detrend,label='detrend')
+        plt.plot(self._time,trend,label='trend')
+        plt.ylabel('Value [a.u.]')
+        plt.xlabel('Time [sec]')
+        plt.legend()
+        fname = './Timeseries_{0}.png'.format(self._name)
+        plt.title(fname)            
+        plt.savefig(fname)
+        plt.close()
+
         
     @property
     def timeseries(self):
         return self._timeseries
-        
+
+    
     @property
     def psd(self):
         return self._psd
-          
+
+    
     @property
     def csd(self):
         return self._csd
-                
+
+    
     @timeseries.setter
     def timeseries(self,value):
         self._timeseries = value
         self._nlen = len(self._timeseries)
         self._tlen = self._nlen/self._fs
         self._time = np.arange(self._tlen*self._fs)/self._fs
-                
+
+        
     @psd.setter
     def psd(self,value):
-        self._psd = value
+        self._psd = value        
+
         
-        
-    @psd.setter
+    @csd.setter
     def csd(self,value):
         self._csd = value
         self._ksd,self._qsd = self._csd.real,self._csd.imag
@@ -63,6 +82,13 @@ class Timeseries(object):
         elif data_from == 'gif':
             dtime = mptime.gps2JST(self._t0)
             data  = gif.read(dtime ,self._tlen,self._channelname)
+
+            
+    def plot(self,workplace='./'):
+        label = ['Time','Value']
+        fname = '{0}Timeseries_{1}.png'.format(workplace,self._name)
+        mpplot.plottimeseries(self,fname,label=label)
+        
             
     def bandpass(self,lowcut,highcut,order):
         from scipy.signal import butter, lfilter
@@ -71,7 +97,8 @@ class Timeseries(object):
         high = highcut / nyq
         b, a = butter(order, [low, high], btype='band')
         self.timeseries = lfilter(b, a, self.timeseries)
-            
+
+        
     def decimate(self,fs):
         fs0 = self._fs
         self._fs = fs
@@ -100,6 +127,7 @@ class Timeseries(object):
             raise(ValueError,'end time can not devide by {0}'.format(self._fs))   
         self.timeseries = self.timeseries[int(start_idx):int(end_idx)]
         self._t0  = start
+
         
     def get_fft(self):
         from scipy.fftpack import fft,fftfreq,fftshift
@@ -111,7 +139,7 @@ class Timeseries(object):
         #print self._f
         
         
-    def get_psd(self,ave=4,plot=False,asd=True,integ=False,savefile=True,**kwargs):
+    def get_psd(self,ave=4,plot=False,asd=True,integ=False,savefile=False,**kwargs):
         self._f,self._psd = signal.welch(
             self.timeseries,
             fs=self._fs,
@@ -125,11 +153,6 @@ class Timeseries(object):
             if integ == True:
                 print self._name
                 self._psd = self._psd/(2.0*np.pi*self._f)
-
-        if plot==True:
-            mpplot.LogLogPlot(self,
-                              lim=(None,[1e-11,1e-7]),                              
-                                  )
         if savefile==True:
             with open('./tmp_{0}.csv'.format(self._name),'w') as f:
                 for i in range(len(self._f)):
@@ -151,7 +174,7 @@ class Timeseries(object):
         )
 
         
-    def get_coherence(self,data2,ave,plot=True):
+    def get_coherence(self,data2,ave,plot=False):
         self._f,self.csd = signal.csd(
             x = self.timeseries,
             y = data2.timeseries,
@@ -162,6 +185,8 @@ class Timeseries(object):
         )
         self._nameB = data2._name
         data2.csd = self.csd
+        self.get_psd(ave)
+        data2.get_psd(ave)
         self._coh   = ( np.abs(self._ksd)**2 + np.abs(self._qsd)**2 )/(self.psd*data2.psd )
         self._cohphase = np.arctan2(self._qsd,self._ksd)
         # !!! なぜかCSDとPSDから求めた結果がCoherence関数の値よりも微妙に少しだけ大きい(1e-20程度)
@@ -169,4 +194,24 @@ class Timeseries(object):
         if plot==True:
             mpplot.CoherencePlot(self,'test',ave=ave,cl=95)
 
-       
+            
+    def __div__(self,value):
+        self.timeseries /= value
+        return self    
+
+    
+    def __mul__(self,value):
+        self.timeseries *= value
+        return self
+
+    
+    def __sub__(self,value):
+        self.timeseries += value
+        return self
+
+    
+    def __add__(self,value):
+        self.timeseries *= value
+        return self
+
+    

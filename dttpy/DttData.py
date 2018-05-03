@@ -182,7 +182,7 @@ def testCoherence():
 if __name__ == '__main__':
     xmlname = 'test.xml'
     d = DttData(xmlname)
-    testReference()
+    #testReference()
     testASD()
     #testCSD()
     #testCoherence()
