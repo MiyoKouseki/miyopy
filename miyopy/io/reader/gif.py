@@ -283,7 +283,9 @@ def check_nan(data,fname,chname):
     return data
 
     
-def readGIFdata(gps,tlen,chname,fs=8,plot=False,detrend=False,name=None):    
+def readGIFdata(gps,tlen,chname,fs=8,
+                plot=False,detrend=False,
+                name=None,title='./tmp_'):    
     '''指定された期間のGIFデータを取ってくる関数。
     
     GIFのバイナリファイルを読み込むための関数。                
@@ -299,7 +301,7 @@ def readGIFdata(gps,tlen,chname,fs=8,plot=False,detrend=False,name=None):
     fs : int
         サンプリングを指定。1/4,1/2,1,2,4,8まで対応。
     '''
-    fnames = findFiles(gps,tlen,chname) 
+    fnames = findFiles(gps,tlen,chname)
     check_filesize(fnames,chname)
     data = fromfiles(fnames,chname)
     data = check_nan(data,fnames,chname)
@@ -310,7 +312,7 @@ def readGIFdata(gps,tlen,chname,fs=8,plot=False,detrend=False,name=None):
     byte = info[0][1]
     fs_ = info[0][0]
     c2V = info[2]
-    s_ = 60*(gps/60)+18
+    s_ = 60*(gps/60)+18 
     e_ = 60*((gps+tlen)/60)+18
     # ------------------
     idx = [(gps-s_)*fs_,(gps+tlen-s_)*fs_]
@@ -321,7 +323,7 @@ def readGIFdata(gps,tlen,chname,fs=8,plot=False,detrend=False,name=None):
         exit()
     try:
         data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
-        data = Timeseries(data,fs=8,plot=True,detrend=True,name=name)    
+        data = Timeseries(data,fs=8,plot=True,detrend=detrend,name=name,title=title)
         return data
     except KeyError as e:
         traceback.print_exc()
@@ -330,3 +332,11 @@ def readGIFdata(gps,tlen,chname,fs=8,plot=False,detrend=False,name=None):
         traceback.print_exc()
         exit()
         return None
+
+
+
+if __name__=="__main__":
+    t0 = 1208908938+93400 # 2018-04-29T10:58:40
+    print '[JST] 2018-04-29T10:58:40'
+    tlen = 10
+    data = readGIFdata(t0,tlen,'X500_BARO')
