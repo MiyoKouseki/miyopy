@@ -6,8 +6,26 @@ import math as M
 import numpy as np
 from matplotlib import mlab
 from matplotlib.colors import Normalize,LogNorm
+import matplotlib.pyplot as plt
 
-from obspy.imaging.cm import obspy_sequential
+#from obspy.imaging.cm import obspy_sequential
+param ={
+    #'font.family'       : 'Arial', #使用するフォント
+    'font.family'       : 'sans-serif',
+    'xtick.direction'   : 'in', #x軸の目盛線が内向き('in')か外向き('out')か双方向か('inout')
+    'ytick.direction'   : 'in', #y軸の目盛線が内向き('in')か外向き('out')か双方向か('inout')
+    'xtick.major.width' : 1.0, #x軸主目盛り線の線幅
+    'ytick.major.width' : 1.0, #y軸主目盛り線の線幅
+    'axes.linewidth'    : 1.0, # 軸の線幅edge linewidth。囲みの太さ
+    #'axes.labelsize'    : 12,
+    'font.size'         : 10,
+    'legend.fontsize'   : 12,
+    'xtick.labelsize'   : 10,
+    'ytick.labelsize'   : 10,
+    'text.usetex'       : False,
+    'figure.figsize'    : [7, 5]
+   }
+plt.rcParams.update(param)
 
 
 def _nearest_pow_2(x):
@@ -33,7 +51,7 @@ def _nearest_pow_2(x):
         return b
 
 
-def spectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
+def plotspectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
                 outfile=None, fmt=None, axes=None, dbscale=False,
                 mult=8.0, zorder=None, title=None,
                 show=True, sphinx=False, clip=[0.0, 1.0]):
@@ -105,7 +123,7 @@ def spectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
         mult = mult * nfft
     nlap = int(nfft * float(per_lap))    
     data = data - data.mean()
-    end = npts / samp_rate
+    end = npts / samp_rate /60
     #print True in data
     # Here we call not plt.specgram as this already produces a plot
     # matplotlib.mlab.specgram should be faster as it computes only the
@@ -113,6 +131,7 @@ def spectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
     # XXX mlab.specgram uses fft, would be better and faster use rfft
     specgram, freq, time = mlab.specgram(data, Fs=samp_rate, NFFT=nfft,
                                          pad_to=mult, noverlap=nlap)
+    time = time/60.0 # min
     #specgram = np.sqrt(specgram)
     #print specgram    
     # db scale and remove zero/offset for amplitude
@@ -127,16 +146,16 @@ def spectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
         msg = "Invalid parameters for clip option."
         raise ValueError(msg)
     _range = float(specgram.max() - specgram.min())
-    _range = float(1e-06-1e-13)
+    _range = float(1e-05-1e-11)
     #print '_range = {0:4.1e}'.format(_range)
     #vmin = specgram.min() + vmin * _range
     #vmax = specgram.min() + vmax * _range
-    vmin = 1e-13 + vmin * _range
-    vmax = 1e-13 + vmax * _range
+    vmin = 1e-11 + vmin * _range
+    vmax = 1e-11 + vmax * _range
     norm = Normalize(vmin, vmax, clip=True)
     norm = LogNorm(vmin, vmax,clip=True)
     if not axes:
-        fig = plt.figure()
+        fig = plt.figure(figsize=(6,4),dpi=480)
         ax = fig.add_subplot(111)
     else:
         ax = axes
@@ -157,7 +176,7 @@ def spectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
         freq -= halfbin_freq
         # Log scaling for frequency values (y-axis)
         ax.set_yscale('log')
-        # Plot times
+        # Plot times       
         pcm = ax.pcolormesh(time, freq, specgram, norm=norm, **kwargs)
         cbar = fig.colorbar(pcm, ax=ax)
         cbar.set_label(r'ASD [m/s /rtHz]')
@@ -178,12 +197,11 @@ def spectrogram(data, samp_rate, per_lap=0.9, wlen=None, log=False,
     if axes:
         return ax
 
-    ax.set_xlabel('Time [s]')
+    ax.set_xlabel('Time [Minutes]')
     ax.set_ylabel('Frequency [Hz]')
     ax.set_title(outfile)
     if title:
         ax.set_title(title)
-
     if not sphinx:
         # ignoring all NumPy warnings during plot
         with np.errstate(all='ignore'):

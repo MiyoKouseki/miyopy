@@ -40,6 +40,7 @@ def getpicklefname(t0,tlen,chlst_num=4):
     files = os.listdir(DATAdir)
     files = filter(lambda x:'chlst' not in x, files)
     files = filter(lambda x:'pickle' in x, files)
+    #print files
     info = map(lambda x:x.replace('.pickle',''),files)
     info = map(lambda x:x.split('_'),info)
     info = map(lambda x:strList2intList(x),info)
@@ -73,10 +74,10 @@ def loaddata_nds(t0,tlen,chlst='4.chlst'):
     return data
 
 
-def readKAGRAdata(t0,tlen,channels,fs_resample=8,plot=False,detrend=False):
+def readKAGRAdata(t0,tlen,channels,fs_resample=8,plot=False,detrend=False,title='./tmp_'):
     '''
     KAGRAデータを読み込む
-    '''    
+    '''   
     try:
         fname,_ = getpicklefname(t0,tlen)
         print fname

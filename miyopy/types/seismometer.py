@@ -16,11 +16,11 @@ def clockwise_Zaxis(theta):
 
 
 class Seismometer(object):
-    def __init__(self,t0,tlen,name='EX1',theta=0.0,plot=True,detrend=True):        
+    def __init__(self,t0,tlen,name='EX1',theta=0.0,plot=True,detrend=True,title='./tmp_'):        
         self.name = name
         self.start = t0
         self.tlen = tlen
-        self._getEWNSZ()
+        self._getEWNSZ(title)
         if 'X1500_TR240' == self.name:
             theta = -30+theta
             self._rotate(theta)
@@ -28,27 +28,38 @@ class Seismometer(object):
             theta = 180+30+theta
             self._rotate(theta)
         
-    def _getEWNSZ(self):
+    def _getEWNSZ(self,title):
         if 'X1500_TR240' == self.name:
             self.x = reader.gif.readGIFdata(self.start,
                                             self.tlen,
                                             'X1500_TR240velEW',
-                                            plot=False,detrend=True)    
+                                            plot=False,detrend=True,
+                                            name='X1500_TR_X',
+                                            title=title,
+                                                )    
             self.y = reader.gif.readGIFdata(self.start,
                                             self.tlen,
                                             'X1500_TR240velNS',
-                                            plot=False,detrend=True)    
+                                            plot=False,detrend=True,
+                                            name='X1500_TR_Y',   
+                                            title=title,
+                                                )    
             self.z = reader.gif.readGIFdata(self.start,
                                             self.tlen,
                                             'X1500_TR240velUD',
-                                            plot=False,detrend=True)    
+                                            plot=False,detrend=True,
+                                            name='X1500_TR_Z',   
+                                            title=title,
+                                                )    
         else:
             channels = ['K1:PEM-{0}_SEIS_WE_SENSINF_OUT16'.format(self.name),
                         'K1:PEM-{0}_SEIS_NS_SENSINF_OUT16'.format(self.name),
                         'K1:PEM-{0}_SEIS_Z_SENSINF_OUT16'.format(self.name)]
             self.x,self.y,self.z = reader.kagra.readKAGRAdata(self.start,
                                                             self.tlen,
-                                                            channels)        
+                                                            channels,
+                                                            title=title,
+                                                                  )        
         
     def _rotate(self,theta=0.0):
         '''
