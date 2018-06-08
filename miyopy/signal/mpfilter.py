@@ -7,9 +7,11 @@ from control import matlab
 
 def decimate(data,fs_befor,fs_after):
     from scipy.signal import decimate
-    #print 'a  ',data, len(data)
-    data_ = decimate(data,int(fs_befor/fs_after))
-    #print 'b  ',data_,len(data_)
+    if fs_after<=8:
+        data_ = decimate(data,int(fs_befor/8),ftype='iir')
+        data_ = decimate(data_,int(8/fs_after),ftype='iir')        
+    else:
+        data_ = decimate(data,int(fs_befor/fs_after),ftype='iir')
     return data_
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):

@@ -1,7 +1,7 @@
 #
 #! coding:utf-8
 
-import miyopy.io.reader as reader
+#import miyopy.io.reader as reader
 import numpy as np
 
 
