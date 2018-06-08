@@ -18,7 +18,7 @@ byte = 1
 from astropy.time import Time
         
 datatype = {
-    # Data Loction   : [ Sampling Frequncy, Data Size, calib]
+    # Data Loction   : [ Sampling Frequncy, Data Size, c2V or Strain]
     '/NAS/cRIO01_data/':[(200*Hz,4*byte), np.int32, 1.25e-6],
     '/NAS/cRIO02_data/':[(200*Hz,4*byte), np.int32, 1.25e-6],
     '/NAS/cRIO03_data/':[(200*Hz,4*byte), np.int32, 1.25e-6],
@@ -80,6 +80,7 @@ fname_fmt={
     'CLIO_CALC_STRAIN_LIN':'/data2/CLIO/LIN/<filename>.LIN',
     'CLIO_CALC_STRAIN_SHR':'/data2/CLIO/SHR/<filename>.SHR',
 }
+
     
 class gifdatatype(object):
     def __init__(self,chname,t0):
@@ -93,6 +94,7 @@ class gifdatatype(object):
         self.c2V = info[2]
         self.get_path_to_file(t0)
 
+        
     def get_path_to_file(self):
         '''ファイルがある場所を調べる関数
 
@@ -120,6 +122,7 @@ class gifdatatype(object):
                 print key
                 exit()
 
+                
     def readfile(self):
         pass
 
@@ -142,9 +145,11 @@ def to_JSTdatetime(jst):
     assert isinstance(jst,dt),'Please {0}, not {1}!'.format(dt,type(jst))   
     return jst
 
+
 def to_GPStime(gps):
     gps = Time(gps).gps
     return int(gps)
+
 
 def path_to_file(gps,chname,prefix):
     '''GPS時刻、ただし分で丸められた時刻、に対応するファイル名を返す関数。
@@ -174,7 +179,8 @@ def path_to_file(gps,chname,prefix):
     
     return path_to_file
 
-def findFiles(gpstime,tlen,chname,prefix='/Users/miyo/KAGRA/DATA/'):
+
+def findFiles(gpstime,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
     '''GPS時刻で指定した期間を含むファイルをローカルディレクトリから探す関数。
 
     GIFのファイルは１ファイル１分のファイルを日時で管理しているため、ファイルに保存されている時系列データはかならず00秒始まり。なのでファイル名を探すときは、指定した開始時刻と終了時刻を60秒で丸める必要がある。簡単な例として、2017-01-15-00:00:00のGPS時間は60で割ると18なので、とりあえず、指定した時刻を60で割った余りがそれになるように丸めればよい。ただし注意として、途中、うるう秒が入ってくるとつかえない。
@@ -202,7 +208,7 @@ def findFiles(gpstime,tlen,chname,prefix='/Users/miyo/KAGRA/DATA/'):
     return fnames
 
 
-def fromfiles(fnames,chname):
+def fromfiles(fnames,chname,mintrend=False):
     ''' np.fromfileを連続したファイルに対応させたもの。
     
     Parameter
@@ -223,16 +229,22 @@ def fromfiles(fnames,chname):
     fs = info[0][0]
     c2V = info[2]
     #gifdata = gifdatatype(chname,)
-    try:
+    if mintrend==False:
         data = np.array([np.fromfile(fname,dtype=dtype) for fname in fnames])
         shape = data.shape
         data = np.resize(data, (1,shape[0]*shape[1]))[0]
+    else:
+        data = np.array([np.average(np.fromfile(fname,dtype=dtype)) for fname in fnames])
+        shape = data.shape
+        data = np.resize(data, (1,shape[0]))[0]
+    try:
         return data
     except IOError as e:
         print e
         print 'No data. Did you download GIF file?'
         exit()
-
+        
+        
 def check_filesize(fnames,chname):
     '''GIFのファイルが欠損していないか確認する関数。
     
@@ -262,13 +274,13 @@ def check_filesize(fnames,chname):
         pass        
     # ------------------    
     if fsize!=size_:
-        print 'detect lack of data'
+        print '[Warning] detect lack of data'
         idxs = np.where(ans==False)[0]
         lack_of_data = [fnames[idx] for idx in idxs]
         lack = [fsize[idx] for idx in idxs]
         for i,fname in enumerate(lack_of_data):
             print ' - ',fname,lack[i]
-        exit()
+        #exit()
     else:
         return True
 
@@ -277,15 +289,15 @@ def check_nan(data,fname,chname):
         idx = np.where(np.isnan(data)==True)[0]
         print '[Warning] found nan value. did zero padding'
         print '\t Continuing..'
-        data[idx] = 0.0
+        data[idx] = np.nan
     else:
         pass    
     return data
 
     
-def readGIFdata(gps,tlen,chname,fs=8,
-                plot=False,detrend=False,
-                name=None,title='./tmp_'):    
+def read(gps,tlen,chname,fs,
+         plot=False,detrend=False,
+             name=None,title='./tmp_'):    
     '''指定された期間のGIFデータを取ってくる関数。
     
     GIFのバイナリファイルを読み込むための関数。                
@@ -303,7 +315,9 @@ def readGIFdata(gps,tlen,chname,fs=8,
     '''
     fnames = findFiles(gps,tlen,chname)
     check_filesize(fnames,chname)
-    data = fromfiles(fnames,chname)
+    if fs==(1.0/60.0):
+        mintrend = True
+    data = fromfiles(fnames,chname,mintrend)
     data = check_nan(data,fnames,chname)
     # ------------------綺麗にしたい
     DataLocation = fname_fmt[chname].split('<filename>')[0]
@@ -317,14 +331,20 @@ def readGIFdata(gps,tlen,chname,fs=8,
     # ------------------
     idx = [(gps-s_)*fs_,(gps+tlen-s_)*fs_]
     data = data[idx[0]:idx[1]]*c2V
-    if len(data)/fs_!=tlen:
-        print 'error: tlen do not match'
+    #print True in np.isnan(data)
+    if mintrend==False and (len(data)/fs_!=tlen):
+        #print len(data)
+        print 'Error: tlen do not match'
         print len(data)/fs_,'!=',tlen
         exit()
     try:
-        data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
-        data = Timeseries(data,fs=8,plot=True,detrend=detrend,name=name,title=title)
-        return data
+        if mintrend==False:
+            data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
+            data = Timeseries(data,fs=fs,plot=True,detrend=detrend,name=name,title=title,unit='Voltage')
+            return data
+        else:
+            data = Timeseries(data,fs=fs,plot=True,detrend=detrend,name=name,title=title,unit='Voltage')
+            return data            
     except KeyError as e:
         traceback.print_exc()
         return None
@@ -332,9 +352,8 @@ def readGIFdata(gps,tlen,chname,fs=8,
         traceback.print_exc()
         exit()
         return None
-
-
-
+    
+    
 if __name__=="__main__":
     t0 = 1208908938+93400 # 2018-04-29T10:58:40
     print '[JST] 2018-04-29T10:58:40'

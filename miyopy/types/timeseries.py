@@ -60,35 +60,36 @@ def tf_120():
     return H
 
 
+
+from astropy import units as u
+    
+        
 class Timeseries(object):
-    def __init__(self,value,name='None',
-                 fs=8,t0=None,plot=False,
-                 unit=None,detrend=True,
-                 title='./tmp_'):
+    def __init__(self,value,t0,fs,name,plot=False,detrend=False,title='./tmp_'):
         self._fs = fs
-        self._unit = unit
         self._name = name
         self._t0 = t0
-        self._dt = 1.0/self._fs
+        self._dt = (1.0/self._fs)#.to(u.second)
         self.timeseries = value
         self._V2Unit()        
         if plot:
             self._plot(title)
-        if detrend*plot:
-            self._detrend(title)            
-        if detrend:
-            self.timeseries_detrend = signal.detrend(self.timeseries)
+        #if detrend*plot:
+        #    self._detrend(title)
+        #if detrend:
+        #    self.timeseries_detrend = signal.detrend(self.timeseries)
+    
 
     def _V2Unit(self):
-        print self._name
         if self._name==None:
             pass 
-        elif 'pressure' in self._name:
+        elif 'BARO' in self._name:
             if '500' in self._name:
-                V2hPa = lambda y:y/-2.0/5.0*(1100.0-800.0)+800.0
+                V2hPa = lambda y:y/-2.0/(5.0*u.Volt)*(1100.0-800.0)*u.hPa+800.0*u.hPa
             else:                    
-                V2hPa = lambda y:y/2.0/5.0*(1100.0-800.0)+800.0        
+                V2hPa = lambda y:y/2.0/(5.0*u.Volt)*(1100.0-800.0)*u.hPa+800.0*u.hPa
             self.timeseries = V2hPa(self.timeseries)
+            self.unit = 'Pressure'
         elif 'TR' in self._name:            
             #b,a = tf_240()
             #print b,a
@@ -98,11 +99,12 @@ class Timeseries(object):
             pass
         else:
             pass
+
         
     def _detrend(self,title):
         import matplotlib.pyplot as plt
         fname = '{0}DetrendTimeseries_{1}.png'.format(title,self._name)
-        print fname
+        #print fname
         #print self.timeseries[0]
         value = self.timeseries #- self.timeseries[0]
         value_detrend = signal.detrend(value)
@@ -116,11 +118,12 @@ class Timeseries(object):
         plt.title(fname)            
         plt.savefig(fname)
         plt.close()
+        
 
     def _plot(self,title):
         import matplotlib.pyplot as plt
         fname = '{0}Timeseries_{1}.png'.format(title,self._name)
-        print fname
+        #print fname
         value = self.timeseries #- self.timeseries[0]
         plt.plot(self._time,value,label='value')
         plt.ylabel('Value [a.u.]')
@@ -130,7 +133,6 @@ class Timeseries(object):
         plt.savefig(fname)
         plt.close()
         
-
         
     @property
     def timeseries(self):
@@ -151,20 +153,20 @@ class Timeseries(object):
     def timeseries(self,value):
         self._timeseries = value
         self._nlen = len(self._timeseries)
-        self._tlen = self._nlen/self._fs
-        self._time = np.arange(self._tlen*self._fs)/self._fs
-
+        self._tlen = (self._nlen*self._dt)
+        self._time = np.arange(self._tlen*self._fs)*self._dt
+        
         
     @psd.setter
     def psd(self,value):
         self._psd = value   
-
+        
         
     @csd.setter
     def csd(self,value):
         self._csd = value
         self._ksd,self._qsd = self._csd.real,self._csd.imag
-
+        
         
     def _getTimeseries(self,data_from='txt'):
         if data_from == 'txt':
@@ -178,7 +180,7 @@ class Timeseries(object):
         elif data_from == 'gif':
             dtime = mptime.gps2JST(self._t0)
             data  = gif.read(dtime ,self._tlen,self._channelname)
-
+            
             
     def plot(self,datatype='Timeseries',workplace='./'):
         plotfunc = {'Timeseries':mpplot.plottimeseries,
@@ -186,8 +188,24 @@ class Timeseries(object):
                     }
         fname = '{0}{1}_{2}.png'.format(workplace,datatype,self._name)
         plotfunc[datatype](self,fname)
+
         
-            
+    def savecsv(self,**kwargs):
+        array2d = np.c_[self._time,self.timeseries]
+        fmt = kwargs.get('fmt','%f %f')
+        fname = kwargs.get('fname','{0}.csv'.format(self._name))
+        header = ' -name:{0}\n -gps:{1}\n -tlen:{2}\n -fs:{3}'.format(
+            self._name,
+            self._t0,
+            self._tlen,
+            self._fs
+            )        
+        header = kwargs.get('header',header)
+        print 'Save csv data in "{0}"'.format(fname)
+        print header
+        np.savetxt(fname,array2d,fmt=fmt,header=header)
+        
+        
     def bandpass(self,lowcut,highcut,order):
         from scipy.signal import butter, lfilter
         nyq = 0.5 * self._fs
@@ -195,18 +213,18 @@ class Timeseries(object):
         high = highcut / nyq
         b, a = butter(order, [low, high], btype='band')
         self.timeseries = lfilter(b, a, self.timeseries)
-
+        
         
     def decimate(self,fs):
         fs0 = self._fs
         self._fs = fs
         self.timeseries = signal.decimate(self.timeseries,int(fs0/fs))
-
+        
         
     def cliptime(self,start,end):
         '''
         端数は切り捨てている。
-
+        
         start : float
            開始時刻。GPS
         end : float
@@ -225,7 +243,7 @@ class Timeseries(object):
             raise(ValueError,'end time can not devide by {0}'.format(self._fs))   
         self.timeseries = self.timeseries[int(start_idx):int(end_idx)]
         self._t0  = start
-
+        
         
     def get_fft(self):
         from scipy.fftpack import fft,fftfreq,fftshift
@@ -303,7 +321,7 @@ class Timeseries(object):
             mode     = 'magnitude',
             scaling  = 'density'
         )
-
+        
         
     def get_coherence(self,data2,ave,plot=False,title='./tmp/'):
         self._f,self.csd = signal.csd(
@@ -325,7 +343,7 @@ class Timeseries(object):
         if plot==True:
             fname = '{0}Coherence_{1}_{2}'.format(title,self._name,self._nameB)
             mpplot.plotcoherence(self,fname,ave=ave,cl=95)
-
+            
             
     def __div__(self,value):
         self.timeseries /= value
@@ -344,5 +362,4 @@ class Timeseries(object):
     
     def __add__(self,value):
         self.timeseries *= value
-        return self
-   
+        return self   
