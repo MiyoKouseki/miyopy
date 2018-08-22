@@ -55,7 +55,8 @@ class TimeSeriesAxes(SeriesAxes):
         self.fmt_xdata = LIGOTimeGPS
         self.set_xlabel('_auto')
 
-    @allow_rasterization
+
+    @allow_rasterization ###???? nani-kore ????
     def draw(self, *args, **kwargs):
         # dynamically set scaling
         if self.get_xscale() == 'auto-gps':
@@ -64,48 +65,50 @@ class TimeSeriesAxes(SeriesAxes):
         # dynamically set x-axis label
         nolabel = self.get_xlabel() == '_auto'
         if nolabel and isinstance(self.xaxis._scale, GPSScale):
-            self.auto_gps_label()
+            self.auto_gps_label()            
         elif nolabel:
             self.set_xlabel('')
-
+            
         # draw
         super(TimeSeriesAxes, self).draw(*args, **kwargs)
-
+        
         # reset label
         if nolabel:
             self.set_xlabel('_auto')
 
     draw.__doc__ = SeriesAxes.draw.__doc__
-
+    
     # -- GPS scaling --------------------------------
 
     def set_xscale(self, scale, *args, **kwargs):
         super(TimeSeriesAxes, self).set_xscale(scale, *args, **kwargs)
 
     set_xscale.__doc__ = SeriesAxes.set_xscale.__doc__
-
+    
     def auto_gps_label(self):
         """Automatically set the x-axis label based on the current GPS scale
         """
         scale = self.xaxis._scale
         epoch = scale.get_epoch()
+        print epoch ######################
         if int(epoch) == epoch:
             epoch = int(epoch)
         if epoch is None:
             self.set_xlabel('GPS Time')
         else:
             unit = scale.get_unit_name()
+            print unit ##################################
             utc = re.sub(r'\.0+', '',
                          Time(epoch, format='gps', scale='utc').iso)
             self.set_xlabel('Time [%s] from %s UTC (%s)'
                             % (unit, utc, repr(epoch)))
-
+            
     def auto_gps_scale(self):
         """Automagically set the GPS scale for the time-axis of this plot
         based on the current view limits
         """
         self.set_xscale('auto-gps', epoch=self.get_epoch())
-
+        
     def set_epoch(self, epoch):
         """Set the GPS epoch (t=0) for these axes
         """
@@ -115,12 +118,12 @@ class TimeSeriesAxes(SeriesAxes):
             pass
         else:
             self.set_xscale(xscale, epoch=to_gps(epoch))
-
+            
     def get_epoch(self):
         """Return the current GPS epoch (t=0)
         """
         return self.xaxis._scale.get_epoch()
-
+    
     epoch = property(fget=get_epoch, fset=set_epoch, doc=get_epoch.__doc__)
 
     def set_xlim(self, left=None, right=None, emit=True, auto=False, **kw):

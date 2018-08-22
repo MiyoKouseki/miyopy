@@ -114,7 +114,22 @@ class gifdatatype(object):
         self.dtype = info[1]
         self.byte = info[0][1]
         self.fs = info[0][0]
-        self.c2V = info[2]        
+        self.c2V = info[2]
+        
+    def calib(self,data):
+        if 'BARO' in self.chname:
+            data = data*self.c2V.value
+            if '500' in self.chname:
+                #V2hPa = lambda y:y/-2.0/(5.0*u.Volt)*(1100.0-800.0)*u.hPa+800.0*u.hPa
+                V2hPa = lambda y:y/-2.0/(5.0)*(1100.0-800.0)+800.0
+            else:                    
+                V2hPa = lambda y:y/2.0/(5.0*u.Volt)*(1100.0-800.0)*u.hPa+800.0*u.hPa
+            return  V2hPa(data)
+        elif 'STRAIN' in self.chname:
+            data = data*self.c2V
+            return data
+        else:
+            raise ValueError('this is not pressure or strain data')
             
     def _get_fname(self):
         date = to_JSTdatetime(int(self.t0))

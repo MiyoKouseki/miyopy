@@ -4,24 +4,23 @@
 import numpy as np
 from astropy.units.quantity import Quantity
 
-
-class Series(Quantity):
+class SeriesBase(Quantity):
     '''
     Parameter
     ---------
     value:
     unit:
-    t0
-    dt
-    name
+    x0:int
+    dx:
+    name:
     '''
     def __new__(cls, value, vunit=None, # Quantity attrs
                 dx=None, x0=None, xunit=None, name=None, # Series attrs
                 dtype=None, copy=True, order=None, # ndarray attrs
                 subok=True, ndmin=0): # ndarray attrs
-        new = super(Series, cls).__new__(cls, value, unit=vunit, dtype=dtype,
+        new = super(SeriesBase, cls).__new__(cls, value, unit=vunit, dtype=dtype,
                                          copy=copy, order=order, subok=subok,
-                                         ndmin=ndmin)        
+                                         ndmin=ndmin)
         if copy:
             new = new.copy()
             
@@ -30,18 +29,20 @@ class Series(Quantity):
             
         if dx is not None:
             new.dx = Quantity(dx,unit=xunit)
-            
+         
         if x0 is not None:
             new.x0 = x0
             
         new.nlen = len(value)        
-        new._series = Quantity(np.arange(new.nlen)*dx,unit=xunit)        
+        new._series = Quantity(np.arange(new.nlen)*dx,unit=xunit)
         return new
+
     
     @property
     def x0(self):
         """X-axis coordinate of the first data point
         :type: `~astropy.units.Quantity` scalar
+        
         """
         try:
             return self._x0
@@ -49,28 +50,19 @@ class Series(Quantity):
             self._x0 = Quantity(0, self.xunit)
             return self._x0
 
+        
     @x0.setter
     def x0(self, value):
-        if value is None:
-            del self.x0
-            return
-        if not isinstance(value, Quantity):
-            try:
-                value = Quantity(value, self.xunit)
-            except TypeError:
-                value = Quantity(float(value), self.xunit)
-        # if setting new x0, delete xindex
-        '''
-        try:
-            x0 = self._x0
-        except AttributeError:
-            del self.xindex
-        else:
-            if value is None or self.x0 is None or value != x0:
-                del self.xindex
-        '''
         self._x0 = value
 
+
+    @x0.deleter
+    def x0(self):
+        try:
+            del self._x0
+        except AttributeError:
+            pass        
+        
     # xunit
     @property
     def xunit(self):
@@ -85,6 +77,7 @@ class Series(Quantity):
             except AttributeError:
                 return self._default_xunit
 
+            
     @xunit.setter
     def xunit(self, unit):
         unit = Unit(unit)
@@ -94,6 +87,7 @@ class Series(Quantity):
             self.dx = self.dx.to(unit)
             self.x0 = self.x0.to(unit)            
 
+            
     @property
     def dx(self):
         """X-axis sample separation
@@ -113,66 +107,83 @@ class Series(Quantity):
                 self._dx = self.xindex[1] - self.xindex[0]
             return self._dx
 
-
     @dx.setter
     def dx(self, value):
-        '''                
-        # delete if None
-        if value is None:
-            del self.dx
-            return
-        # convert float to Quantity
-        if not isinstance(value, Quantity):
-            value = Quantity(value, self.xunit)
-        # if value is changing, delete xindex
-
-        try:
-            dx = self._dx
-        except AttributeError:
-            del self.xindex
-        else:
-            if value is None or self.dx is None or value != dx:
-                del self.xindex
-        '''
         self._dx = value
+        
+    @dx.deleter
+    def dx(self):
+        try:
+            del self._dx
+        except AttributeError:
+            pass
+        
+        
+    @property
+    def name(self):
+        """Name for this data set
+        :type: `str`
+        """
+        try:
+            return self._name
+        except AttributeError:
+            self._name = None
+            return self._name
 
+        
+    @name.setter
+    def name(self, val):
+        self._name = val
+
+
+        
+    
+class TimeSeriesBase(SeriesBase):    
+    '''
+    Parameter
+    ---------
+    value:
+    unit:
+    t0:int
+    dt:
+    name:
+    '''
+    
+    def __new__(cls, value, vunit=None, # Quantity attrs
+                dt=None, t0=None, tunit=None, name=None, # Series attrs
+                dtype=None, copy=True, order=None, # ndarray attrs
+                subok=True, ndmin=0): # ndarray attrs
+        new = super(TimeSeriesBase, cls).__new__(cls, value, vunit=vunit, dtype=dtype,
+                                             dx=dt, x0=t0, xunit=tunit,
+                                             copy=copy, order=order, subok=subok,
+                                             ndmin=ndmin)
+        if copy:
+            new = new.copy()
+            
+        if name is not None:
+            new.name = name
+
+        if t0 is not None:
+            new.t0 = Quantity(t0,tunit)
+            
+        if dt is not None:
+            new.dt = Quantity(dt,tunit)
+            
+        return new
+      
+    t0 = SeriesBase.x0
+    dt = SeriesBase.dx
+    
     @classmethod        
-    def read(cls,t0,tlen,chname,fs=1,*kwargs):
+    def read(cls,t0,tlen,chname,prefix=None,**kwargs):
         from .. import gif
-        return gif.read(t0,tlen,chname,fs=fs)
-        
-        
+        return gif.read(t0,tlen,chname,prefix=prefix,**kwargs)
+    
+    
     def plot(self, **kwargs):
-        """Plot the data for this timeseries
-        All keywords are passed to `~gwpy.plotter.TimeSeriesPlot`
-        Returns
-        -------
-        plot : `~gwpy.plotter.TimeSeriesPlot`
-            the newly created figure, with populated Axes.
-        See Also
-        --------
-        matplotlib.pyplot.figure
-            for documentation of keyword arguments used to create the
-            figure
-        matplotlib.figure.Figure.add_subplot
-            for documentation of keyword arguments used to create the
-            axes
-        matplotlib.axes.Axes.plot
-            for documentation of keyword arguments used in rendering the data
+        """Plot 
         """
         from ..plotter import TimeSeriesPlot
-        return TimeSeriesPlot(self, **kwargs)
-        
-        
-    def __str__(self):
-        return '{4}\n- name:\t{0}\n- val:\t{1} {5}\n- dx:\t{2}\n- x0:\t{3}'.format(
-            self.name,self.value,self.dx,self.x0,self.__class__,self.unit)
-    
-    
-'''
-if __name__=='__main__':
-value=[0,1,2,3,4,5]
-    dt=0.1
-    t0=1212143472
-    q = Series(value,dx=dt,x0=t0,vunit='um/s',xunit='us',name='hoge')
-'''
+        # GWpyでエポックを使っているので、いれた
+        kwargs['epoch'] = self.t0.value
+        return TimeSeriesPlot(self, **kwargs)    

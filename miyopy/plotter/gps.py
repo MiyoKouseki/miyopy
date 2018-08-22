@@ -126,6 +126,7 @@ class GPSMixin(object):
     def get_unit_name(self):
         """Returns the name of the unit for this GPS scale
         """
+        print self.unit #################
         if not self.unit:
             return None
         name = sorted(self.unit.names, key=len)[-1]
@@ -145,7 +146,7 @@ class GPSMixin(object):
 
 class GPSTransformBase(GPSMixin, Transform):
     """`Transform` to convert GPS times to time since epoch (and vice-verse)
-
+    
     This class uses the `decimal.Decimal` object to protect against precision
     errors when converting to and from GPS times that may have 19 significant
     digits, which is more than `float` can handle.
@@ -175,7 +176,7 @@ class GPSTransformBase(GPSMixin, Transform):
         """
         scale = self.scale
         epoch = self.epoch
-
+        
         # handle simple or data transformations with floats
         if any([
                 epoch is None,  # no large additions
@@ -214,8 +215,9 @@ class GPSTransform(GPSTransformBase):
     @staticmethod
     def _transform(value, epoch, scale):
         # convert GPS into scaled time from epoch
+        print '1 : v{0} e{1} u{2}'.format(value,epoch,scale),'plotter gps' ######## 
         return (value - epoch) / scale
-
+    
     def inverted(self):
         return InvertedGPSTransform(unit=self.unit, epoch=self.epoch)
 

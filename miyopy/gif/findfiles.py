@@ -7,7 +7,6 @@ import os
 from datatype import gifdatatype
 
 
-
 def getsize(path):
     try:
         return os.path.getsize(path)
@@ -15,6 +14,7 @@ def getsize(path):
         #print(traceback.format_exc())
         print '! {0}'.format(path)
         return 0
+
 
     
 def check_filesize(fnames,chname):
@@ -54,13 +54,20 @@ def path_to_file(t0,chname,prefix='/Volumes/HDPF-UT/DATA/'):
       チャンネル名。fname_fmtで指定されている名前を指定。
     prefix: str
       GIFデータが保存されているローカルディレクトリ。
+
     '''
     g = gifdatatype(chname,t0)
     path_to_file = prefix[:-1] + g.fname
     return path_to_file
 
+__epoch = 946339215
 
-def findFiles(t0,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+
+def is_zeroMinutes(gps):
+    return np.mod(int(gps)-18,60)==0
+
+
+def findFiles(t0,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/',**kwargs):
     '''T0時刻で指定した期間を含むファイルをローカルディレクトリから探す関数。
 
     GIFのファイルは１ファイル１分のファイルを日時で管理しているため、ファイルに保存されている時系列データはかならず00秒始まり。なのでファイル名を探すときは、指定した開始時刻と終了時刻を60秒で丸める必要がある。簡単な例として、2017-01-15-00:00:00のT0時間は60で割ると18なので、とりあえず、指定した時刻を60で割った余りがそれになるように丸めればよい。ただし注意として、途中、うるう秒が入ってくるとつかえない。
@@ -81,12 +88,24 @@ def findFiles(t0,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
     fnames: list of str
       GIFデータまでの絶対PATHを1ファイルごとに格納したリスト。
     '''
-    s_ = 60*(t0/60)+18#*u.second
-    e_ = 60*((t0+tlen)/60)+18#*u.second
-    fnames_t0 = np.arange(s_,e_+60,60)#*u.second
-    print 'calc filename'
-    fnames = [path_to_file(t0,chname,prefix) for t0 in fnames_t0]
-    print 'done.'
+    # simple にできそう
+    if t0 < __epoch:
+        raise ValueError('t0 is too past. more newer than {0}'.format(__epoch))
+    
+    _s = t0 - np.mod(t0-18,60) 
+    _e = (t0+tlen) - np.mod(t0+tlen-18,60)
+    
+    if is_zeroMinutes(t0+tlen):
+        _e -= 60
+    
+    if np.mod(t0-18,60)==0:
+        t0names = np.arange(_s,_e,60)    
+    if _s==_e:
+        t0names = np.arange(_s,_e+60,60)
+    else:
+        t0names = np.arange(_s,_e+60,60)
+
+    fnames = [path_to_file(t0,chname,prefix) for t0 in t0names]
     return fnames
 
 
@@ -104,21 +123,11 @@ def fromfiles(fnames,chname,fs,mintrend=False):
     data : numpy.ndarray
         1次元になったndarray    
     '''
-    g = gifdatatype(chname)    
-    if mintrend==False:
-        data = np.array([np.fromfile(fname,dtype=g.dtype) for fname in fnames])
-        shape = data.shape
-        data = np.resize(data, (1,shape[0]*shape[1]))[0]
-    else:
-        data = np.array([np.average(np.fromfile(fname,dtype=g.dtype)) for fname in fnames])
-        shape = data.shape
-        data = np.resize(data, (1,shape[0]))[0]
-    try:
-        return data
-    except IOError as e:
-        print e
-        print 'No data. Did you download GIF file?'
-        exit()
+    g = gifdatatype(chname)
+    data = np.array([np.fromfile(fname,dtype=g.dtype) for fname in fnames])
+    shape = data.shape
+    data = np.resize(data, (1,shape[0]*shape[1]))[0]
+    return data    
 
 
 def check_nan(data,fname,chname):

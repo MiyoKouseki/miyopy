@@ -1,13 +1,14 @@
 
 from astropy.time import Time
 from datetime import datetime as dt
+#from lal import LIGOTimeGPS
 
 
 def to_JSTdatetime(jst):
     if isinstance(jst,str):
         jst = Time(gps).to_datetime()
     elif isinstance(jst,int):
-        gps = Time(jst+3600*9, format='gps')
+        gps = Time(jst+3600*9-37, format='gps')
         jst = gps.to_datetime()
     elif isinstance(jst,dt):
         jst = Time(jst+3600*9, format='gps')

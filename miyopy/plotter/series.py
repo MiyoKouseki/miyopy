@@ -72,9 +72,10 @@ class SeriesAxes(Axes):
         
         # plot series
         #if len(args) == 1 and isinstance(args[0], Series):
-        #    return self.plot_series(*args, **kwargs)
+        #return self.plot_series(*args, **kwargs)
 
         # plot everything else
+
         return super(SeriesAxes, self).plot(*args, **kwargs)
 
     @auto_refresh
@@ -307,10 +308,10 @@ class SeriesPlot(Plot):
         """
         kwargs.setdefault('projection', self._DefaultAxesClass.name)
         self._update_kwargs_from_data(kwargs, series)
-
+        
         # extract custom keyword arguments
         sep = kwargs.pop('sep', False)
-
+        
         # separate keyword arguments
         axargs, plotargs = self._parse_kwargs(kwargs)
         sharex = axargs.get('sharex', False)
@@ -319,8 +320,9 @@ class SeriesPlot(Plot):
         super(SeriesPlot, self).__init__(**kwargs)
 
         # plot data
-        self._init_axes(series, sep, axargs, plotargs)
 
+        self._init_axes(series, sep, axargs, plotargs)
+        exit()
         # set epoch
         for ax in self.axes[:-1]:
             if sharex:
@@ -338,7 +340,7 @@ class SeriesPlot(Plot):
         # set xlim based on xspans
         #kwargs.setdefault(
         #    'xlim', SegmentList([s.xspan for s in flat]).extent())
-
+        
     def _init_axes(self, data, sep, axargs, plotargs):
         """Initalise these Axes from the input data and keywords
         """
