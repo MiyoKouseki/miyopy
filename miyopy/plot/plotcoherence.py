@@ -15,6 +15,8 @@ def confidential_peak_index(data,cl):
     cpidx = np.intersect1d(pidx,cidx)
     return cpidx
 
+def clfunc(ave,alpha=5.0):
+    return 1.0-(1.0-alpha/100.0)**(1./(ave-1))
 
 def plotcoherence(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):    
     fig = plt.figure()
@@ -64,3 +66,70 @@ def plotcoherence(data,fn,ave,cl,unwrap=False,xlim=(1e0,1e3)):
     plt.savefig(fn+'.png')    
     plt.close()
     #return fig
+
+    
+def plot_coh(ax,f,coh,label,ave=None,**kwargs):
+    color = ['black','red','green']
+    for i,f in enumerate(f):
+        ax.semilogx(f,coh[i],
+                    linewidth=0.5,
+                    color=color[i],
+                    label=label[i],
+                    alpha=1.0-0.2*i,                    
+                        )
+    ax.set_ylabel("Coherence")
+    ax.legend()
+    ax.set_ylim([0,1])        
+    return ax
+
+
+def plot_coh_cl(ax,f,cl=5.0,ave=None,**kwargs):
+    print(clfunc(ave,cl))
+    for i,f in enumerate(f):    
+        ax.plot(f,np.ones(len(f))*clfunc(cl,ave),
+                'k--',
+                linewidth=1,
+                label='{0}%'.format(cl)
+                )    
+    ax.legend()
+    return ax
+
+
+def plot_deg(ax,f,deg,label,**kwargs):
+    ax.set_xlabel("Frequency [Hz]")
+    ax.set_ylabel("Phase")
+    ax.set_yticks( np.arange(-180.0, 181.0,90 ) )
+    color = ['black','red','green']    
+    for i,f in enumerate(f):    
+        ax.semilogx(f,deg[i],
+                    linewidth=0.5,
+                    label=label[i],
+                    color=color[i],
+                    alpha=1.0-0.2*i,                                        
+                        )
+    return ax
+
+
+def plot21_coherence(f,coh,deg,title=None,label=None,**kwargs):
+    '''
+    
+    '''
+    if type(f)==list:
+        pass
+    elif type(f)==np.ndarray:
+        f = [f]
+        coh = [coh]
+        deg = [deg]
+        label = [label]
+    else:
+        raise ValueError('error!')
+    fig = plt.figure(dpi=320)
+    ax1 = fig.add_axes([0.12, 0.43, 0.80, 0.47])  # coherence
+    ax2 = fig.add_axes([0.12, 0.13, 0.80, 0.25])  # phase
+    ax1 = plot_coh(ax1,f,coh,label,**kwargs)
+    ax2 = plot_deg(ax2,f,deg,label,**kwargs)
+    plt.suptitle(title)
+    fn = title+format('.png')
+    print 'saved',fn
+    plt.savefig(fn)    
+    plt.close()   

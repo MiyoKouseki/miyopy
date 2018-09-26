@@ -25,4 +25,7 @@ from sys import stdout
 
 from .misc import *
 
+from trillium import trillium120QA
+from dump import readdump
+
 __author__ = 'Duncan Macleod <duncan.macleod@ligo.org>'

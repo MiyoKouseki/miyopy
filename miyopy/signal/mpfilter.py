@@ -1,8 +1,43 @@
+#
+#! coding:utf-8
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 from scipy.signal import butter, lfilter
 from control import matlab
+
+
+def bandpass(data, lowcut, highcut, fs, order=None, w=None,**kwargs):
+    '''時系列データをバンドパスする関数
+
+
+    Parameter
+    ---------
+    data : 
+        バンドパスされる時系列データ。
+    lowcut:
+        
+
+
+    Return
+    ------
+
+    '''
+    
+    nyq = 0.5 * fs
+    if highcut==None:
+        low = lowcut / nyq
+        b, a = butter(order, low, btype='low',analog=False)
+    elif lowcut==None:
+        high = highcut / nyq                
+        b, a = butter(order, high, btype='high',analog=False)
+    else:
+        low = lowcut / nyq
+        high = highcut / nyq        
+        b, a = butter(order, [low, high], btype='band',analog=False)    
+    y = lfilter(b, a, data)
+    return y,b,a
+
 
 
 def decimate(data,fs_befor,fs_after):
