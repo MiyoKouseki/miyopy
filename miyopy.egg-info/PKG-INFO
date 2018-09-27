@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: miyopy
+Version: 0.1
+Summary: Awesome library
+Home-page: https://github.com/MiyoKouseki/miyopy.git
+Author: MiyoKouseki
+Author-email: miyo@icrr.u-tokyo.ac.jp
+License: MIT
+Description-Content-Type: UNKNOWN
+Description: UNKNOWN
+Keywords: sample setuptools development
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.6
