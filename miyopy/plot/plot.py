@@ -21,41 +21,6 @@ try:
 except:
     pass
 
-def _plotbode(ax0,ax1,w,h,label=None):
-    mpl.rcParams['lines.linewidth'] = 1    
-    mag = np.abs(h)
-    phase = np.rad2deg(np.angle(h))
-    if True in np.isinf(h):
-        raise ValueError('Data have Inf value! \n Exit..')
-    ax0.loglog(w, mag, label=label,color='k')
-    ax0.grid(which='major',linestyle='-', linewidth=1)
-    ax0.grid(which='minor',linestyle=':', linewidth=1)
-    ax0.set_ylabel('Magnitude')            
-    ax1.semilogx(w,phase,label=label,color='k')
-    ax1.grid(which='major',linestyle='-', linewidth=1)
-    ax1.grid(which='minor',linestyle=':', linewidth=1)
-    ax0.legend(loc='lower right',framealpha=0.8)    
-    ax1.legend(loc='lower right',framealpha=0.8)
-    return ax0,ax1
-
-
-def bodeplot(w,h,fname='./bode.png',ylim=None,xlim=None,**kwargs):
-    fig, (ax0, ax1) = plt.subplots(2, 1, sharex=True, dpi=640)
-    ax0,ax1 = _plotbode(ax0,ax1,w,h,label='hoge')
-    plt.subplots_adjust(hspace=0.05,top=0.92)    
-    ax1.set_yticks(np.arange(-180,181,90))
-    ax1.set_yticklabels(np.arange(-180,181,90))
-    ax1.set_ylim([-200,200])
-    ax1.set_ylabel('Phase [Degree]')                
-    ax1.set_xlabel('Frequency [Hz]')
-    ax0.set_ylim(ylim)
-    ax0.set_xlim(xlim)
-    ax1.set_xlim(xlim)    
-    plt.setp(ax0.get_xticklabels(), visible=False)
-    plt.suptitle("Bandpass filter")
-    plt.savefig(fname)
-    plt.close()        
-    print('plot {0}'.format(fname))        
 
     
 def plotn1_Timeseries(fig,ax,fname='./NoName.png',sidetext='None',
@@ -142,6 +107,7 @@ def _plot_asd(ax,datalist,fname='asd',labels=None,
     ax.grid(which='minor',linestyle=':', linewidth=1)
     return ax
 
+
 def plot_cdmr(ax,datalist,fname='cdmr',tlen=None,labels=None,
               disp=True,model='comm/diff',trillium=None,L=3000.0,**kwargs):
     '''
@@ -195,74 +161,6 @@ def plot_cdmr(ax,datalist,fname='cdmr',tlen=None,labels=None,
     return ax
 
 
-def plot_coh(ax,data,fname='cdmr',tlen=None,ave=32,labels=None,disp=True,**kwargs):
-    ''' Plot coherence on the axes.
-
-    Parameter
-    ---------
-    
-    
-    Return
-    ------
-    
-    '''
-    if len(data)==3:
-        data1, data2, gif = data
-    else:
-        data1, data2 = data
-        
-    if disp:
-        integ=True
-    else:
-        integ=False
-    #print(ave)
-    dof = ave*2
-    alpha = 0.05
-    integ=False # kesu!
-    #
-    f,coh,deg = get_coh(data1,data2,fs=len(data1)/tlen,integ=integ,tlen=tlen,**kwargs)
-    
-    ax.semilogx(f, coh, label=labels[0],color='k',linewidth=2)
-    #cl = np.arange(len(f))*
-    cl = 1.0-alpha**(1./(float(dof)/2.0-1.0))
-    ax.semilogx(f, cl*np.ones(len(f)),
-                label='95% ',color='k',
-                linewidth=1,linestyle='--')
-    ax.set_xlabel('Frequency [Hz]')
-    ax.set_ylabel('Magnitude-Squared \n Coherence')
-    ax.set_xlim([1e-2,1e2])
-    ax.legend(fontsize=8)
-    ax.grid(which='major',linestyle='-', linewidth=1)
-    ax.grid(which='minor',linestyle=':', linewidth=1)        
-    ax.tick_params(axis='both',direction='in',which='both')
-    #ax.set_yticks(np.arange(10)[::1])
-    ax.set_ylim([0,1])
-    return ax
-
-def plot_coh_deg(ax,data,tlen=None,fname='cdmr',labels=None,disp=True,**kwargs):
-    if len(data)==3:
-        data1, data2, gif = data
-    else:
-        data1, data2 = data
-    if disp:
-        integ=True
-    else:
-        integ=False
-    
-    f,coh,deg = get_coh(data1,data2,fs=len(data1)/tlen,tlen=tlen,integ=integ,**kwargs)
-    ax.semilogx(f, deg, label=labels[0],color='k',linewidth=2)
-    ax.set_xlabel('Frequency [Hz]')
-    ax.set_ylabel('Phase [deg]')
-    ax.set_xlim([1e-2,1e2])
-    ax.legend(fontsize=8,loc='upper right')
-    ax.grid(which='major',linestyle='-', linewidth=1)
-    ax.grid(which='minor',linestyle=':', linewidth=1)        
-    ax.tick_params(axis='both',direction='in',which='both')
-    ax.set_yticks(np.arange(-180,181,90))
-    ax.set_ylim([-180,180])
-    return ax
-
-
 def plot21_cdmr(data,fname='cdmr',start=None,tlen=None,
                 title='No title',labels1=None,labels2=None,**kwargs):
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, dpi=640)
@@ -272,7 +170,9 @@ def plot21_cdmr(data,fname='cdmr',start=None,tlen=None,
     xticklabels = ax1.get_xticklabels()
     plt.setp(xticklabels, visible=False)
     ax_pos = ax1.get_position()
-    fig.text(ax_pos.x1*1.01, ax_pos.y0,'GPS:{0}\nHanning,ovlp=50%'.format(start),rotation=90,verticalalignment='bottom')    
+    fig.text(ax_pos.x1*1.01, ax_pos.y0,
+             'GPS:{0}\nHanning,ovlp=50%'.format(start),rotation=90,
+                 verticalalignment='bottom')    
     fig.suptitle(title,fontsize=12)
     ax1.yaxis.set_label_coords(-0.1,0.5)
     ax2.yaxis.set_label_coords(-0.1,0.5)    
@@ -290,7 +190,9 @@ def plot(data,fname='NoTile',title='No title',
     ax1 = plot_asd(ax1,data,labels=labels1,ave=32,disp=True,tlen=tlen,**kwargs)
     plt.subplots_adjust(hspace=0.1,top=0.92)
     ax_pos = ax1.get_position()
-    fig.text(ax_pos.x1*1.01, ax_pos.y0,'GPS:{0}\nHanning,ovlp=50%'.format(start),rotation=90,verticalalignment='bottom')
+    fig.text(ax_pos.x1*1.01, ax_pos.y0,
+             'GPS:{0}\nHanning,ovlp=50%'.format(start),rotation=90,
+                 verticalalignment='bottom')
     ax_pos = ax1.get_position()
     fig.suptitle(title,fontsize=12)
     ax1.yaxis.set_label_coords(-0.1,0.5)
@@ -322,26 +224,6 @@ def plot_timeseries(data,fname='No Title',
     #ax2.yaxis.set_label_coords(-0.1,0.5)    
     plt.savefig('{0}.png'.format(fname))
     plt.close()
-
-
-def plotASD(data,fname='NoTile',title='No title',
-         labels1=None,labels2=None,
-         tlen=None,**kwargs):
-    
-    fig, ax1 = plt.subplots(1, 1, sharex=True, dpi=640)
-    start = kwargs.get('start',None)
-    ax1 = plot_asd(ax1,data,labels=labels1,ave=32,disp=True,tlen=tlen,**kwargs)
-    plt.subplots_adjust(hspace=0.1,top=0.92)
-    ax_pos = ax1.get_position()
-    fig.text(ax_pos.x1*1.01, ax_pos.y0,'GPS:{0}\nHanning,ovlp=50%'.format(start),rotation=90,verticalalignment='bottom')
-    ax_pos = ax1.get_position()
-    fig.suptitle(title,fontsize=12)
-    ax1.yaxis.set_label_coords(-0.1,0.5)
-    ax1.set_xlabel('Frequency [Hz]')
-    #ax2.yaxis.set_label_coords(-0.1,0.5)    
-    plt.savefig('{0}.png'.format(fname))
-    plt.close()
-    print('plot {}.png'.format(fname))    
     
 
 def plot41_blrms_timeseries(data,fname='No Title',
@@ -402,43 +284,7 @@ def plot41_blrms_timeseries(data,fname='No Title',
     plt.close()
     print('plot as ./{}.png'.format(fname))
     
-    
-def plot21_coherence(data,fname='seismometer',title='No title',ave=None,
-                     labels1=None,labels2=None,start=None,tlen=None,**kwargs):
-    """ Plot coherence on the 1 row 2 columns figure.
-
-    Parameters
-    ----------
-    data : [numpy.array, numpy.array] 
-        magnitude, phase.       
-    fname : str
-        output image filename.
-    title : str
-        Title of the figure
-    labels1 : str
-        legends for the magnitude axes
-    labels2 : str
-        legends for the phase axes        
-    ave : int
-        Averaging number.    
-    """    
-    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, dpi=340)
-    ax1 = plot_coh(ax1,data,labels=labels1,ave=ave,tlen=tlen,disp=False,**kwargs)
-    ax2 = plot_coh_deg(ax2,data,labels=labels2,ave=ave,tlen=tlen,disp=False,**kwargs)
-    plt.subplots_adjust(hspace=0.1,top=0.92)
-    xticklabels = ax1.get_xticklabels()
-    plt.setp(xticklabels, visible=False)
-    ax_pos = ax1.get_position()
-    print(ax1_pos)
-    fig.text(ax_pos.x1*1.01, ax_pos.y0,
-             'GPS:{0}\nHanning,ovlp=50%'.format(start),
-             rotation=90,verticalalignment='bottom')
-    fig.suptitle(title,fontsize=12)
-    ax1.yaxis.set_label_coords(-0.09,0.5)
-    ax2.yaxis.set_label_coords(-0.1,0.5)    
-    plt.savefig('{0}.png'.format(fname))
-    plt.close()
-
+   
     
 def plot_31(data,fname='seismometer',title='No title',labels1=None,labels2=None,**kwargs):   
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, dpi=340)
@@ -508,11 +354,103 @@ Frequency[Hz],ASD [um/sqrtHz]'''
         exit()
 
 
+        def ax_plot(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
+    ax.plot(x,y,label=legend,color='k',linewidth=0.8)
+    #ax.set_ylim(-1e-6,1e-6)
+    ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
+    ax.legend()
+    return ax
+
+def ax_spectrogram(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
+    ax.plot(x,y,label=legend,color='k',linewidth=0.8)
+    #ax.set_ylim(-5e-6,5e-6)
+    ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)
+    ax.legend()
+    return ax
 
 
+def subplot33(data,fname,label):
+    matplotlib.rc('font',family='Arial')
+    fig, ax = plt.subplots(3, 3, figsize=(17, 10))
+    fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
+    ax_ = ax.reshape(1,9)[0]
+    plot = ax_plot
+    for i in range(len(ax_)):
+        ax_[i] = plot(
+            ax_[i],
+            data[i][0],
+            data[i][1],           
+            xlabel='Time',
+            ylabel='Value',
+            legend=label[i]            
+        )        
+    for i in filter(lambda x:x<6,range(6)):
+        plt.setp(ax_[i].get_xticklabels(),visible=False)
+    for i in filter(lambda x:(x%3)!=0,range(9)):
+        plt.setp(ax_[i].get_yticklabels(),visible=False)
+    for i in filter(lambda x:x==7,range(9)):
+        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
+    for i in filter(lambda x:x==3,range(9)):
+        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
+    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
+    plt.savefig(fname)
+    plt.close()
 
+    
+def subplot31(data,fname,label):
+    matplotlib.rc('font',family='Arial')
+    fig, ax = plt.subplots(3, 1, figsize=(14, 10))
+    fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
+    ax_ = ax.reshape(1,3)[0]
+    for i in range(len(ax_)):
+        ax_[i] = ax_plot(
+            ax_[i],
+            data[i][0],
+            data[i][1],           
+            xlabel='Time',
+            ylabel='Value',
+            legend=label[i]            
+        )
+    '''
+    for i in filter(lambda x:x<6,range(6)):
+        plt.setp(ax_[i].get_xticklabels(),visible=False)
+    for i in filter(lambda x:(x%3)!=0,range(9)):
+        plt.setp(ax_[i].get_yticklabels(),visible=False)
+    for i in filter(lambda x:x==7,range(9)):
+        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
+    for i in filter(lambda x:x==3,range(9)):
+        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
+'''
+    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
+    plt.savefig(fname)
+    plt.close()    
 
-
-
-
-
+    
+def subplot32(data,fname,label):
+    matplotlib.rc('font',family='Arial')
+    fig, ax = plt.subplots(2, 3, figsize=(14, 7))
+    fig.suptitle(fname.split('.')[0],fontsize=20,fontname='Arial')
+    ax_ = ax.reshape(1,6)[0]
+    for i in range(len(ax_)):
+        ax_[i] = ax_plot(
+            ax_[i],
+            data[i][0],
+            data[i][1],           
+            xlabel='Time',
+            ylabel='Value',
+            legend=label[i]            
+        )        
+    '''
+    for i in filter(lambda x:x<6,range(6)):
+        plt.setp(ax_[i].get_xticklabels(),visible=False)
+    for i in filter(lambda x:(x%3)!=0,range(9)):
+        plt.setp(ax_[i].get_yticklabels(),visible=False)
+    for i in filter(lambda x:x==7,range(9)):
+        ax_[i].set_xlabel('Time [sec]',fontsize=20,fontname='Arial')
+    for i in filter(lambda x:x==3,range(9)):
+        ax_[i].set_ylabel('Velocity [m/sec]',fontsize=20,fontname='Arial')
+'''
+    fig.tight_layout(rect=[0, 0, 0.99, 0.95])
+    plt.savefig(fname)
+    plt.close()    
+    

@@ -1,13 +1,28 @@
 #
 #! coding:utf-8
 
-from miyopy.signal import bandpass
+
 import numpy as np
 from scipy.signal import lfilter,zpk2tf,butter,filtfilt
 from scipy.signal import zpk2sos,sosfilt,butter
 from scipy.signal import freqs_zpk,freqs,freqz,bilinear
 from control import matlab
 from miyopy.plot import bodeplot
+
+def H120QA(f):
+    from miyopy.utils.trillium import H_120QA
+    from scipy import signal
+    from miyopy.plot import bodeplot
+    num,den = H_120QA()
+    _w = f*(2.0*np.pi)
+    #w,h = signal.freqs(num,den,np.logspace(-4,4,1e5))
+    w,h = signal.freqs(num,den,_w)    
+    #f = w/(2.0*np.pi)    
+    #bodeplot(f,h,ylim=[1e-0,1e4],xlim=[1e-4,1e3])
+    mag = np.abs(h)
+    mag[0] = mag[1]#-1e-20
+    return mag
+
 
 
 def TRselfnoise(trillium='120QA',psd='ASD',acc='acc'):
@@ -77,8 +92,6 @@ def TRselfnoise(trillium='120QA',psd='ASD',acc='acc'):
     return f, selfnoise
 
 
-
-
 def H_120QA(flat=True):
     ''' Trillium 120QA TransferFunction
 
@@ -135,6 +148,8 @@ def _V2Vel(data):
     plt.close()
     return data
 
+
+#from miyopy.signal import bandpass
 
 class trillium120QA(object):
     def __init__(self):

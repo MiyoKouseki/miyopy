@@ -36,9 +36,7 @@ def asd(data1,fs,ave=None,integ=False,gif=False,
     return f, Asd_den
 
 
-
-def coherence(data1,data2,fs,tlen,ave=32,**kwargs):
-    print(tlen)
+def coherence(data1,data2,fs,ave=32,**kwargs):
     f, P1_den = signal.welch(data1,
                              fs,
                              nperseg=len(data1)/ave,
@@ -58,7 +56,7 @@ def coherence(data1,data2,fs,tlen,ave=32,**kwargs):
                         window='hanning',
                         scaling='density',
                         )
-    f, coh2 = signal.coherence(data1, data2, fs=len(data1)/tlen, nperseg=len(data1)/ave)        
+    f, coh2 = signal.coherence(data1, data2, fs=fs, nperseg=len(data1)/ave)        
     A1_den = np.sqrt(P1_den)
     A2_den = np.sqrt(P2_den)
     #csd = np.sqrt(csd)
