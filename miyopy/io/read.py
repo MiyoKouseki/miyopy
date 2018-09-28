@@ -53,6 +53,7 @@ def read_from_dumpfile(start,end,chname,**kwargs):
         with open(fname,'rb') as f:
             value = np.load(f)
         logger.info('Data was loaded from "{0}" successfully'.format(fname))
+        return value
     except IOError as e:
         logger.error(e)
         raise DumpFileException('There is no such dump file "{}"'.format(fname))

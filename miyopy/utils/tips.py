@@ -21,6 +21,13 @@ try:
 except:
     pass
 
+def magphase(w,h,**kwargs):
+    if True in np.isinf(h):
+        raise ValueError('Data have Inf value! \n Exit..')    
+    mag = np.abs(h)
+    phase = np.rad2deg(np.angle(h))    
+    return w,mag,phase
+
 
 def bandpass(data, lowcut, highcut, fs, order=None, w=None,**kwargs):
     '''時系列データをバンドパスする関数
