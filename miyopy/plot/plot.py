@@ -354,7 +354,7 @@ Frequency[Hz],ASD [um/sqrtHz]'''
         exit()
 
 
-        def ax_plot(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
+def ax_plot(ax,x,y,xlabel=None,ylabel=None,legend='None'):    
     ax.plot(x,y,label=legend,color='k',linewidth=0.8)
     #ax.set_ylim(-1e-6,1e-6)
     ax.grid(color='black', linestyle='--', linewidth=0.6,alpha=0.3)

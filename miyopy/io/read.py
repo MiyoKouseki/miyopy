@@ -60,7 +60,7 @@ def read_from_dumpfile(start,end,chname,**kwargs):
         raise DumpFileException('There is no such dump file "{}"'.format(fname))
     
 
-def save_to_dump():    
+def save_to_dump(data,start,end,chname,prefix=pfx['Darwin']):    
     fname = prefix+'{0}_{1}_{2}'.format(start,end,chname[3:])        
     with open(fname,'w') as f:
         np.save(f,data)

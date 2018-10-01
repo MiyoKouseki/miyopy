@@ -6,7 +6,7 @@ import nds2
 class ChannelNameException(Exception):
     pass
 
-def read(start,end,chlst,nds_hostname='k1nds0'):
+def read(start,end,chlst,nds_hostname='k1nds0',**kwargs):
     ''' read data using nds.    
     
     Parameters
@@ -31,7 +31,8 @@ def read(start,end,chlst,nds_hostname='k1nds0'):
     '''
     if not isinstance(chlst,list):
         raise ChannelNameException('Please give chlst as list type.\n'\
-                                   'Given chlst is {}'.format(type(chlst)))
+                                   'Given chlst is {}, which type is {}'\
+                                       .format(chlst,type(chlst)))
     elif isinstance(chlst,str):
         chlst = [chlst]        
     conn = nds2.connection('10.68.10.121', 8088) # nds0
