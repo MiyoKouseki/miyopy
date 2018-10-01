@@ -5,7 +5,6 @@ import os
 from scipy import signal
 import miyopy.signal.mpfilter as mpf
 #import miyopy
-from  miyopy.io import readNDS2
 import platform
 #
 if platform.system() == 'Linux':

@@ -17,7 +17,7 @@ import numpy as np
 
 #from miyopy.timeseries import TimeSeries as ts
 from gwpy.timeseries import TimeSeries
-from .reader import kagra,gif
+from .reader import nds,gif
 
 class DumpFileException(Exception):
     pass
@@ -91,7 +91,7 @@ def read(start,end,chname,fmt='dump',**kwargs):
     elif fmt=='gif':
         value = gif.read(start,end,chname,**kwargs)
     elif fmt=='nds':
-        value = kagra.read(start,end,chname,**kwargs)
+        value = nds.read(start,end,chname,**kwargs)
     else:
         raise ValueError('invalid format. "{}"'.format(fmt))            
     return value

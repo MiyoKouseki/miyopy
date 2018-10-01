@@ -3,8 +3,11 @@
 
 import nds2
 
-def fetch(start,end,chlst,nds_hostname='k1nds0'):
-    ''' fetch data using nds.    
+class ChannelNameException(Exception):
+    pass
+
+def read(start,end,chlst,nds_hostname='k1nds0'):
+    ''' read data using nds.    
     
     Parameters
     ----------
@@ -23,16 +26,21 @@ def fetch(start,end,chlst,nds_hostname='k1nds0'):
     Example
     -------
     >>> channel = 'K1:PEM-EX1_SEIS_WE_SENSINF_OUT16'
-    >>> fetch(1205201472,1205205568,channel)
+    >>> read(1205201472,1205205568,channel)
     <list of the numpy array>
     '''
+    if not isinstance(chlst,list):
+        raise ChannelNameException('Please give chlst as list type.\n'\
+                                   'Given chlst is {}'.format(type(chlst)))
+    elif isinstance(chlst,str):
+        chlst = [chlst]        
     conn = nds2.connection('10.68.10.121', 8088) # nds0
     buffers = conn.fetch(start,end,chlst)
-    return buffers.data
+    return buffers
 
 
 
 if __name__ == '__main__':
-    chname = 'K1:PEM-EX1_SEIS_WE_SENSINF_OUT16'
-    data = fetch(1207197172,1207197172+100,chname)
-    print data
+    chlst = ['K1:PEM-EXV_SEIS_WE_SENSINF_INMON']
+    buffers = read(1222387218,1222387218+100,chlst)
+    print buffers[0].data    
