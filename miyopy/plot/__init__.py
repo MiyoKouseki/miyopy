@@ -9,3 +9,4 @@
 from .bodeplot import bodeplot
 from .coherenceplot import coherenceplot
 from .asdplot import asdplot
+from .plottimeseries import plotBandPassTimeseries
