@@ -6,6 +6,7 @@
 #from plotspectrogram import plotspectrogram
 #from plotcoherence import plotcoherence
 #from plot import plot21_coherence
+from .plottimeseries import plotBandPassTimeseries
 from .bodeplot import bodeplot
 from .coherenceplot import coherenceplot
 from .asdplot import asdplot

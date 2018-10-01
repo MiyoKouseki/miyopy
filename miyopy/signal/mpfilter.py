@@ -22,6 +22,19 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
     y = lfilter(b, a, data)
     return y
 
+def bandpass(data, lowcut, highcut, fs, order=4):
+    nyq = 0.5 * fs
+    if highcut==None:
+        b, a = butter(order, lowcut/nyq, btype='low')        
+    elif lowcut==None:
+        b, a = butter(order, highcut/nyq, btype='high')
+    else:
+        b, a = butter(order, [lowcut/nyq, highcut/nyq], btype='band')            
+    y = lfilter(b, a, data)
+    return y,b,a
+
+
+
 def filt_iirpeak(dic,fs,f0,Q,plot=False):
     w0 = f0/(fs/2)
     num, den = signal.iirpeak(w0, Q)
