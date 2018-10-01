@@ -10,6 +10,7 @@ import platform
 #
 if platform.system() == 'Linux':
     DATAdir = '/users/Miyo/KagraDropboxMiyo/GIF/data/'
+    DATAdir = '/users/Miyo/KagraDropboxMiyo/GIF/data/'    
     #DATAdir = '/users/Miyo/KagraDropboxMiyo/AOS/data/'
 else:
     DATAdir = '/Users/miyo/Dropbox/KagraMiyo/GIF/data/'

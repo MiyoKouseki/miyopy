@@ -17,6 +17,7 @@ import numpy as np
 
 #from miyopy.timeseries import TimeSeries as ts
 from gwpy.timeseries import TimeSeries
+from .reader import kagra,gif
 
 class DumpFileException(Exception):
     pass
