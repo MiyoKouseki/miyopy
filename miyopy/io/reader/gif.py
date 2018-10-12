@@ -180,34 +180,36 @@ def path_to_file(gps,chname,prefix):
     return path_to_file
 
 
-#def findFiles(gpstime,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
-def findFiles(gpstime,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):    
-    '''GPS時刻で指定した期間を含むファイルをローカルディレクトリから探す関数。
+def _00sec(gps):
+    return gps - (gps%60) + 18
+
+def get_filelist(sgt,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+    ''' Return file path
     
     Parameter
     ---------
-    gpstime: int
-        開始時刻。GPS時間で指定。
+    sgt: int
+        start gps time. second.
     tlen: int
-        長さ。秒で指定。
+        time length. second.
     chname:str
-        チャンネル名。fname_fmtで指定されている名前を指定。
+        Channel name. Must be choosen from fname_fmt.
     prefix: str
-        GIFデータが保存されているローカルディレクトリ。一応デフォルトでは、'/Users/miyo/KAGRA/DATA/'に保存している。
+        Location where GIF data are saved in. Default is '/Users/miyo/KAGRA/DATA/'
 
     Return
     ------
-    fnames: list of str
-      GIFデータまでの絶対PATHを1ファイルごとに格納したリスト。
-    '''
-    s_ = 60*(gpstime/60)+18
-    e_ = 60*((gpstime+tlen)/60)+18
-    fnames_gps = np.arange(s_,e_+60,60)
-    fnames = [path_to_file(gps,chname,prefix) for gps in fnames_gps]
-    return fnames
+    flist: list of str
+        file path.
+    '''    
+    _s = _00sec(sgt)
+    _e = _00sec(sgt+tlen)
+    gpslist = np.arange(_s,_e+60,60)    
+    flist = [path_to_file(gps,chname,prefix) for gps in gpslist]
+    return flist
 
 
-def fromfiles(fnames,chname,mintrend=False):
+def fromfiles(fnames,chname):
     ''' np.fromfileを連続したファイルに対応させたもの。
     
     Parameter
@@ -228,20 +230,10 @@ def fromfiles(fnames,chname,mintrend=False):
     fs = info[0][0]
     c2V = info[2]
     #gifdata = gifdatatype(chname,)
-    if mintrend==False:
-        data = np.array([np.fromfile(fname,dtype=dtype) for fname in fnames])
-        shape = data.shape
-        data = np.resize(data, (1,shape[0]*shape[1]))[0]
-    else:
-        data = np.array([np.average(np.fromfile(fname,dtype=dtype)) for fname in fnames])
-        shape = data.shape
-        data = np.resize(data, (1,shape[0]))[0]
-    try:
-        return data
-    except IOError as e:
-        print e
-        print 'No data. Did you download GIF file?'
-        exit()
+    data = np.array([np.fromfile(fname,dtype=dtype) for fname in fnames])
+    shape = data.shape
+    data = np.resize(data, (1,shape[0]*shape[1]))[0]
+    return data
         
         
 def check_filesize(fnames,chname):
@@ -294,9 +286,8 @@ def check_nan(data,fname,chname):
     return data
 
     
-def read(gps,tlen,chname,fs,
-         plot=False,detrend=False,
-             name=None,title='./tmp_'):    
+def read(gps,tlen,chname,fs,plot=False,detrend=False,
+         name=None,title='./tmp_',**kwargs):    
     '''指定された期間のGIFデータを取ってくる関数。
     
     GIFのバイナリファイルを読み込むための関数。                
@@ -312,11 +303,9 @@ def read(gps,tlen,chname,fs,
     fs : int
         サンプリングを指定。1/4,1/2,1,2,4,8まで対応。
     '''
-    fnames = findFiles(gps,tlen,chname)
+    fnames = get_filelist(gps,tlen,chname,**kwargs)
     check_filesize(fnames,chname)
-    if fs==(1.0/60.0):
-        mintrend = True
-    data = fromfiles(fnames,chname,mintrend)
+    data = fromfiles(fnames,chname)
     data = check_nan(data,fnames,chname)
     # ------------------綺麗にしたい
     DataLocation = fname_fmt[chname].split('<filename>')[0]
@@ -330,27 +319,10 @@ def read(gps,tlen,chname,fs,
     # ------------------
     idx = [(gps-s_)*fs_,(gps+tlen-s_)*fs_]
     data = data[idx[0]:idx[1]]*c2V
-    #print True in np.isnan(data)
-    if mintrend==False and (len(data)/fs_!=tlen):
-        #print len(data)
-        print 'Error: tlen do not match'
-        print len(data)/fs_,'!=',tlen
-        exit()
-    try:
-        if mintrend==False:
-            data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
-            data = Timeseries(data,fs=fs,plot=True,detrend=detrend,name=name,title=title,unit='Voltage')
-            return data
-        else:
-            data = Timeseries(data,fs=fs,plot=True,detrend=detrend,name=name,title=title,unit='Voltage')
-            return data            
-    except KeyError as e:
-        traceback.print_exc()
-        return None
-    except Exception as e:
-        traceback.print_exc()
-        exit()
-        return None
+    #
+    data = mpf.decimate(data,fs_befor=fs_,fs_after=fs)
+    #data = Timeseries(data,fs=fs,plot=True,detrend=detrend,name=name,title=title,unit='Voltage')
+    return data
     
     
 if __name__=="__main__":
