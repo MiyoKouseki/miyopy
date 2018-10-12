@@ -34,12 +34,12 @@ def plotBandPassTimeseries(data,start,end,chname,
                            low_high = [[0.01,None],
                                        [0.01,0.05],
                                        [0.05,0.3],
-                                       [0.3,1.0]],
+                                       [None,0.3]],
                            labels = ['No Filt',
                                      'DC (-0.01 Hz)',
                                      'Low (0.01-0.05 Hz)',
                                      'Mid (0.05-0.3 Hz)',
-                                     'High (0.3-1.0 Hz)'],
+                                     'High (0.3-  Hz)'],
                            imgdir='./',
                            ylabel='None []',
                            xlabel='None []',
@@ -96,7 +96,7 @@ def plotBandPassTimeseries(data,start,end,chname,
                           xlabel=xlabel,
                           title='Band Passed Timeseries\n{0}'.format(chname),
                           **kwargs)
-        
+
         
 if __name__ == '__main__':
     import sys 
