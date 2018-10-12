@@ -3,7 +3,7 @@
 import traceback
 
 from .findfiles import findFiles,check_filesize,fromfiles,check_nan
-from .datatype import gifdatatype
+from .datatype import gifdata
 
 from ..time import to_JSTdatetime,to_GPStime
 

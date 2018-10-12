@@ -4,7 +4,7 @@ from astropy import units as u
 import numpy as np
 import traceback
 import os
-from datatype import gifdatatype
+from datatype import gifdata
 
 
 
