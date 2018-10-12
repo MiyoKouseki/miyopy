@@ -180,21 +180,20 @@ def path_to_file(gps,chname,prefix):
     return path_to_file
 
 
-def findFiles(gpstime,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+#def findFiles(gpstime,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+def findFiles(gpstime,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):    
     '''GPS時刻で指定した期間を含むファイルをローカルディレクトリから探す関数。
-
-    GIFのファイルは１ファイル１分のファイルを日時で管理しているため、ファイルに保存されている時系列データはかならず00秒始まり。なのでファイル名を探すときは、指定した開始時刻と終了時刻を60秒で丸める必要がある。簡単な例として、2017-01-15-00:00:00のGPS時間は60で割ると18なので、とりあえず、指定した時刻を60で割った余りがそれになるように丸めればよい。ただし注意として、途中、うるう秒が入ってくるとつかえない。
     
     Parameter
     ---------
     gpstime: int
-      開始時刻。GPS時間で指定。
+        開始時刻。GPS時間で指定。
     tlen: int
-      長さ。秒で指定。
+        長さ。秒で指定。
     chname:str
-      チャンネル名。fname_fmtで指定されている名前を指定。
+        チャンネル名。fname_fmtで指定されている名前を指定。
     prefix: str
-      GIFデータが保存されているローカルディレクトリ。一応デフォルトでは、'/Users/miyo/KAGRA/DATA/'に保存している。
+        GIFデータが保存されているローカルディレクトリ。一応デフォルトでは、'/Users/miyo/KAGRA/DATA/'に保存している。
 
     Return
     ------

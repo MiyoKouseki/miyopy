@@ -17,7 +17,7 @@ import numpy as np
 
 #from miyopy.timeseries import TimeSeries as ts
 from gwpy.timeseries import TimeSeries
-from .reader import nds,gif
+
 
 class DumpFileException(Exception):
     pass
@@ -89,8 +89,10 @@ def read(start,end,chname,fmt='dump',**kwargs):
     if fmt=='dump':
         value = read_from_dumpfile(start,end,chname,**kwargs)
     elif fmt=='gif':
+        from .reader import gif
         value = gif.read(start,end,chname,**kwargs)
     elif fmt=='nds':
+        from .reader import nds
         value = nds.read(start,end,chname,**kwargs)
     else:
         raise ValueError('invalid format. "{}"'.format(fmt))            
