@@ -34,7 +34,6 @@ def plotn1_Timeseries(fig,ax,fname='./NoName.png',sidetext='None',
              rotation=90,verticalalignment='bottom')
     fig.text(.05, .5, ylabel,
              ha='center', va='center', rotation='vertical')
-    
     #for i in range(ax_num):
         #ax[i].set_xticks(np.arange(0,25,3))
     #ax[-1].set_xticklabels(np.arange(0,25,3))
