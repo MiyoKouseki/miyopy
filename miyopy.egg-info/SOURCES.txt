@@ -1,7 +1,0 @@
-README
-setup.py
-miyopy.egg-info/PKG-INFO
-miyopy.egg-info/SOURCES.txt
-miyopy.egg-info/dependency_links.txt
-miyopy.egg-info/requires.txt
-miyopy.egg-info/top_level.txt
