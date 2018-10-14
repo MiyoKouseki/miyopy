@@ -73,18 +73,18 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">miyopy.plot package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#miyopy-plot-asdplot-module">miyopy.plot.asdplot module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-bodeplot-module">miyopy.plot.bodeplot module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-coherenceplot-module">miyopy.plot.coherenceplot module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-core-module">miyopy.plot.core module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-mpplot-module">miyopy.plot.mpplot module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-plot-module">miyopy.plot.plot module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-plotbode-module">miyopy.plot.plotbode module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-plotcoherence-module">miyopy.plot.plotcoherence module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-plotspectrogram-module">miyopy.plot.plotspectrogram module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-plotspectrum-module">miyopy.plot.plotspectrum module</a></li>
-<li><a class="reference internal" href="#miyopy-plot-plottimeseries-module">miyopy.plot.plottimeseries module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.asdplot">miyopy.plot.asdplot module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.bodeplot">miyopy.plot.bodeplot module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.coherenceplot">miyopy.plot.coherenceplot module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.core">miyopy.plot.core module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.mpplot">miyopy.plot.mpplot module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.plot">miyopy.plot.plot module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.plotbode">miyopy.plot.plotbode module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.plotcoherence">miyopy.plot.plotcoherence module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.plotspectrogram">miyopy.plot.plotspectrogram module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.plotspectrum">miyopy.plot.plotspectrum module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot.plottimeseries">miyopy.plot.plottimeseries module</a></li>
+<li><a class="reference internal" href="#module-miyopy.plot">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -142,41 +142,334 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="miyopy-plot-asdplot-module">
-<h2>miyopy.plot.asdplot module<a class="headerlink" href="#miyopy-plot-asdplot-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.asdplot">
+<span id="miyopy-plot-asdplot-module"></span><h2>miyopy.plot.asdplot module<a class="headerlink" href="#module-miyopy.plot.asdplot" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="miyopy.plot.asdplot.AsdPlotException">
+<em class="property">exception </em><code class="descclassname">miyopy.plot.asdplot.</code><code class="descname">AsdPlotException</code><a class="headerlink" href="#miyopy.plot.asdplot.AsdPlotException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.asdplot.asdplot">
+<code class="descclassname">miyopy.plot.asdplot.</code><code class="descname">asdplot</code><span class="sig-paren">(</span><em>datalist</em>, <em>fname='NoTile'</em>, <em>title='No title'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.asdplot.asdplot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-bodeplot-module">
-<h2>miyopy.plot.bodeplot module<a class="headerlink" href="#miyopy-plot-bodeplot-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.bodeplot">
+<span id="miyopy-plot-bodeplot-module"></span><h2>miyopy.plot.bodeplot module<a class="headerlink" href="#module-miyopy.plot.bodeplot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.bodeplot.bodeplot">
+<code class="descclassname">miyopy.plot.bodeplot.</code><code class="descname">bodeplot</code><span class="sig-paren">(</span><em>w</em>, <em>h</em>, <em>fname='./bode.png'</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.bodeplot.bodeplot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-coherenceplot-module">
-<h2>miyopy.plot.coherenceplot module<a class="headerlink" href="#miyopy-plot-coherenceplot-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.coherenceplot">
+<span id="miyopy-plot-coherenceplot-module"></span><h2>miyopy.plot.coherenceplot module<a class="headerlink" href="#module-miyopy.plot.coherenceplot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.coherenceplot.coherenceplot">
+<code class="descclassname">miyopy.plot.coherenceplot.</code><code class="descname">coherenceplot</code><span class="sig-paren">(</span><em>data</em>, <em>fname='seismometer'</em>, <em>title='No title'</em>, <em>ave=None</em>, <em>labels1=None</em>, <em>labels2=None</em>, <em>start=None</em>, <em>tlen=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.coherenceplot.coherenceplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot coherence on the 1 row 2 columns figure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data</strong> : [numpy.array, numpy.array]</p>
+<blockquote>
+<div><p>magnitude, phase.</p>
+</div></blockquote>
+<p><strong>fname</strong> : str</p>
+<blockquote>
+<div><p>output image filename.</p>
+</div></blockquote>
+<p><strong>title</strong> : str</p>
+<blockquote>
+<div><p>Title of the figure</p>
+</div></blockquote>
+<p><strong>labels1</strong> : str</p>
+<blockquote>
+<div><p>legends for the magnitude axes</p>
+</div></blockquote>
+<p><strong>labels2</strong> : str</p>
+<blockquote>
+<div><p>legends for the phase axes</p>
+</div></blockquote>
+<p><strong>ave</strong> : int</p>
+<blockquote class="last">
+<div><p>Averaging number.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.coherenceplot.plot_coh">
+<code class="descclassname">miyopy.plot.coherenceplot.</code><code class="descname">plot_coh</code><span class="sig-paren">(</span><em>ax</em>, <em>data</em>, <em>fname='cdmr'</em>, <em>tlen=None</em>, <em>ave=32</em>, <em>labels=None</em>, <em>disp=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.coherenceplot.plot_coh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot coherence on the axes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.coherenceplot.plot_coh_deg">
+<code class="descclassname">miyopy.plot.coherenceplot.</code><code class="descname">plot_coh_deg</code><span class="sig-paren">(</span><em>ax</em>, <em>data</em>, <em>tlen=None</em>, <em>fname='cdmr'</em>, <em>labels=None</em>, <em>disp=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.coherenceplot.plot_coh_deg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-core-module">
-<h2>miyopy.plot.core module<a class="headerlink" href="#miyopy-plot-core-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.core">
+<span id="miyopy-plot-core-module"></span><h2>miyopy.plot.core module<a class="headerlink" href="#module-miyopy.plot.core" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.core.plot11">
+<code class="descclassname">miyopy.plot.core.</code><code class="descname">plot11</code><span class="sig-paren">(</span><em>title='NoTitle'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.core.plot11" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.core.plot21">
+<code class="descclassname">miyopy.plot.core.</code><code class="descname">plot21</code><span class="sig-paren">(</span><em>title='NoTitle'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.core.plot21" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-mpplot-module">
-<h2>miyopy.plot.mpplot module<a class="headerlink" href="#miyopy-plot-mpplot-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.mpplot">
+<span id="miyopy-plot-mpplot-module"></span><h2>miyopy.plot.mpplot module<a class="headerlink" href="#module-miyopy.plot.mpplot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.mpplot.MultiBodePlot">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">MultiBodePlot</code><span class="sig-paren">(</span><em>f</em>, <em>sys</em>, <em>fn</em>, <em>label</em>, <em>style</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.MultiBodePlot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.MultiPlot">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">MultiPlot</code><span class="sig-paren">(</span><em>data</em>, <em>label</em>, <em>style</em>, <em>filename</em>, <em>legend</em>, <em>lim</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.MultiPlot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.MultiPlot_new">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">MultiPlot_new</code><span class="sig-paren">(</span><em>data</em>, <em>label</em>, <em>filename</em>, <em>legend</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.MultiPlot_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>一枚のFigureの上に複数のグラフを載せる。</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.MultiSemiLogyPlot">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">MultiSemiLogyPlot</code><span class="sig-paren">(</span><em>data</em>, <em>label</em>, <em>style</em>, <em>filename</em>, <em>legend</em>, <em>lim</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.MultiSemiLogyPlot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.TF_V2Vel">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">TF_V2Vel</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.TF_V2Vel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.ax_plot">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">ax_plot</code><span class="sig-paren">(</span><em>ax, x, y, xlabel=None, ylabel=None, legend='None', ylim=[-1e-05, 1e-05]</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.ax_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.ax_spectrogram">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">ax_spectrogram</code><span class="sig-paren">(</span><em>ax, x, y, xlabel=None, ylabel=None, legend='None', ylim=[-1e-05, 1e-05]</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.ax_spectrogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.plotSpectrogram">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">plotSpectrogram</code><span class="sig-paren">(</span><em>data</em>, <em>ave</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.plotSpectrogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.readDiaggui_PSD">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">readDiaggui_PSD</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.readDiaggui_PSD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.spectrogram">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">spectrogram</code><span class="sig-paren">(</span><em>data</em>, <em>ave</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.spectrogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.subplot31">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">subplot31</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>label</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.subplot31" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.subplot32">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">subplot32</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>label</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.subplot32" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.subplot33">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">subplot33</code><span class="sig-paren">(</span><em>data, fname, ylim=[-1e-05, 1e-05], title='No Title', **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.subplot33" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.mpplot.tsplot">
+<code class="descclassname">miyopy.plot.mpplot.</code><code class="descname">tsplot</code><span class="sig-paren">(</span><em>t</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.mpplot.tsplot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-plot-module">
-<h2>miyopy.plot.plot module<a class="headerlink" href="#miyopy-plot-plot-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.plot">
+<span id="miyopy-plot-plot-module"></span><h2>miyopy.plot.plot module<a class="headerlink" href="#module-miyopy.plot.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.plot.ax_plot">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">ax_plot</code><span class="sig-paren">(</span><em>ax</em>, <em>x</em>, <em>y</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>legend='None'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.ax_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.ax_spectrogram">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">ax_spectrogram</code><span class="sig-paren">(</span><em>ax</em>, <em>x</em>, <em>y</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>legend='None'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.ax_spectrogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plot">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>data</em>, <em>fname='NoTile'</em>, <em>title='No title'</em>, <em>labels1=None</em>, <em>labels2=None</em>, <em>tlen=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plot21_cdmr">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plot21_cdmr</code><span class="sig-paren">(</span><em>data</em>, <em>fname='cdmr'</em>, <em>start=None</em>, <em>tlen=None</em>, <em>title='No title'</em>, <em>labels1=None</em>, <em>labels2=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plot21_cdmr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plot41_blrms_timeseries">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plot41_blrms_timeseries</code><span class="sig-paren">(</span><em>data</em>, <em>fname='No Title'</em>, <em>title='No title'</em>, <em>labels1=None</em>, <em>tlen=None</em>, <em>start=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plot41_blrms_timeseries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plot_31">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plot_31</code><span class="sig-paren">(</span><em>data</em>, <em>fname='seismometer'</em>, <em>title='No title'</em>, <em>labels1=None</em>, <em>labels2=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plot_31" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plot_cdmr">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plot_cdmr</code><span class="sig-paren">(</span><em>ax</em>, <em>datalist</em>, <em>fname='cdmr'</em>, <em>tlen=None</em>, <em>labels=None</em>, <em>disp=True</em>, <em>model='comm/diff'</em>, <em>trillium=None</em>, <em>L=3000.0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plot_cdmr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plot_timeseries">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plot_timeseries</code><span class="sig-paren">(</span><em>data</em>, <em>fname='No Title'</em>, <em>title='No title'</em>, <em>labels1=None</em>, <em>tlen=None</em>, <em>start=None</em>, <em>labels2=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plot_timeseries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.plotn1_Timeseries">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">plotn1_Timeseries</code><span class="sig-paren">(</span><em>fig</em>, <em>ax</em>, <em>fname='./NoName.png'</em>, <em>sidetext='None'</em>, <em>title='None'</em>, <em>ylabel='None'</em>, <em>xlabel='None'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.plotn1_Timeseries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.save">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">save</code><span class="sig-paren">(</span><em>data</em>, <em>fnames</em>, <em>ave=32</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.subplot31">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">subplot31</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>label</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.subplot31" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.subplot32">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">subplot32</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>label</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.subplot32" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plot.subplot33">
+<code class="descclassname">miyopy.plot.plot.</code><code class="descname">subplot33</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>label</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plot.subplot33" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-plotbode-module">
-<h2>miyopy.plot.plotbode module<a class="headerlink" href="#miyopy-plot-plotbode-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.plotbode">
+<span id="miyopy-plot-plotbode-module"></span><h2>miyopy.plot.plotbode module<a class="headerlink" href="#module-miyopy.plot.plotbode" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.plotbode.bodeplot">
+<code class="descclassname">miyopy.plot.plotbode.</code><code class="descname">bodeplot</code><span class="sig-paren">(</span><em>w</em>, <em>h</em>, <em>fname='./bode.png'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plotbode.bodeplot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-plotcoherence-module">
-<h2>miyopy.plot.plotcoherence module<a class="headerlink" href="#miyopy-plot-plotcoherence-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.plotcoherence">
+<span id="miyopy-plot-plotcoherence-module"></span><h2>miyopy.plot.plotcoherence module<a class="headerlink" href="#module-miyopy.plot.plotcoherence" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.plotcoherence.confidential_peak_index">
+<code class="descclassname">miyopy.plot.plotcoherence.</code><code class="descname">confidential_peak_index</code><span class="sig-paren">(</span><em>data</em>, <em>cl</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plotcoherence.confidential_peak_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plotcoherence.peak_index">
+<code class="descclassname">miyopy.plot.plotcoherence.</code><code class="descname">peak_index</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plotcoherence.peak_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plotcoherence.plotcoherence">
+<code class="descclassname">miyopy.plot.plotcoherence.</code><code class="descname">plotcoherence</code><span class="sig-paren">(</span><em>data</em>, <em>fn</em>, <em>ave</em>, <em>cl</em>, <em>unwrap=False</em>, <em>xlim=(1.0</em>, <em>1000.0)</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plotcoherence.plotcoherence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-plotspectrogram-module">
-<h2>miyopy.plot.plotspectrogram module<a class="headerlink" href="#miyopy-plot-plotspectrogram-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.plotspectrogram">
+<span id="miyopy-plot-plotspectrogram-module"></span><h2>miyopy.plot.plotspectrogram module<a class="headerlink" href="#module-miyopy.plot.plotspectrogram" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.plotspectrogram.plotspectrogram">
+<code class="descclassname">miyopy.plot.plotspectrogram.</code><code class="descname">plotspectrogram</code><span class="sig-paren">(</span><em>data, samp_rate, per_lap=0.9, wlen=None, log=False, outfile=None, fmt=None, axes=None, dbscale=False, mult=8, zorder=None, title=None, auto_frange=False, flim=[1e-11, 1e-05], show=True, sphinx=False, clip=[0.0, 1.0]</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plotspectrogram.plotspectrogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes and plots spectrogram of the input data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – Input data</li>
+<li><strong>samp_rate</strong> (<em>float</em>) – Samplerate in Hz</li>
+<li><strong>per_lap</strong> (<em>float</em>) – Percentage of overlap of sliding window, ranging from 0
+to 1. High overlaps take a long time to compute.</li>
+<li><strong>wlen</strong> (<em>int</em><em> or </em><em>float</em>) – Window length for fft in seconds. If this parameter is too
+small, the calculation will take forever. If None, it defaults to
+(samp_rate/100.0).</li>
+<li><strong>log</strong> (<em>bool</em>) – Logarithmic frequency axis if True, linear frequency axis
+otherwise.</li>
+<li><strong>outfile</strong> (<em>str</em>) – String for the filename of output file, if None
+interactive plotting is activated.</li>
+<li><strong>fmt</strong> (<em>str</em>) – Format of image to save</li>
+<li><strong>axes</strong> (<code class="xref py py-class docutils literal"><span class="pre">matplotlib.axes.Axes</span></code>) – Plot into given axes, this deactivates the fmt and
+outfile option.</li>
+<li><strong>dbscale</strong> (<em>bool</em>) – If True 10 * log10 of color values is taken, if False the
+sqrt is taken.</li>
+<li><strong>mult</strong> (<em>float</em>) – Pad zeros to length mult * wlen. This will make the
+spectrogram smoother.</li>
+<li><strong>cmap</strong> (<code class="xref py py-class docutils literal"><span class="pre">matplotlib.colors.Colormap</span></code>) – Specify a custom colormap instance. If not specified, then the
+default ObsPy sequential colormap is used.</li>
+<li><strong>zorder</strong> (<em>float</em>) – Specify the zorder of the plot. Only of importance if other
+plots in the same axes are executed.</li>
+<li><strong>title</strong> (<em>str</em>) – Set the plot title</li>
+<li><strong>show</strong> (<em>bool</em>) – Do not call <cite>plt.show()</cite> at end of routine. That way, further
+modifications can be done to the figure before showing it.</li>
+<li><strong>sphinx</strong> (<em>bool</em>) – Internal flag used for API doc generation, default False</li>
+<li><strong>clip</strong> (<em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – adjust colormap to clip at lower and/or upper end. The given
+percentages of the amplitude range (linear or logarithmic depending
+on option <cite>dbscale</cite>) are clipped.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-plotspectrum-module">
-<h2>miyopy.plot.plotspectrum module<a class="headerlink" href="#miyopy-plot-plotspectrum-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.plotspectrum">
+<span id="miyopy-plot-plotspectrum-module"></span><h2>miyopy.plot.plotspectrum module<a class="headerlink" href="#module-miyopy.plot.plotspectrum" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.plotspectrum.plotspectrum">
+<code class="descclassname">miyopy.plot.plotspectrum.</code><code class="descname">plotspectrum</code><span class="sig-paren">(</span><em>datalist, lim, label=['xlabel', 'ylabel'], filename='./noname', **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plotspectrum.plotspectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>スペクトルを描画する関数</p>
+</dd></dl>
+
 </div>
-<div class="section" id="miyopy-plot-plottimeseries-module">
-<h2>miyopy.plot.plottimeseries module<a class="headerlink" href="#miyopy-plot-plottimeseries-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot.plottimeseries">
+<span id="miyopy-plot-plottimeseries-module"></span><h2>miyopy.plot.plottimeseries module<a class="headerlink" href="#module-miyopy.plot.plottimeseries" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.plot.plottimeseries.plotBandPassTimeseries">
+<code class="descclassname">miyopy.plot.plottimeseries.</code><code class="descname">plotBandPassTimeseries</code><span class="sig-paren">(</span><em>data, start, end, chname, low_high=[[0.01, None], [0.01, 0.05], [0.05, 0.3], [None, 0.3]], labels=['No Filt', 'DC (-0.01 Hz)', 'Low (0.01-0.05 Hz)', 'Mid (0.05-0.3 Hz)', 'High (0.3-  Hz)'], imgdir='./', ylabel='None []', xlabel='None []', **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plottimeseries.plotBandPassTimeseries" title="Permalink to this definition">¶</a></dt>
+<dd><p>時系列データをバンドパスしてプロットする関数</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.plot.plottimeseries.plottimeseries">
+<code class="descclassname">miyopy.plot.plottimeseries.</code><code class="descname">plottimeseries</code><span class="sig-paren">(</span><em>data, fname='./tmp.png', label=['Time', 'Value']</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.plot.plottimeseries.plottimeseries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.plot">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-miyopy.plot" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

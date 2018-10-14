@@ -74,11 +74,8 @@
 <li><a class="reference internal" href="#">miyopy.gif package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-miyopy.gif.datatype">miyopy.gif.datatype module</a></li>
-<li><a class="reference internal" href="#module-miyopy.gif.file">miyopy.gif.file module</a></li>
 <li><a class="reference internal" href="#module-miyopy.gif.findfiles">miyopy.gif.findfiles module</a></li>
-<li><a class="reference internal" href="#miyopy-gif-fromfiles-module">miyopy.gif.fromfiles module</a></li>
-<li><a class="reference internal" href="#module-miyopy.gif.giffile">miyopy.gif.giffile module</a></li>
-<li><a class="reference internal" href="#module-miyopy.gif.read">miyopy.gif.read module</a></li>
+<li><a class="reference internal" href="#module-miyopy.gif.fromfiles">miyopy.gif.fromfiles module</a></li>
 <li><a class="reference internal" href="#module-miyopy.gif">Module contents</a></li>
 </ul>
 </li>
@@ -145,117 +142,34 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
 </dd></dl>
 
-<dl class="function">
-<dt id="miyopy.gif.datatype.check_filesize">
-<code class="descclassname">miyopy.gif.datatype.</code><code class="descname">check_filesize</code><span class="sig-paren">(</span><em>fnames</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.check_filesize" title="Permalink to this definition">¶</a></dt>
-<dd><p>GIFのファイルが欠損していないか確認する関数。</p>
-<dl class="docutils">
-<dt>fnames <span class="classifier-delimiter">:</span> <span class="classifier">list of str</span></dt>
-<dd>GIFデータの絶対パスのリスト</dd>
-<dt>chname <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>GIFデータのチャンネル名。これを元にしてチャンネルの情報をしらべる。ゆくゆくはなくして綺麗にしたい。</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="miyopy.gif.datatype.check_nan">
-<code class="descclassname">miyopy.gif.datatype.</code><code class="descname">check_nan</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.check_nan" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="miyopy.gif.datatype.cliptime">
-<code class="descclassname">miyopy.gif.datatype.</code><code class="descname">cliptime</code><span class="sig-paren">(</span><em>data</em>, <em>gps</em>, <em>tlen</em>, <em>fs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.cliptime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="miyopy.gif.datatype.fromfiles">
-<code class="descclassname">miyopy.gif.datatype.</code><code class="descname">fromfiles</code><span class="sig-paren">(</span><em>fnames</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.fromfiles" title="Permalink to this definition">¶</a></dt>
-<dd><p>np.fromfileを連続したファイルに対応させたもの。</p>
-<dl class="docutils">
-<dt>fname <span class="classifier-delimiter">:</span> <span class="classifier">list of str</span></dt>
-<dd>GIFのファイル名が書かれたリスト。</dd>
-<dt>chname <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>チャンネル名。これをつかってDtypeを調べているけど、どこかに移して綺麗にしたい。それにnp.fromfileの上位互換になるように、<a href="#id1"><span class="problematic" id="id2">*</span></a>args,**kwargsを拾えるようにしたい。</dd>
-</dl>
-<dl class="docutils">
-<dt>data <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray</span></dt>
-<dd>1次元になったndarray</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="miyopy.gif.datatype.get_filelist">
-<code class="descclassname">miyopy.gif.datatype.</code><code class="descname">get_filelist</code><span class="sig-paren">(</span><em>sgt</em>, <em>tlen</em>, <em>chname</em>, <em>prefix='/Volumes/HDPF-UT/DATA/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.get_filelist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return file path</p>
-<dl class="docutils">
-<dt>sgt: int</dt>
-<dd>start gps time. second.</dd>
-<dt>tlen: int</dt>
-<dd>time length. second.</dd>
-<dt>chname:str</dt>
-<dd>Channel name. Must be choosen from fname_fmt.</dd>
-<dt>prefix: str</dt>
-<dd>Location where GIF data are saved in. Default is ‘/Users/miyo/KAGRA/DATA/’</dd>
-</dl>
-<dl class="docutils">
-<dt>flist: list of str</dt>
-<dd>file path.</dd>
-</dl>
-</dd></dl>
-
 <dl class="class">
 <dt id="miyopy.gif.datatype.gifdata">
 <em class="property">class </em><code class="descclassname">miyopy.gif.datatype.</code><code class="descname">gifdata</code><span class="sig-paren">(</span><em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.gifdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="miyopy.gif.datatype.gifdata.path_to_file">
-<code class="descname">path_to_file</code><span class="sig-paren">(</span><em>gps</em>, <em>prefix='/Users/miyo/Dropbox/KagraData/gif/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.gifdata.path_to_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">path_to_file</code><span class="sig-paren">(</span><em>date</em>, <em>prefix='/Users/miyo/Dropbox/KagraData/gif/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.gifdata.path_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return path to file</p>
-<dl class="docutils">
-<dt>gpstime: int</dt>
-<dd>start gps time.</dd>
-<dt>tlen: int</dt>
-<dd>time length.</dd>
-<dt>prefix: str</dt>
-<dd>location where gif binary data is saved.</dd>
-</dl>
-<dl class="docutils">
-<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>path to file</dd>
-</dl>
 </dd></dl>
 
-<dl class="staticmethod">
+<dl class="classmethod">
 <dt id="miyopy.gif.datatype.gifdata.read">
-<em class="property">static </em><code class="descname">read</code><span class="sig-paren">(</span><em>gps</em>, <em>tlen</em>, <em>chname</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.gifdata.read" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">read</code><span class="sig-paren">(</span><em>start</em>, <em>tlen</em>, <em>chname</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.datatype.gifdata.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read gif data</p>
-<dl class="docutils">
-<dt>gps <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>start gps time.</dd>
-<dt>tlen <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>time length.</dd>
-<dt>chname <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>channel name.</dd>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><cite>numpy.array</cite></span></dt>
+<dd></dd>
 </dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-miyopy.gif.file">
-<span id="miyopy-gif-file-module"></span><h2>miyopy.gif.file module<a class="headerlink" href="#module-miyopy.gif.file" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="miyopy.gif.file.path_to_file">
-<code class="descclassname">miyopy.gif.file.</code><code class="descname">path_to_file</code><span class="sig-paren">(</span><em>gps</em>, <em>prefix='/Users/miyo/Dropbox/KagraData/gif/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.file.path_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>ファイルがある場所を調べる関数</p>
-<p>gpstime: int
-開始時刻。GPS時間で指定。
-tlen: int
-長さ。秒で指定。
-chname:str
-チャンネル名。fname_fmtで指定されている名前を指定。
-prefix: str
-GIFデータが保存されているローカルディレクトリ。</p>
 </dd></dl>
 
 </div>
@@ -265,12 +179,22 @@ GIFデータが保存されているローカルディレクトリ。</p>
 <dt id="miyopy.gif.findfiles.check_filesize">
 <code class="descclassname">miyopy.gif.findfiles.</code><code class="descname">check_filesize</code><span class="sig-paren">(</span><em>fnames</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.findfiles.check_filesize" title="Permalink to this definition">¶</a></dt>
 <dd><p>check whether GIF files lacks data or not.</p>
-<dl class="docutils">
-<dt>fnames <span class="classifier-delimiter">:</span> <span class="classifier">list of str</span></dt>
-<dd>path to file</dd>
-<dt>chname <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>channel name</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fnames</strong> : list of str</p>
+<blockquote>
+<div><p>path to file</p>
+</div></blockquote>
+<p><strong>chname</strong> : str</p>
+<blockquote class="last">
+<div><p>channel name</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -283,36 +207,74 @@ GIFデータが保存されているローカルディレクトリ。</p>
 <code class="descclassname">miyopy.gif.findfiles.</code><code class="descname">findFiles</code><span class="sig-paren">(</span><em>t0</em>, <em>tlen</em>, <em>chname</em>, <em>prefix='/Volumes/HDPF-UT/DATA/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.findfiles.findFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>T0時刻で指定した期間を含むファイルをローカルディレクトリから探す関数。</p>
 <p>GIFのファイルは１ファイル１分のファイルを日時で管理しているため、ファイルに保存されている時系列データはかならず00秒始まり。なのでファイル名を探すときは、指定した開始時刻と終了時刻を60秒で丸める必要がある。簡単な例として、2017-01-15-00:00:00のT0時間は60で割ると18なので、とりあえず、指定した時刻を60で割った余りがそれになるように丸めればよい。ただし注意として、途中、うるう秒が入ってくるとつかえない。</p>
-<dl class="docutils">
-<dt>t0: int</dt>
-<dd>開始時刻。T0時間で指定。</dd>
-<dt>tlen: int</dt>
-<dd>長さ。秒で指定。</dd>
-<dt>chname:str</dt>
-<dd>チャンネル名。fname_fmtで指定されている名前を指定。</dd>
-<dt>prefix: str</dt>
-<dd>GIFデータが保存されているローカルディレクトリ。一応デフォルトでは、’/Users/miyo/KAGRA/DATA/’に保存している。</dd>
-</dl>
-<dl class="docutils">
-<dt>fnames: list of str</dt>
-<dd>GIFデータまでの絶対PATHを1ファイルごとに格納したリスト。</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t0: int</strong></p>
+<blockquote>
+<div><p>開始時刻。T0時間で指定。</p>
+</div></blockquote>
+<p><strong>tlen: int</strong></p>
+<blockquote>
+<div><p>長さ。秒で指定。</p>
+</div></blockquote>
+<p><strong>chname:str</strong></p>
+<blockquote>
+<div><p>チャンネル名。fname_fmtで指定されている名前を指定。</p>
+</div></blockquote>
+<p><strong>prefix: str</strong></p>
+<blockquote>
+<div><p>GIFデータが保存されているローカルディレクトリ。一応デフォルトでは、’/Users/miyo/KAGRA/DATA/’に保存している。</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fnames: list of str</strong></p>
+<blockquote class="last">
+<div><p>GIFデータまでの絶対PATHを1ファイルごとに格納したリスト。</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="miyopy.gif.findfiles.fromfiles">
 <code class="descclassname">miyopy.gif.findfiles.</code><code class="descname">fromfiles</code><span class="sig-paren">(</span><em>fnames</em>, <em>chname</em>, <em>fs</em>, <em>mintrend=False</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.findfiles.fromfiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>np.fromfileを連続したファイルに対応させたもの。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fname</strong> : list of str</p>
+<blockquote>
+<div><p>GIFのファイル名が書かれたリスト。</p>
+</div></blockquote>
+<p><strong>chname</strong> : str</p>
+<blockquote>
+<div><p>チャンネル名。これをつかってDtypeを調べているけど、どこかに移して綺麗にしたい。それにnp.fromfileの上位互換になるように、<a href="#id1"><span class="problematic" id="id2">*</span></a>args,**kwargsを拾えるようにしたい。</p>
+</div></blockquote>
 <dl class="docutils">
-<dt>fname <span class="classifier-delimiter">:</span> <span class="classifier">list of str</span></dt>
-<dd>GIFのファイル名が書かれたリスト。</dd>
-<dt>chname <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>チャンネル名。これをつかってDtypeを調べているけど、どこかに移して綺麗にしたい。それにnp.fromfileの上位互換になるように、<a href="#id3"><span class="problematic" id="id4">*</span></a>args,**kwargsを拾えるようにしたい。</dd>
+<dt><strong>Returns</strong></dt>
+<dd></dd>
+<dt><strong>——-</strong></dt>
+<dd></dd>
 </dl>
-<dl class="docutils">
-<dt>data <span class="classifier-delimiter">:</span> <span class="classifier">numpy.ndarray</span></dt>
-<dd>1次元になったndarray</dd>
-</dl>
+<p><strong>data</strong> : numpy.ndarray</p>
+<blockquote class="last">
+<div><p>1次元になったndarray</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.gif.findfiles.get_filelist">
+<code class="descclassname">miyopy.gif.findfiles.</code><code class="descname">get_filelist</code><span class="sig-paren">(</span><em>cls</em>, <em>sgt</em>, <em>tlen</em>, <em>chname</em>, <em>prefix='/Volumes/HDPF-UT/DATA/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.findfiles.get_filelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return file path</p>
 </dd></dl>
 
 <dl class="function">
@@ -323,57 +285,56 @@ GIFデータが保存されているローカルディレクトリ。</p>
 <dl class="function">
 <dt id="miyopy.gif.findfiles.path_to_file">
 <code class="descclassname">miyopy.gif.findfiles.</code><code class="descname">path_to_file</code><span class="sig-paren">(</span><em>t0</em>, <em>chname</em>, <em>prefix='/Volumes/HDPF-UT/DATA/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.findfiles.path_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>T0時刻、ただし分で丸められた時刻、に対応するファイル名を返す関数。</p>
-<dl class="docutils">
-<dt>t0time: int</dt>
-<dd>開始時刻。T0時間で指定。</dd>
-<dt>tlen: int</dt>
-<dd>長さ。秒で指定。</dd>
-<dt>chname:str</dt>
-<dd>チャンネル名。fname_fmtで指定されている名前を指定。</dd>
-<dt>prefix: str</dt>
-<dd>GIFデータが保存されているローカルディレクトリ。</dd>
-</dl>
+<dd><p>Return path to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t0time: int</strong></p>
+<blockquote>
+<div><p>開始時刻。T0時間で指定。</p>
+</div></blockquote>
+<p><strong>tlen: int</strong></p>
+<blockquote>
+<div><p>長さ。秒で指定。</p>
+</div></blockquote>
+<p><strong>chname:str</strong></p>
+<blockquote>
+<div><p>チャンネル名。fname_fmtで指定されている名前を指定。</p>
+</div></blockquote>
+<p><strong>prefix: str</strong></p>
+<blockquote class="last">
+<div><p>GIFデータが保存されているローカルディレクトリ。</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
-<div class="section" id="miyopy-gif-fromfiles-module">
-<h2>miyopy.gif.fromfiles module<a class="headerlink" href="#miyopy-gif-fromfiles-module" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-miyopy.gif.giffile">
-<span id="miyopy-gif-giffile-module"></span><h2>miyopy.gif.giffile module<a class="headerlink" href="#module-miyopy.gif.giffile" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.gif.fromfiles">
+<span id="miyopy-gif-fromfiles-module"></span><h2>miyopy.gif.fromfiles module<a class="headerlink" href="#module-miyopy.gif.fromfiles" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="miyopy.gif.giffile.path_to_file">
-<code class="descclassname">miyopy.gif.giffile.</code><code class="descname">path_to_file</code><span class="sig-paren">(</span><em>gps</em>, <em>prefix='/Users/miyo/Dropbox/KagraData/gif/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.giffile.path_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>ファイルがある場所を調べる関数</p>
-<p>gpstime: int
-開始時刻。GPS時間で指定。
-tlen: int
-長さ。秒で指定。
-chname:str
-チャンネル名。fname_fmtで指定されている名前を指定。
-prefix: str
-GIFデータが保存されているローカルディレクトリ。</p>
+<dt id="miyopy.gif.fromfiles.check_filesize">
+<code class="descclassname">miyopy.gif.fromfiles.</code><code class="descname">check_filesize</code><span class="sig-paren">(</span><em>cls</em>, <em>fnames</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.fromfiles.check_filesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>GIFのファイルが欠損していないか確認する関数。</p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-miyopy.gif.read">
-<span id="miyopy-gif-read-module"></span><h2>miyopy.gif.read module<a class="headerlink" href="#module-miyopy.gif.read" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="miyopy.gif.read.read">
-<code class="descclassname">miyopy.gif.read.</code><code class="descname">read</code><span class="sig-paren">(</span><em>t0</em>, <em>tlen</em>, <em>chname</em>, <em>fs</em>, <em>plot=False</em>, <em>detrend=False</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.read.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>指定された期間のGIFデータを取ってくる関数。</p>
-<p>GIFのバイナリファイルを読み込むための関数。</p>
-<dl class="docutils">
-<dt>t0 <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>開始時刻。</dd>
-<dt>tlen <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>データ長さ。秒。</dd>
-<dt>chname <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>チャンネル名。</dd>
-<dt>fs <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>サンプリングを指定。1/4,1/2,1,2,4,8まで対応。</dd>
-</dl>
+<dt id="miyopy.gif.fromfiles.check_nan">
+<code class="descclassname">miyopy.gif.fromfiles.</code><code class="descname">check_nan</code><span class="sig-paren">(</span><em>data</em>, <em>fname</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.fromfiles.check_nan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.gif.fromfiles.cliptime">
+<code class="descclassname">miyopy.gif.fromfiles.</code><code class="descname">cliptime</code><span class="sig-paren">(</span><em>data</em>, <em>gps</em>, <em>tlen</em>, <em>fs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.fromfiles.cliptime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.gif.fromfiles.fromfiles">
+<code class="descclassname">miyopy.gif.fromfiles.</code><code class="descname">fromfiles</code><span class="sig-paren">(</span><em>cls</em>, <em>fnames</em>, <em>chname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.gif.fromfiles.fromfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>np.fromfileを連続したファイルに対応させたもの。</p>
 </dd></dl>
 
 </div>

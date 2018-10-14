@@ -4,7 +4,41 @@ from astropy import units as u
 import numpy as np
 import traceback
 import os
-from datatype import gifdata
+#from .datatype import gifdata
+
+
+def _00sec(gps):
+    return gps - (gps%60) + 18
+
+
+def get_filelist(cls,sgt,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+    ''' Return file path
+    
+    Parameter
+    ---------
+    sgt: int
+        start gps time. second.
+    tlen: int
+        time length. second.
+    chname:str
+        Channel name. Must be choosen from fname_fmt.
+    prefix: str
+        Location where GIF data are saved in. Default is '/Users/miyo/KAGRA/DATA/'
+
+    Return
+    ------
+    flist: list of str
+        file path.
+    '''    
+    _s = _00sec(sgt)
+    _e = _00sec(sgt+tlen)
+    #gdata = gifdata(chname)    
+    gpslist = np.arange(_s,_e+60,60)
+    gdata = cls(chname)
+    flist = [gdata.path_to_file(gps) for gps in gpslist]
+    return flist
+
+
 
 
 
@@ -20,8 +54,8 @@ def getsize(path):
 def check_filesize(fnames,chname):
     ''' check whether GIF files lacks data or not.
     
-    Parameter
-    ---------
+    Parameters
+    ----------
     fnames : list of str
         path to file 
     chname : str
@@ -42,10 +76,10 @@ def check_filesize(fnames,chname):
 
 
 def path_to_file(t0,chname,prefix='/Volumes/HDPF-UT/DATA/'):
-    '''T0時刻、ただし分で丸められた時刻、に対応するファイル名を返す関数。
+    ''' Return path to file
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     t0time: int
       開始時刻。T0時間で指定。
     tlen: int
@@ -65,8 +99,8 @@ def findFiles(t0,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
 
     GIFのファイルは１ファイル１分のファイルを日時で管理しているため、ファイルに保存されている時系列データはかならず00秒始まり。なのでファイル名を探すときは、指定した開始時刻と終了時刻を60秒で丸める必要がある。簡単な例として、2017-01-15-00:00:00のT0時間は60で割ると18なので、とりあえず、指定した時刻を60で割った余りがそれになるように丸めればよい。ただし注意として、途中、うるう秒が入ってくるとつかえない。
     
-    Parameter
-    ---------
+    Parameters
+    ----------
     t0: int
       開始時刻。T0時間で指定。
     tlen: int
@@ -76,8 +110,8 @@ def findFiles(t0,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
     prefix: str
       GIFデータが保存されているローカルディレクトリ。一応デフォルトでは、'/Users/miyo/KAGRA/DATA/'に保存している。
 
-    Return
-    ------
+    Returns
+    -------
     fnames: list of str
       GIFデータまでの絶対PATHを1ファイルごとに格納したリスト。
     '''
@@ -93,14 +127,14 @@ def findFiles(t0,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
 def fromfiles(fnames,chname,fs,mintrend=False):
     ''' np.fromfileを連続したファイルに対応させたもの。
     
-    Parameter
-    ---------
+    Parameters
+    ----------
     fname : list of str
         GIFのファイル名が書かれたリスト。
     chname : str
         チャンネル名。これをつかってDtypeを調べているけど、どこかに移して綺麗にしたい。それにnp.fromfileの上位互換になるように、*args,**kwargsを拾えるようにしたい。
-    Return
-    ------
+    Returns
+    -------
     data : numpy.ndarray
         1次元になったndarray    
     '''

@@ -73,12 +73,12 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">miyopy.utils package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#miyopy-utils-downloadgifdata-module">miyopy.utils.downloadGIFdata module</a></li>
+<li><a class="reference internal" href="#module-miyopy.utils.downloadGIFdata">miyopy.utils.downloadGIFdata module</a></li>
 <li><a class="reference internal" href="#module-miyopy.utils.fitEllipse">miyopy.utils.fitEllipse module</a></li>
 <li><a class="reference internal" href="#module-miyopy.utils.giflib">miyopy.utils.giflib module</a></li>
 <li><a class="reference internal" href="#module-miyopy.utils.gifutils">miyopy.utils.gifutils module</a></li>
 <li><a class="reference internal" href="#module-miyopy.utils.tips">miyopy.utils.tips module</a></li>
-<li><a class="reference internal" href="#miyopy-utils-trillium-module">miyopy.utils.trillium module</a></li>
+<li><a class="reference internal" href="#module-miyopy.utils.trillium">miyopy.utils.trillium module</a></li>
 <li><a class="reference internal" href="#module-miyopy.utils">Module contents</a></li>
 </ul>
 </li>
@@ -137,8 +137,23 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="miyopy-utils-downloadgifdata-module">
-<h2>miyopy.utils.downloadGIFdata module<a class="headerlink" href="#miyopy-utils-downloadgifdata-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.utils.downloadGIFdata">
+<span id="miyopy-utils-downloadgifdata-module"></span><h2>miyopy.utils.downloadGIFdata module<a class="headerlink" href="#module-miyopy.utils.downloadGIFdata" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.utils.downloadGIFdata.getGIFFile">
+<code class="descclassname">miyopy.utils.downloadGIFdata.</code><code class="descname">getGIFFile</code><span class="sig-paren">(</span><em>dtime='2018/01/15 00:00'</em>, <em>chname='GIF_X500_TEMP'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.downloadGIFdata.getGIFFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.utils.downloadGIFdata.scpDownload">
+<code class="descclassname">miyopy.utils.downloadGIFdata.</code><code class="descname">scpDownload</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.downloadGIFdata.scpDownload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.utils.downloadGIFdata.test_getAlldata">
+<code class="descclassname">miyopy.utils.downloadGIFdata.</code><code class="descname">test_getAlldata</code><span class="sig-paren">(</span><em>dtime='2018/01/15-00:00'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.downloadGIFdata.test_getAlldata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-miyopy.utils.fitEllipse">
 <span id="miyopy-utils-fitellipse-module"></span><h2>miyopy.utils.fitEllipse module<a class="headerlink" href="#module-miyopy.utils.fitEllipse" title="Permalink to this headline">¶</a></h2>
@@ -196,11 +211,6 @@
 <dt id="miyopy.utils.tips.bandpass">
 <code class="descclassname">miyopy.utils.tips.</code><code class="descname">bandpass</code><span class="sig-paren">(</span><em>data</em>, <em>lowcut</em>, <em>highcut</em>, <em>fs</em>, <em>order=None</em>, <em>w=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.tips.bandpass" title="Permalink to this definition">¶</a></dt>
 <dd><p>時系列データをバンドパスする関数</p>
-<dl class="docutils">
-<dt>data <span class="classifier-delimiter">:</span> <span class="classifier"></span></dt>
-<dd>バンドパスされる時系列データ。</dd>
-</dl>
-<p>lowcut:</p>
 </dd></dl>
 
 <dl class="function">
@@ -268,7 +278,6 @@
 <code class="descclassname">miyopy.utils.tips.</code><code class="descname">remove_nandata</code><span class="sig-paren">(</span><em>data_fname</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.tips.remove_nandata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Nanを含むDumpファイルを消す関数。</p>
 <p>読み込んだDumpファイルにNanが入っている場合，そのファイルを消す。</p>
-<p>data_fname : str</p>
 </dd></dl>
 
 <dl class="function">
@@ -284,8 +293,41 @@
 <dd></dd></dl>
 
 </div>
-<div class="section" id="miyopy-utils-trillium-module">
-<h2>miyopy.utils.trillium module<a class="headerlink" href="#miyopy-utils-trillium-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.utils.trillium">
+<span id="miyopy-utils-trillium-module"></span><h2>miyopy.utils.trillium module<a class="headerlink" href="#module-miyopy.utils.trillium" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.utils.trillium.H120QA">
+<code class="descclassname">miyopy.utils.trillium.</code><code class="descname">H120QA</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.trillium.H120QA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.utils.trillium.H_120QA">
+<code class="descclassname">miyopy.utils.trillium.</code><code class="descname">H_120QA</code><span class="sig-paren">(</span><em>flat=True</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.trillium.H_120QA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trillium 120QA TransferFunction</p>
+<p>Transfer function from Velocity to Voltage.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.utils.trillium.TRselfnoise">
+<code class="descclassname">miyopy.utils.trillium.</code><code class="descname">TRselfnoise</code><span class="sig-paren">(</span><em>trillium='120QA'</em>, <em>psd='ASD'</em>, <em>acc='acc'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.trillium.TRselfnoise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="miyopy.utils.trillium.trillium120QA">
+<em class="property">class </em><code class="descclassname">miyopy.utils.trillium.</code><code class="descname">trillium120QA</code><a class="headerlink" href="#miyopy.utils.trillium.trillium120QA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="miyopy.utils.trillium.trillium120QA.V2Vel">
+<em class="property">classmethod </em><code class="descname">V2Vel</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.trillium.trillium120QA.V2Vel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="miyopy.utils.trillium.trillium120QA.bandpass">
+<em class="property">classmethod </em><code class="descname">bandpass</code><span class="sig-paren">(</span><em>data</em>, <em>low</em>, <em>high</em>, <em>fs</em>, <em>order</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.utils.trillium.trillium120QA.bandpass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-miyopy.utils">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-miyopy.utils" title="Permalink to this headline">¶</a></h2>
