@@ -37,13 +37,12 @@ def bandpass(data, lowcut, highcut, fs, order=None, w=None,**kwargs):
     ---------
     data : 
         バンドパスされる時系列データ。
-    lowcut:
-        
-
+    lowcut:        
+        aaa
 
     Return
     ------
-
+        aaa
     '''
     nyq = 0.5 * fs
     if highcut==None:

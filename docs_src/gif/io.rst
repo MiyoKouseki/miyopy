@@ -1,3 +1,4 @@
+:orphan:
 .. currentmodule:: gif.io
 
 ################

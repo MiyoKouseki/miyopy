@@ -39,8 +39,7 @@ def get_fw0_dataframe(fname='fw0-latest.txt',ascending=False):
     return df    
 
 def is_record_in_fw0(start,duration):
-    """
-    指定した時間のデータがfw0に保存されているかどうか判別する。    
+    """ Check the data existing
     
     Parameters
     ----------
@@ -55,6 +54,7 @@ def is_record_in_fw0(start,duration):
         Available start time duaring requested time as a GPS time.
     duration : int
         Available time length.
+
     Examples
     --------
     >>> is_record_in_fw0('2018-03-15 10:37:50',3600)

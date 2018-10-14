@@ -1,9 +1,11 @@
 #
 #! coding:utf-8
+import logging
 import numpy as np
 from astropy import units as u
+from .fromfiles import fromfiles,cliptime
+from .findfiles import get_filelist
 from ..time import to_JSTdatetime,to_GPStime
-import logging
 
 Hz = 1
 byte = 1
@@ -92,11 +94,44 @@ class NoChannelNameError(Exception):
 
     
 class gifdata(object):
-    def __init__(self,chname,):
+    def __init__(self,chname,):        
         self.chname = chname
-            
+        DataLocation = fname_fmt[self.chname].split('<fname>')[0]
+        info = datatype[DataLocation]
+        self.dtype = info[1]
+        self.byte = info[0][1]
+        self.fs = info[0][0]
+        self.c2V = info[2]        
+        self._check_chname()
+        
+    @classmethod
+    def read(cls,start,tlen,chname,**kwargs):
+        ''' Read gif data
+        
+        Parameter
+        ---------
+        start : `int`
+            start start time.
 
-    def path_to_file(self,gps,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
+        tlen : int
+            time length.
+
+        chname : `str`
+            channel name.
+            
+        Returns
+        -------
+        data : `numpy.array`
+        '''
+        #gdata = gifdata(chname)
+        fnames = get_filelist(cls,start,tlen,chname,**kwargs)    
+        data = fromfiles(cls,fnames,chname)
+        data = cliptime(data,start,tlen,cls(chname).fs)
+        data = data*cls(chname).c2V
+        return data       
+
+    
+    def path_to_file(self,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
         ''' Return path to file
         
         Parameter
@@ -115,36 +150,15 @@ class gifdata(object):
         '''
         
         if isinstance(date,int):            
-            assert (gps%60)==18,'{0}%60={1}'.format(gps,gps%60)
-            date = to_JSTdatetime(gps)
+            assert (date%60)==18,'{0}%60={1}'.format(date,date%60)
+            date = to_JSTdatetime(date)
         elif isinstance(date,date):
             pass
         
         date_str = date.strftime(date_fmt)
         path = prefix + fname_fmt[self.chname].replace('<fname>',date_str)
         return path
-    
-    
-    @staticmethod
-    def read(gps,tlen,chname,**kwargs):
-        ''' Read gif data
-        
-        Parameter
-        ---------
-        gps : int
-            start gps time.
-        tlen : int
-            time length.
-        chname : str
-            channel name.
-        '''
-        gdata = gifdata(chname)
-        fnames = get_filelist(gps,tlen,chname,**kwargs)    
-        data = fromfiles(fnames,chname)
-        data = cliptime(data,gps,tlen,gdata.fs)
-        data = data*gdata.c2V
-        return data       
-    
+
     
     def _check_chname(self):
         ''' check wheter channel name exit or not.        
@@ -152,7 +166,7 @@ class gifdata(object):
         '''        
         if not self.chname in fname_fmt.keys():
             raise NoChannelNameError(self.chname)
-        
+
         
     def _get_info(self):
         DataLocation = fname_fmt[self.chname].split('<fname>')[0]
@@ -169,144 +183,8 @@ class gifdata(object):
         self.fname = fname_fmt[self.chname].replace('<fname>',date_str)        
         
 
-def _00sec(gps):
-    return gps - (gps%60) + 18
-
-
-
-def get_filelist(sgt,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
-    ''' Return file path
-    
-    Parameter
-    ---------
-    sgt: int
-        start gps time. second.
-    tlen: int
-        time length. second.
-    chname:str
-        Channel name. Must be choosen from fname_fmt.
-    prefix: str
-        Location where GIF data are saved in. Default is '/Users/miyo/KAGRA/DATA/'
-
-    Return
-    ------
-    flist: list of str
-        file path.
-    '''    
-    _s = _00sec(sgt)
-    _e = _00sec(sgt+tlen)
-    gdata = gifdata(chname)    
-    gpslist = np.arange(_s,_e+60,60)
-    flist = [gdata.path_to_file(gps) for gps in gpslist]
-    return flist
-
-
-def _fromfile(fname,fs,dtype=None):
-    try:
-        data = np.fromfile(fname,dtype=dtype)
-    except:
-        data = np.zero([60*fs])
-        data[:] = np.nan
-    return data
-
-
-def fromfiles(fnames,chname):
-    ''' np.fromfileを連続したファイルに対応させたもの。
-    
-    Parameter
-    ---------
-    fname : list of str
-        GIFのファイル名が書かれたリスト。
-    chname : str
-        チャンネル名。これをつかってDtypeを調べているけど、どこかに移して綺麗にしたい。それにnp.fromfileの上位互換になるように、*args,**kwargsを拾えるようにしたい。
-    Return
-    ------
-    data : numpy.ndarray
-        1次元になったndarray    
-    '''
-    check_filesize(fnames,chname)    
-    gdata = gifdata(chname)
-    data = _fromfile(fnames[0],gdata.fs,dtype=gdata.dtype)
-    for fname in fnames[1:]:
-        data = np.r_[data,_fromfile(fname,gdata.fs,dtype=gdata.dtype)]
-    data = check_nan(data,fnames,chname)        
-    return data
-
-
-def _getsize(path):
-    import os
-    try:
-        size = os.path.getsize(path)
-    except Exception as e:
-        print(e)
-        size = 0
-    return size 
-        
-def check_filesize(fnames,chname):
-    '''GIFのファイルが欠損していないか確認する関数。
-    
-    Parameter
-    ---------
-    fnames : list of str
-      GIFデータの絶対パスのリスト
-    chname : str
-      GIFデータのチャンネル名。これを元にしてチャンネルの情報をしらべる。ゆくゆくはなくして綺麗にしたい。
-    '''    
-    import os
-    gdata = gifdata(chname)
-    fsize = [_getsize(path) for path in fnames]
-    size_ = [gdata.byte*gdata.fs*60 for i in range(len(fnames))]
-    ans = np.array(fsize)==np.array(size_)
-
-    if fsize!=size_:
-        print '[Warning] detect lack of data'
-        idxs = np.where(ans==False)[0]
-        lack_of_data = [fnames[idx] for idx in idxs]
-        lack = [fsize[idx] for idx in idxs]
-        for i,fname in enumerate(lack_of_data):
-            print ' - ',fname,lack[i]
-        #exit()
-    else:
-        return True
-
-def check_nan(data,fname,chname):
-    if True in np.isnan(data):
-        idx = np.where(np.isnan(data)==True)[0]
-        print '[Warning] found nan value. did zero padding'
-        print '\t Continuing..'
-        data[idx] = np.nan
-    else:
-        pass    
-    return data
 
     
-def _read(gps,tlen,chname,**kwargs):    
-    ''' Read gif data
-        
-    Parameter
-    ---------
-    gps : int
-        start gps time.
-    tlen : int
-        time length.
-    chname : str
-        channel name.
-    '''
-    gdata = gifdata(chname)        
-    fnames = get_filelist(gps,tlen,chname,**kwargs)    
-    data = fromfiles(fnames,chname)
-    data = cliptime(data,gps,tlen,gdata.fs)
-    data = data*gdata.c2V
-    return data
-
-
-def cliptime(data,gps,tlen,fs):
-    s_ = 60*(gps/60)+18 
-    e_ = 60*((gps+tlen)/60)+18
-    idx = [(gps-s_)*fs,(gps+tlen-s_)*fs]
-    data = data[idx[0]:idx[1]]
-    return data
-
 
 
 

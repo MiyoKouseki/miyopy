@@ -73,9 +73,9 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">miyopy.types package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#miyopy-types-seismometer-module">miyopy.types.seismometer module</a></li>
-<li><a class="reference internal" href="#miyopy-types-timeseries-module">miyopy.types.timeseries module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-miyopy.types.seismometer">miyopy.types.seismometer module</a></li>
+<li><a class="reference internal" href="#module-miyopy.types.timeseries">miyopy.types.timeseries module</a></li>
+<li><a class="reference internal" href="#module-miyopy.types">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -133,14 +133,118 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="miyopy-types-seismometer-module">
-<h2>miyopy.types.seismometer module<a class="headerlink" href="#miyopy-types-seismometer-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.types.seismometer">
+<span id="miyopy-types-seismometer-module"></span><h2>miyopy.types.seismometer module<a class="headerlink" href="#module-miyopy.types.seismometer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="miyopy.types.seismometer.Seismometer">
+<em class="property">class </em><code class="descclassname">miyopy.types.seismometer.</code><code class="descname">Seismometer</code><span class="sig-paren">(</span><em>t0</em>, <em>tlen</em>, <em>name='EX1'</em>, <em>theta=0.0</em>, <em>plot=True</em>, <em>detrend=True</em>, <em>title='./tmp_'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.seismometer.Seismometer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="miyopy.types.seismometer.Seismometer.bandpass">
+<code class="descname">bandpass</code><span class="sig-paren">(</span><em>lowcut=0.001</em>, <em>highcut=1.0</em>, <em>order=1</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.seismometer.Seismometer.bandpass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.types.seismometer.clockwise_Zaxis">
+<code class="descclassname">miyopy.types.seismometer.</code><code class="descname">clockwise_Zaxis</code><span class="sig-paren">(</span><em>theta</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.seismometer.clockwise_Zaxis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="miyopy-types-timeseries-module">
-<h2>miyopy.types.timeseries module<a class="headerlink" href="#miyopy-types-timeseries-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.types.timeseries">
+<span id="miyopy-types-timeseries-module"></span><h2>miyopy.types.timeseries module<a class="headerlink" href="#module-miyopy.types.timeseries" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="miyopy.types.timeseries.Timeseries">
+<em class="property">class </em><code class="descclassname">miyopy.types.timeseries.</code><code class="descname">Timeseries</code><span class="sig-paren">(</span><em>value</em>, <em>t0</em>, <em>fs</em>, <em>name</em>, <em>plot=False</em>, <em>detrend=False</em>, <em>title='./tmp_'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.bandpass">
+<code class="descname">bandpass</code><span class="sig-paren">(</span><em>lowcut</em>, <em>highcut</em>, <em>order</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.bandpass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.cliptime">
+<code class="descname">cliptime</code><span class="sig-paren">(</span><em>start</em>, <em>end</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.cliptime" title="Permalink to this definition">¶</a></dt>
+<dd><p>端数は切り捨てている。</p>
+<dl class="docutils">
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>開始時刻。GPS</dd>
+<dt>end <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>終了時刻。GPS</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.types.timeseries.Timeseries.csd">
+<code class="descname">csd</code><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.csd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.decimate">
+<code class="descname">decimate</code><span class="sig-paren">(</span><em>fs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.decimate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.get_coherence">
+<code class="descname">get_coherence</code><span class="sig-paren">(</span><em>data2</em>, <em>ave</em>, <em>plot=False</em>, <em>title='./tmp/'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.get_coherence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.get_fft">
+<code class="descname">get_fft</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.get_fft" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.get_psd">
+<code class="descname">get_psd</code><span class="sig-paren">(</span><em>ave=4</em>, <em>plot=False</em>, <em>asd=True</em>, <em>integ=False</em>, <em>savefile=False</em>, <em>TF_240=False</em>, <em>TF_120=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.get_psd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.get_spectrogram">
+<code class="descname">get_spectrogram</code><span class="sig-paren">(</span><em>ave</em>, <em>plot=True</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.get_spectrogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>datatype='Timeseries'</em>, <em>workplace='./'</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.types.timeseries.Timeseries.psd">
+<code class="descname">psd</code><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.psd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="miyopy.types.timeseries.Timeseries.savecsv">
+<code class="descname">savecsv</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.savecsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.types.timeseries.Timeseries.timeseries">
+<code class="descname">timeseries</code><a class="headerlink" href="#miyopy.types.timeseries.Timeseries.timeseries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="miyopy.types.timeseries.tf_120">
+<code class="descclassname">miyopy.types.timeseries.</code><code class="descname">tf_120</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.tf_120" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.types.timeseries.tf_240">
+<code class="descclassname">miyopy.types.timeseries.</code><code class="descname">tf_240</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.tf_240" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.types.timeseries.tf_nazo">
+<code class="descclassname">miyopy.types.timeseries.</code><code class="descname">tf_nazo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.types.timeseries.tf_nazo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-miyopy.types">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-miyopy.types" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
