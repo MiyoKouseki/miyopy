@@ -94,9 +94,15 @@ class NoChannelNameError(Exception):
 class gifdata(object):
     def __init__(self,chname,):
         self.chname = chname
+        DataLocation = fname_fmt[self.chname].split('<fname>')[0]
+        info = datatype[DataLocation]
+        self.dtype = info[1]
+        self.byte = info[0][1]
+        self.fs = info[0][0]
+        self.c2V = info[2]        
             
 
-    def path_to_file(self,gps,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
+    def path_to_file(self,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
         ''' Return path to file
         
         Parameter
@@ -115,8 +121,8 @@ class gifdata(object):
         '''
         
         if isinstance(date,int):            
-            assert (gps%60)==18,'{0}%60={1}'.format(gps,gps%60)
-            date = to_JSTdatetime(gps)
+            assert (date%60)==18,'{0}%60={1}'.format(date,date%60)
+            date = to_JSTdatetime(date)
         elif isinstance(date,date):
             pass
         

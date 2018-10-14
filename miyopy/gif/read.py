@@ -9,21 +9,14 @@ from ..time import to_JSTdatetime,to_GPStime
 
 
 def read(t0,tlen,chname,fs,plot=False,detrend=False):
-    '''指定された期間のGIFデータを取ってくる関数。
+    '''Read gif data.
     
-    GIFのバイナリファイルを読み込むための関数。
-    
-    Parameter
-    ---------------    
+    Parameters
+    ----------
     t0 : int
-        開始時刻。
-    tlen : int
-        データ長さ。秒。
-    chname : str
-        チャンネル名。
-    fs : int
-        サンプリングを指定。1/4,1/2,1,2,4,8まで対応。
-    '''
+        start gps time
+
+    '''    
     from ..timeseries import TimeSeries    
     g = gifdatatype(chname)
     fnames = findFiles(t0,tlen,chname)

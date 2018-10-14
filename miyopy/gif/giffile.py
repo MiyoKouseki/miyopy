@@ -6,8 +6,8 @@ from ..time import to_JSTdatetime
 def path_to_file(gps,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     '''ファイルがある場所を調べる関数
     
-    Parameter
-    ---------
+    Parameters
+    ----------
     gpstime: int
     開始時刻。GPS時間で指定。
     tlen: int

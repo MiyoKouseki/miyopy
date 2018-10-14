@@ -1,3 +1,4 @@
+:orphan:
 miyopy\.optimize package
 ========================
 

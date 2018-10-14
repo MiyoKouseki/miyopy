@@ -1,7 +1,10 @@
 #
 #! coding:utf-8
-
-import nds2
+try:
+    import nds2
+except:
+    print('no nds2')
+    pass
 
 class ChannelNameException(Exception):
     pass
