@@ -1,0 +1,139 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>miyopy.signal package &#8212; miyopy 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="miyopy-signal-package">
+<h1>miyopy.signal package<a class="headerlink" href="#miyopy-signal-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-miyopy.signal.filt">
+<span id="miyopy-signal-filt-module"></span><h2>miyopy.signal.filt module<a class="headerlink" href="#module-miyopy.signal.filt" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.signal.filt.bandpass">
+<code class="descclassname">miyopy.signal.filt.</code><code class="descname">bandpass</code><span class="sig-paren">(</span><em>data</em>, <em>lowcut</em>, <em>highcut</em>, <em>fs</em>, <em>order=4</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.filt.bandpass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.signal.filt.butter_bandpass_filter">
+<code class="descclassname">miyopy.signal.filt.</code><code class="descname">butter_bandpass_filter</code><span class="sig-paren">(</span><em>data</em>, <em>lowcut</em>, <em>highcut</em>, <em>fs</em>, <em>order=4</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.filt.butter_bandpass_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.signal.filt.decimate">
+<code class="descclassname">miyopy.signal.filt.</code><code class="descname">decimate</code><span class="sig-paren">(</span><em>data</em>, <em>fs_befor</em>, <em>fs_after</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.filt.decimate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.signal.filt.filt_butterBandPass">
+<code class="descclassname">miyopy.signal.filt.</code><code class="descname">filt_butterBandPass</code><span class="sig-paren">(</span><em>dic</em>, <em>fs</em>, <em>lowcut</em>, <em>highcut</em>, <em>order</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.filt.filt_butterBandPass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.signal.filt.filt_iirpeak">
+<code class="descclassname">miyopy.signal.filt.</code><code class="descname">filt_iirpeak</code><span class="sig-paren">(</span><em>dic</em>, <em>fs</em>, <em>f0</em>, <em>Q</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.filt.filt_iirpeak" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-miyopy.signal.spectrum">
+<span id="miyopy-signal-spectrum-module"></span><h2>miyopy.signal.spectrum module<a class="headerlink" href="#module-miyopy.signal.spectrum" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="miyopy.signal.spectrum.asd">
+<code class="descclassname">miyopy.signal.spectrum.</code><code class="descname">asd</code><span class="sig-paren">(</span><em>data1</em>, <em>fs</em>, <em>ave=None</em>, <em>integ=False</em>, <em>gif=False</em>, <em>psd='asd'</em>, <em>scaling='density'</em>, <em>window='hanning'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.spectrum.asd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.signal.spectrum.cf">
+<code class="descclassname">miyopy.signal.spectrum.</code><code class="descname">cf</code><span class="sig-paren">(</span><em>alpha=0.05</em>, <em>k=32</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.spectrum.cf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="miyopy.signal.spectrum.coherence">
+<code class="descclassname">miyopy.signal.spectrum.</code><code class="descname">coherence</code><span class="sig-paren">(</span><em>data1</em>, <em>data2</em>, <em>fs</em>, <em>ave=32</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.signal.spectrum.coherence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-miyopy.signal">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-miyopy.signal" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, MiyoKouseki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/apis/miyopy.signal.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
