@@ -4,7 +4,41 @@ from astropy import units as u
 import numpy as np
 import traceback
 import os
-from datatype import gifdata
+#from .datatype import gifdata
+
+
+def _00sec(gps):
+    return gps - (gps%60) + 18
+
+
+def get_filelist(cls,sgt,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+    ''' Return file path
+    
+    Parameter
+    ---------
+    sgt: int
+        start gps time. second.
+    tlen: int
+        time length. second.
+    chname:str
+        Channel name. Must be choosen from fname_fmt.
+    prefix: str
+        Location where GIF data are saved in. Default is '/Users/miyo/KAGRA/DATA/'
+
+    Return
+    ------
+    flist: list of str
+        file path.
+    '''    
+    _s = _00sec(sgt)
+    _e = _00sec(sgt+tlen)
+    #gdata = gifdata(chname)    
+    gpslist = np.arange(_s,_e+60,60)
+    gdata = cls(chname)
+    flist = [gdata.path_to_file(gps) for gps in gpslist]
+    return flist
+
+
 
 
 
