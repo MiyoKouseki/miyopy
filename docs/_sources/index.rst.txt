@@ -8,10 +8,13 @@ Welcome to miyopy's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   gif/io   
 
+GIF
+==================   
+* :doc:`gif/io`
 
-
+  
 Indices and tables
 ==================
 
