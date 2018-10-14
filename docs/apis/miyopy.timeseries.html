@@ -1,0 +1,369 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>miyopy.timeseries package &#8212; miyopy 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="miyopy-timeseries-package">
+<h1>miyopy.timeseries package<a class="headerlink" href="#miyopy-timeseries-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-miyopy.timeseries.core">
+<span id="miyopy-timeseries-core-module"></span><h2>miyopy.timeseries.core module<a class="headerlink" href="#module-miyopy.timeseries.core" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="miyopy.timeseries.core.SeriesBase">
+<em class="property">class </em><code class="descclassname">miyopy.timeseries.core.</code><code class="descname">SeriesBase</code><a class="headerlink" href="#miyopy.timeseries.core.SeriesBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">astropy.units.quantity.Quantity</span></code></p>
+<p>value:
+unit:
+x0:int
+dx:
+name:</p>
+<dl class="attribute">
+<dt id="miyopy.timeseries.core.SeriesBase.dx">
+<code class="descname">dx</code><a class="headerlink" href="#miyopy.timeseries.core.SeriesBase.dx" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis sample separation
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.core.SeriesBase.name">
+<code class="descname">name</code><a class="headerlink" href="#miyopy.timeseries.core.SeriesBase.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name for this data set
+:type: <cite>str</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.core.SeriesBase.x0">
+<code class="descname">x0</code><a class="headerlink" href="#miyopy.timeseries.core.SeriesBase.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis coordinate of the first data point
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.core.SeriesBase.xunit">
+<code class="descname">xunit</code><a class="headerlink" href="#miyopy.timeseries.core.SeriesBase.xunit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit of x-axis index
+:type: <cite>~astropy.units.Unit</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="miyopy.timeseries.core.TimeSeriesBase">
+<em class="property">class </em><code class="descclassname">miyopy.timeseries.core.</code><code class="descname">TimeSeriesBase</code><a class="headerlink" href="#miyopy.timeseries.core.TimeSeriesBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#miyopy.timeseries.core.SeriesBase" title="miyopy.timeseries.core.SeriesBase"><code class="xref py py-class docutils literal"><span class="pre">miyopy.timeseries.core.SeriesBase</span></code></a></p>
+<p>value:
+unit:
+t0:int
+dt:
+name:</p>
+<dl class="attribute">
+<dt id="miyopy.timeseries.core.TimeSeriesBase.dt">
+<code class="descname">dt</code><a class="headerlink" href="#miyopy.timeseries.core.TimeSeriesBase.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis sample separation
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="miyopy.timeseries.core.TimeSeriesBase.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.timeseries.core.TimeSeriesBase.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="miyopy.timeseries.core.TimeSeriesBase.read">
+<em class="property">classmethod </em><code class="descname">read</code><span class="sig-paren">(</span><em>t0</em>, <em>tlen</em>, <em>chname</em>, <em>prefix=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.timeseries.core.TimeSeriesBase.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.core.TimeSeriesBase.t0">
+<code class="descname">t0</code><a class="headerlink" href="#miyopy.timeseries.core.TimeSeriesBase.t0" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis coordinate of the first data point
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-miyopy.timeseries.series">
+<span id="miyopy-timeseries-series-module"></span><h2>miyopy.timeseries.series module<a class="headerlink" href="#module-miyopy.timeseries.series" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="miyopy.timeseries.series.Series">
+<em class="property">class </em><code class="descclassname">miyopy.timeseries.series.</code><code class="descname">Series</code><a class="headerlink" href="#miyopy.timeseries.series.Series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">astropy.units.quantity.Quantity</span></code></p>
+<p>value:
+unit:
+t0
+dt
+name</p>
+<dl class="attribute">
+<dt id="miyopy.timeseries.series.Series.dx">
+<code class="descname">dx</code><a class="headerlink" href="#miyopy.timeseries.series.Series.dx" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis sample separation
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="miyopy.timeseries.series.Series.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.timeseries.series.Series.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the data for this timeseries
+All keywords are passed to <cite>~gwpy.plotter.TimeSeriesPlot</cite>
+Returns
+——-
+plot : <cite>~gwpy.plotter.TimeSeriesPlot</cite></p>
+<blockquote>
+<div>the newly created figure, with populated Axes.</div></blockquote>
+<dl class="docutils">
+<dt>matplotlib.pyplot.figure</dt>
+<dd>for documentation of keyword arguments used to create the
+figure</dd>
+<dt>matplotlib.figure.Figure.add_subplot</dt>
+<dd>for documentation of keyword arguments used to create the
+axes</dd>
+<dt>matplotlib.axes.Axes.plot</dt>
+<dd>for documentation of keyword arguments used in rendering the data</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="miyopy.timeseries.series.Series.read">
+<em class="property">classmethod </em><code class="descname">read</code><span class="sig-paren">(</span><em>t0</em>, <em>tlen</em>, <em>chname</em>, <em>fs=1</em>, <em>*kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.timeseries.series.Series.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.series.Series.x0">
+<code class="descname">x0</code><a class="headerlink" href="#miyopy.timeseries.series.Series.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis coordinate of the first data point
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.series.Series.xunit">
+<code class="descname">xunit</code><a class="headerlink" href="#miyopy.timeseries.series.Series.xunit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit of x-axis index
+:type: <cite>~astropy.units.Unit</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-miyopy.timeseries.timeseries">
+<span id="miyopy-timeseries-timeseries-module"></span><h2>miyopy.timeseries.timeseries module<a class="headerlink" href="#module-miyopy.timeseries.timeseries" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="miyopy.timeseries.timeseries.TimeSeries">
+<em class="property">class </em><code class="descclassname">miyopy.timeseries.timeseries.</code><code class="descname">TimeSeries</code><a class="headerlink" href="#miyopy.timeseries.timeseries.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#miyopy.timeseries.series.Series" title="miyopy.timeseries.series.Series"><code class="xref py py-class docutils literal"><span class="pre">miyopy.timeseries.series.Series</span></code></a></p>
+<p>Timseries class 
+This class based on Series class which have simple attribute and method for 
+handling series data.</p>
+<dl class="docutils">
+<dt>value: ‘array-like’</dt>
+<dd>value of the seriese data.</dd>
+<dt>vunit: ‘str’,’astropy.unit’</dt>
+<dd>unit od value parameter.</dd>
+<dt>t0: int</dt>
+<dd>gps time.</dd>
+<dt>dt: float</dt>
+<dd>differential time.</dd>
+<dt>tunit:</dt>
+<dd>unit of differential time.</dd>
+<dt>name: ‘str’</dt>
+<dd>name of this timeseries.</dd>
+</dl>
+<dl class="attribute">
+<dt id="miyopy.timeseries.timeseries.TimeSeries.dt">
+<code class="descname">dt</code><a class="headerlink" href="#miyopy.timeseries.timeseries.TimeSeries.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis sample separation
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.timeseries.TimeSeries.t0">
+<code class="descname">t0</code><a class="headerlink" href="#miyopy.timeseries.timeseries.TimeSeries.t0" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis coordinate of the first data point
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-miyopy.timeseries">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-miyopy.timeseries" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="miyopy.timeseries.TimeSeries">
+<em class="property">class </em><code class="descclassname">miyopy.timeseries.</code><code class="descname">TimeSeries</code><a class="headerlink" href="#miyopy.timeseries.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#miyopy.timeseries.series.Series" title="miyopy.timeseries.series.Series"><code class="xref py py-class docutils literal"><span class="pre">miyopy.timeseries.series.Series</span></code></a></p>
+<p>Timseries class 
+This class based on Series class which have simple attribute and method for 
+handling series data.</p>
+<dl class="docutils">
+<dt>value: ‘array-like’</dt>
+<dd>value of the seriese data.</dd>
+<dt>vunit: ‘str’,’astropy.unit’</dt>
+<dd>unit od value parameter.</dd>
+<dt>t0: int</dt>
+<dd>gps time.</dd>
+<dt>dt: float</dt>
+<dd>differential time.</dd>
+<dt>tunit:</dt>
+<dd>unit of differential time.</dd>
+<dt>name: ‘str’</dt>
+<dd>name of this timeseries.</dd>
+</dl>
+<dl class="attribute">
+<dt id="miyopy.timeseries.TimeSeries.dt">
+<code class="descname">dt</code><a class="headerlink" href="#miyopy.timeseries.TimeSeries.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis sample separation
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.TimeSeries.t0">
+<code class="descname">t0</code><a class="headerlink" href="#miyopy.timeseries.TimeSeries.t0" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis coordinate of the first data point
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="miyopy.timeseries.Series">
+<em class="property">class </em><code class="descclassname">miyopy.timeseries.</code><code class="descname">Series</code><a class="headerlink" href="#miyopy.timeseries.Series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">astropy.units.quantity.Quantity</span></code></p>
+<p>value:
+unit:
+t0
+dt
+name</p>
+<dl class="attribute">
+<dt id="miyopy.timeseries.Series.dx">
+<code class="descname">dx</code><a class="headerlink" href="#miyopy.timeseries.Series.dx" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis sample separation
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="miyopy.timeseries.Series.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.timeseries.Series.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the data for this timeseries
+All keywords are passed to <cite>~gwpy.plotter.TimeSeriesPlot</cite>
+Returns
+——-
+plot : <cite>~gwpy.plotter.TimeSeriesPlot</cite></p>
+<blockquote>
+<div>the newly created figure, with populated Axes.</div></blockquote>
+<dl class="docutils">
+<dt>matplotlib.pyplot.figure</dt>
+<dd>for documentation of keyword arguments used to create the
+figure</dd>
+<dt>matplotlib.figure.Figure.add_subplot</dt>
+<dd>for documentation of keyword arguments used to create the
+axes</dd>
+<dt>matplotlib.axes.Axes.plot</dt>
+<dd>for documentation of keyword arguments used in rendering the data</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="miyopy.timeseries.Series.read">
+<em class="property">classmethod </em><code class="descname">read</code><span class="sig-paren">(</span><em>t0</em>, <em>tlen</em>, <em>chname</em>, <em>fs=1</em>, <em>*kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#miyopy.timeseries.Series.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.Series.x0">
+<code class="descname">x0</code><a class="headerlink" href="#miyopy.timeseries.Series.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis coordinate of the first data point
+:type: <cite>~astropy.units.Quantity</cite> scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="miyopy.timeseries.Series.xunit">
+<code class="descname">xunit</code><a class="headerlink" href="#miyopy.timeseries.Series.xunit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit of x-axis index
+:type: <cite>~astropy.units.Unit</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, MiyoKouseki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/apis/miyopy.timeseries.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
