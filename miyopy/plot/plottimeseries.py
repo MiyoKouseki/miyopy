@@ -11,7 +11,7 @@ except :
     pass
 from scipy.signal import butter,lfilter,freqz
 from scipy import signal
-from miyopy.signal.mpfilter import bandpass
+from miyopy.signal.filt import bandpass
 from plot import plotn1_Timeseries
 #from tips import fetch,makedirs,bandpass
 

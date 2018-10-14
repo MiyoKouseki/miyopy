@@ -1,7 +1,7 @@
 #
 #! coding:utf-8
 import numpy as np
-from .datatype import gifdatatype
+from .datatype import gifdata
 
 def decimate(data,fs=8):
     fs0 = len(data)/60
@@ -19,19 +19,23 @@ def fromfile(fname,chname,**kwargs):
     return data
 
     
-def fromfiles(fnames,chname,fs=8,mintrend=False):
-    ''' np.fromfileを連続したファイルに対応させたもの。
+def fromfiles(fnames,chname,fs=8):
+    '''Read from files continuously
     
-    Parameter
-    ---------
-    fname : list of str
-        GIFのファイル名が書かれたリスト。
-    chname : str
-        チャンネル名。これをつかってDtypeを調べているけど、どこかに移して綺麗にしたい。それにnp.fromfileの上位互換になるように、*args,**kwargsを拾えるようにしたい。
-    Return
-    ------
+    Parameters
+    ----------
+    fnames : list of str
+        list of file name 
+    chname : str    
+        channel name
+    fs : int
+        aaa    
+        
+    Returns
+    -------
     data : numpy.ndarray
-        1次元になったndarray    
+        data         
+
     '''
     g = gifdatatype(chname)    
     if mintrend==False:

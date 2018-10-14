@@ -17,9 +17,12 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import re
 import sys
 import sphinx_rtd_theme
 import sphinx_bootstrap_theme
+from numpydoc import docscrape_sphinx
+
 sys.path.insert(0, os.path.abspath('../'))
 
 
@@ -32,7 +35,10 @@ sys.path.insert(0, os.path.abspath('../'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc']
+extensions = [
+    'sphinx.ext.autodoc',
+    'numpydoc',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -84,9 +90,6 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
-#html_theme = 'sphinx_rtd_theme'
-#html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
@@ -113,7 +116,23 @@ html_sidebars = {
     ]
 }
 
+# -- numpydoc -----------------------------------
 
+# fix numpydoc autosummary
+numpydoc_show_class_members = False
+
+# use blockquotes (numpydoc>=0.8 only)
+numpydoc_use_blockquotes = True
+
+# auto-insert plot directive in examples
+numpydoc_use_plots = True
+
+# update the plot detection to include .show() calls
+parts = re.split('[\(\)|]', docscrape_sphinx.IMPORT_MATPLOTLIB_RE)[1:-1]
+parts.extend(('fig.show()', 'plot.show()'))
+docscrape_sphinx.IMPORT_MATPLOTLIB_RE = r'\b({})\b'.format('|'.join(parts))
+
+    
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
