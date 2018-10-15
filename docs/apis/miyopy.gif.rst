@@ -12,14 +12,6 @@ miyopy\.gif\.datatype module
     :undoc-members:
     :show-inheritance:
 
-miyopy\.gif\.file module
-------------------------
-
-.. automodule:: miyopy.gif.file
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 miyopy\.gif\.findfiles module
 -----------------------------
 
@@ -36,27 +28,3 @@ miyopy\.gif\.fromfiles module
     :undoc-members:
     :show-inheritance:
 
-miyopy\.gif\.giffile module
----------------------------
-
-.. automodule:: miyopy.gif.giffile
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-miyopy\.gif\.read module
-------------------------
-
-.. automodule:: miyopy.gif.read
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: miyopy.gif
-    :members:
-    :undoc-members:
-    :show-inheritance:
