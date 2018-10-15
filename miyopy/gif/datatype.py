@@ -2,13 +2,15 @@
 #! coding:utf-8
 import logging
 import numpy as np
+
 from astropy import units as u
+
 from .fromfiles import fromfiles,cliptime
-from .findfiles import get_filelist
-from ..time import to_JSTdatetime,to_GPStime
+from .files import findfiles
+from ..time import to_JSTdatetime
 
 Hz = 1
-byte = 1
+byte = 1   
 
 datatype = {
     # Data Loction   : [ Sampling Frequncy, Data Size, c2V or Strain]
@@ -76,62 +78,45 @@ fname_fmt={
 
 date_fmt = '%Y/%m/%d/%H/%y%m%d%H%M'    
 
-    
-class NoChannelNameError(Exception):
+
+class GifData(object):
     def __init__(self,chname):
-        self.chname = chname
-        keys = [key for key in fname_fmt.keys() if self.chname in key]
-        if len(keys)==0:
-            keys = fname_fmt.keys()
-        self.text = '\n Is it in these channel name?'
-        keys.sort(reverse=False)
-        for key in keys:
-            self.text += '\n- '+key
-            
-    def __str__(self):
-        return "Invalid channel name '{0};{1}'".format(self.chname,self.text)
-
-
-    
-class gifdata(object):
-    def __init__(self,chname,):        
         self.chname = chname
         DataLocation = fname_fmt[self.chname].split('<fname>')[0]
         info = datatype[DataLocation]
         self.dtype = info[1]
         self.byte = info[0][1]
         self.fs = info[0][0]
-        self.c2V = info[2]        
+        self.c2V = info[2]
         self._check_chname()
+        
         
     @classmethod
     def read(cls,start,tlen,chname,**kwargs):
-        ''' Read gif data
+        ''' Read gif dataa
         
         Parameter
         ---------
         start : `int`
             start start time.
-
         tlen : int
             time length.
-
         chname : `str`
-            channel name.
-            
+            channel name.            
+
         Returns
         -------
         data : `numpy.array`
         '''
-        #gdata = gifdata(chname)
-        fnames = get_filelist(cls,start,tlen,chname,**kwargs)    
+        fnames = findfiles(cls,start,tlen,chname,**kwargs)
         data = fromfiles(cls,fnames,chname)
         data = cliptime(data,start,tlen,cls(chname).fs)
         data = data*cls(chname).c2V
-        return data       
+        return data
 
     
-    def path_to_file(self,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
+    @classmethod
+    def path_to_file(cls,chname,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
         ''' Return path to file
         
         Parameter
@@ -148,34 +133,24 @@ class gifdata(object):
         path : str
             path to file
         '''
-        
         if isinstance(date,int):            
             assert (date%60)==18,'{0}%60={1}'.format(date,date%60)
             date = to_JSTdatetime(date)
         elif isinstance(date,date):
-            pass
-        
+            pass    
         date_str = date.strftime(date_fmt)
-        path = prefix + fname_fmt[self.chname].replace('<fname>',date_str)
-        return path
+        path_to_file = prefix + fname_fmt[chname].replace('<fname>',date_str)
+        return path_to_file
 
     
     def _check_chname(self):
         ''' check wheter channel name exit or not.        
         
-        '''        
+        '''
+        from .error import NoChannelNameError
         if not self.chname in fname_fmt.keys():
             raise NoChannelNameError(self.chname)
-
-        
-    def _get_info(self):
-        DataLocation = fname_fmt[self.chname].split('<fname>')[0]
-        info = datatype[DataLocation]
-        self.dtype = info[1]
-        self.byte = info[0][1]
-        self.fs = info[0][0]
-        self.c2V = info[2]        
-
+       
         
     def _get_fname(self):
         date = to_JSTdatetime(int(self.t0))
@@ -189,4 +164,4 @@ class gifdata(object):
 
 
 
-        
+      
