@@ -37,7 +37,13 @@ sys.path.insert(0, os.path.abspath('../'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
     'numpydoc',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -116,6 +122,31 @@ html_sidebars = {
     ]
 }
 
+
+# -- Extensions ---------------------------------------------------------------
+
+# -- autodoc ------------------------------------
+
+autoclass_content = 'class'
+autodoc_default_flags = ['show-inheritance', 'members', 'inherited-members']
+
+# -- autosummary --------------------------------
+
+autosummary_generate = True
+
+# -- plot_directive -----------------------------
+
+#plot_rcparams = GWPY_PLOT_PARAMS
+#plot_rcparams.update({
+#    'backend': 'agg',
+#})
+#plot_apply_rcparams = True
+#plot_formats = ['png']
+plot_include_source = True
+plot_html_show_source_link = False
+
+
+    
 # -- numpydoc -----------------------------------
 
 # fix numpydoc autosummary
