@@ -116,6 +116,11 @@ class GifData(object):
 
     
     @classmethod
+    def findfiles(cls,stat,tlen,chname,**kwargs):
+        return findfiles(cls,stat,tlen,chname,**kwargs)
+
+    
+    @classmethod
     def path_to_file(cls,chname,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
         ''' Return path to file
         
