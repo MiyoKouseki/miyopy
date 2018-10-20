@@ -133,11 +133,10 @@ class GifData(object):
         path : str
             path to file
         '''
+        date=int(date)
         if isinstance(date,int):            
             assert (date%60)==18,'{0}%60={1}'.format(date,date%60)
             date = to_JSTdatetime(date)
-        elif isinstance(date,date):
-            pass    
         date_str = date.strftime(date_fmt)
         path_to_file = prefix + fname_fmt[chname].replace('<fname>',date_str)
         return path_to_file
