@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from numpy import (cos, sin, pi)
+import numpy as np
 
 
 def rotate2d(strain_x,strain_y,shear,theta,**kwargs):
@@ -36,8 +36,8 @@ def rotate2d(strain_x,strain_y,shear,theta,**kwargs):
         timeseries data of shear strain
               
     '''
-    sin = sin(theta)
-    cos = cos(theta)
+    sin = np.sin(theta)
+    cos = np.cos(theta)
     
     _x = strain_x*cos*cos + strain_x*sin*sin + 2*shear*sin*cos
     _y = strain_y*sin*sin + strain_x*cos*cos - 2*shear*sin*cos
