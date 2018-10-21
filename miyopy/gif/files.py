@@ -2,6 +2,8 @@
 #! coding:utf-8
 import os 
 from astropy.time import Time
+from datetime import datetime as dt
+
 from numpy import arange
 
 from datetime import datetime as dt
@@ -46,8 +48,13 @@ def findfiles(cls,start,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
 def fname2gps(fname):
     datetime_str = fname.split('.')[0].split('/')[-1]
     time = dt.strptime(datetime_str, '%y%m%d%H%M')
-    gps = Time(time).gps
+    gps = Time(time).gps - 3600*9
     return gps
+
+def gps2datestr(gps):
+    utc = Time(gps, format='gps').to_datetime()
+    date_str = utc.strftime('%Y%m%d%H%M')
+    return date_str
 
 
 def _read():
