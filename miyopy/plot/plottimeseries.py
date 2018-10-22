@@ -12,7 +12,7 @@ except :
 from scipy.signal import butter,lfilter,freqz
 from scipy import signal
 from miyopy.signal.filt import bandpass
-from plot import plotn1_Timeseries
+#from plot import plotn1_Timeseries
 #from tips import fetch,makedirs,bandpass
 
 
@@ -20,7 +20,7 @@ from plot import plotn1_Timeseries
 
 
 def plottimeseries(data,fname='./tmp.png',label=['Time','Value']):
-    print 'plot {0}'.format(fname)        
+    print('plot {0}'.format(fname))
     plt.plot(data._time,data.timeseries,label=data._name)
     plt.xlabel('Time [{0}]'.format(data._time._unit))
     plt.ylabel('{0} [{1}]'.format(data.unit,data.timeseries._unit))
