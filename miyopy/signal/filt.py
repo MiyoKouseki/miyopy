@@ -2,7 +2,7 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 from scipy.signal import butter, lfilter
-from control import matlab
+#from control import matlab
 
 
 def decimate(data,fs_befor,fs_after):

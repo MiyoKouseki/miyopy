@@ -9,7 +9,7 @@ mpl.rcParams['agg.path.chunksize'] = 1000000
 import numpy as np
 from scipy.signal import butter, lfilter
 from scipy import signal, interpolate
-from control import matlab
+#from control import matlab
 #from trillium import selfnoise
 
 from miyopy.timeseries import TimeSeries as ts
