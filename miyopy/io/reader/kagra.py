@@ -3,13 +3,13 @@
 
 import os
 from scipy import signal
-import miyopy.signal.mpfilter as mpf
+#import miyopy.signal.mpfilter as mpf
 #import miyopy
-from  miyopy.io import readNDS2
 import platform
 #
 if platform.system() == 'Linux':
     DATAdir = '/users/Miyo/KagraDropboxMiyo/GIF/data/'
+    DATAdir = '/users/Miyo/KagraDropboxMiyo/GIF/data/'    
     #DATAdir = '/users/Miyo/KagraDropboxMiyo/AOS/data/'
 else:
     DATAdir = '/Users/miyo/Dropbox/KagraMiyo/GIF/data/'
@@ -91,3 +91,23 @@ def readKAGRAdata(t0,tlen,channels,fs_resample=8,plot=False,detrend=False,title=
         data_lst = loaddata_nds(t0,tlen)
         print 'bye'
         exit()
+
+
+def read(t0,tlen,channels,fs_resample=8,plot=False,detrend=False,title='./tmp_'):
+    '''
+    KAGRAデータを読み込む
+    '''   
+    try:
+        fname,_ = getpicklefname(t0,tlen)
+        print fname
+        data_lst,_ = dumpPickle(fname,channels)
+        [data.cliptime(t0,t0+tlen) for data in data_lst]
+        return data_lst
+    except TypeError as e:
+        print type(e),e
+        print 'There is no pickle data'
+        print ' please save pickle data from nds or gwf'
+        data_lst = loaddata_nds(t0,tlen)
+        print 'bye'
+        exit()
+        
