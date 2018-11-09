@@ -8,6 +8,8 @@ from astropy import units as u
 from .fromfiles import fromfiles,cliptime
 from .files import findfiles
 from ..time import to_JSTdatetime
+from gwpy.time import tconvert
+
 
 Hz = 1
 byte = 1   
@@ -76,8 +78,22 @@ fname_fmt={
     'CLIO_CALC_STRAIN_SHR':'/data2/CLIO/SHR/<fname>.SHR',
     }
 
-date_fmt = '%Y/%m/%d/%H/%y%m%d%H%M'    
+date_fmt = '%Y/%m/%d/%H/%y%m%d%H%M'
 
+def second_is_00(date):
+    '''
+    Parameters
+    ----------
+    date : datetime
+
+        
+    if second is 0, return True, not if return False.
+    '''
+    if date.second == 0 :
+        return True
+    else:
+        return False
+    
 
 class GifData(object):
     def __init__(self,chname):
@@ -116,9 +132,8 @@ class GifData(object):
 
     
     @classmethod
-    def findfiles(cls,stat,tlen,chname,**kwargs):
-        return findfiles(cls,stat,tlen,chname,**kwargs)
-
+    def findfiles(cls,start,end,chname,**kwargs):
+        return findfiles(cls,start,end,chname,**kwargs)
     
     @classmethod
     def path_to_file(cls,chname,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
@@ -138,10 +153,11 @@ class GifData(object):
         path : str
             path to file
         '''
-        date=int(date)
-        if isinstance(date,int):            
-            assert (date%60)==18,'{0}%60={1}'.format(date,date%60)
-            date = to_JSTdatetime(date)
+        date = tconvert(date)
+        if not second_is_00(date):
+            raise ValueError('Second is not 0!')
+
+        # date is datetime    
         date_str = date.strftime(date_fmt)
         path_to_file = prefix + fname_fmt[chname].replace('<fname>',date_str)
         return path_to_file
@@ -160,10 +176,9 @@ class GifData(object):
         date = to_JSTdatetime(int(self.t0))
         date_str = date.strftime('%Y/%m/%d/%H/%y%m%d%H%M')
         self.fname = fname_fmt[self.chname].replace('<fname>',date_str)        
+
+
         
-
-
-    
 
 
 
