@@ -5,4 +5,4 @@
 from .datatype import GifData
 from .files import findfiles,fname2gps,gps2datestr
 from .rotation import rotate2d
-from .gotic import KagraStrain
+from .gotic import KagraGoticStrain
