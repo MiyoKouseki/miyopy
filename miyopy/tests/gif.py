@@ -38,17 +38,19 @@ def strain():
     import matplotlib.pyplot as plt
     import numpy as np
     from matplotlib.ticker import ScalarFormatter    
-    start = 1223510418 # 2018/10/14 00:00:00 
-    tlen = 3600*24
+    start = 1223510418 # 2018/10/14 00:00:00 UTC
+    start = 1223478018 # 2018/10/14 00:00:00 JST
+    tlen = 60
     fs= 200.0
     strain = gif.read(start,tlen,'CALC_STRAIN',prefix=prefix)
-    time = np.arange(len(strain))/fs/3600.0
+    time = np.arange(len(strain))/fs#/3600.0
     #
-    fig = plt.figure(figsize=(8,6))
+    fig = plt.figure(figsize=(18,5))
     ax1 = fig.add_subplot(111)
     ax1.plot(time,strain)
-    ax1.set_xlabel('Time[hour]',fontsize=10)
+    ax1.set_xlabel('Time[sec]',fontsize=10)
     ax1.set_ylabel('Strain',fontsize=10)
+    ax1.set_xlim(0,60)
     ax1.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
     ax1.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
     #ax2 = ax1.twinx()
@@ -56,6 +58,14 @@ def strain():
     print(strain)
     plt.savefig('strain.png')
     plt.close()
+    #
+    #
+    f,asd_strain = asd(strain,200,ave=6,integ=False,gif=False,psd='asd',scaling='density',window='hanning')
+    plt.loglog(f,asd_strain)
+    #plt.ylim(1e-6,1e-4)
+    plt.savefig('hoge_asd.png')
+    plt.close()
+
     
     
 if __name__=='__main__':

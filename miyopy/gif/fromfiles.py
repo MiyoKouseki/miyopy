@@ -20,9 +20,9 @@ def fromfiles(cls,fnames,chname):
     '''
     _check_filesize(cls,fnames,chname)
     gdata = cls(chname)
-    data = _fromfile(fnames[0],gdata.fs,dtype=gdata.dtype)
+    data = fromfile(fnames[0],gdata.fs,dtype=gdata.dtype)
     for fname in fnames[1:]:
-        data = np.r_[data,_fromfile(fname,gdata.fs,dtype=gdata.dtype)]
+        data = np.r_[data,fromfile(fname,gdata.fs,dtype=gdata.dtype)]
     data = _check_nan(data)        
     return data
 
@@ -48,18 +48,18 @@ def _check_filesize(cls,fnames,chname):
     ans = np.array(fsize)==np.array(size_)
     #
     if fsize!=size_:
-        print '[Warning] detect lack of data'
+        print('[Warning] detect lack of data')
         idxs = np.where(ans==False)[0]
         lack_of_data = [fnames[idx] for idx in idxs]
         lack = [fsize[idx] for idx in idxs]
         for i,fname in enumerate(lack_of_data):
-            print ' - ',fname,lack[i]
+            print(' - ',fname,lack[i])
     else:
         return True
 
 
 
-def _fromfile(fname,fs,dtype=None):
+def fromfile(fname,fs,dtype=None):
     ''' Read from one file
     
     Parameters
@@ -97,8 +97,8 @@ def _check_nan(data):
     '''
     if True in np.isnan(data):
         idx = np.where(np.isnan(data)==True)[0]
-        print '[Warning] found nan value. zero padding'
-        print '\t Continuing..'
+        print('[Warning] found nan value. zero padding')
+        print('\t Continuing..')
         data[idx] = np.nan
     else:
         pass    

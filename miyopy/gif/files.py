@@ -9,34 +9,29 @@ from numpy import arange
 from datetime import datetime as dt
 
 
-def findfiles(cls,start,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/',**kwargs):
+def findfiles(cls,start,tlen,chname,prefix='/Volumes/HDPF-UT/DATA/'):
     ''' Return file path
     
-    Parameters
-    ----------
+    Parameter
+    ---------
     start: int
         start gps time. second.
-
     tlen: int
         time length. second.
-
     chname:str
         Channel name. Must be choosen from fname_fmt.
-
     prefix: str
         Location where GIF data are saved in. Default is '/Users/miyo/KAGRA/DATA/'
 
-
-    Returns
-    -------
+    Return
+    ------
     segment: list of list
         Segment contains only list of file path, which files are exist. 
-
     '''
     _00sec = lambda gps: gps - (gps%60) + 18    
     _s = _00sec(start)
     _e = _00sec(start+tlen)
-    gpslist = arange(_s,_e+60,60)
+    gpslist = arange(_s,_e+60,60)    
     segments = [[]]
     for gps in gpslist:
         path = cls.path_to_file(chname, gps, prefix)

@@ -8,6 +8,7 @@ from gwpy.timeseries import TimeSeries
 from astropy import units as u
 from miyopy.gif import rotate2d,gps2datestr
 
+    
 class GoticStrain(object):
     def __init__(self,start,end):
         start_str = gps2datestr(start)
