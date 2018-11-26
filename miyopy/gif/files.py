@@ -48,7 +48,7 @@ def findfiles(cls,start,end,chname,prefix='/Volumes/HDPF-UT/DATA/'):
     _s = _00sec(start)
     _e = _00sec(end)
     gps_filenames = arange(_s,_e+60,60)
-    
+
     segments = [[]]
     for gps in gps_filenames:
         path = cls.path_to_file(chname, gps, prefix)
@@ -58,6 +58,7 @@ def findfiles(cls,start,end,chname,prefix='/Volumes/HDPF-UT/DATA/'):
             segments.append([])
     if not segments[-1]:
         segments.pop(-1)
+
     return segments
 
 
