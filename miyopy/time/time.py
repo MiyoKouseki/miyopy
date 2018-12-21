@@ -1,9 +1,9 @@
 
 from astropy.time import Time
 from datetime import datetime as dt
+from gwpy.time import tconvert
 
-
-def to_JSTdatetime(jst):
+def _to_JSTdatetime(jst):
     if isinstance(jst,str):
         jst = Time(gps).to_datetime()
     elif isinstance(jst,int):
@@ -17,6 +17,25 @@ def to_JSTdatetime(jst):
         raise NameError('Unknown data type!{0},{1}'.format(jst,type(jst)))    
     assert isinstance(jst,dt),'Please {0}, not {1}!'.format(dt,type(jst))   
     return jst
+
+
+def to_JSTdatetime(date):
+    '''
+    Parameters
+    ----------
+    date : float, int , LIGOtimeGPS, datetime
+        date 
+    
+    Returns
+    -------
+    jst : datetime
+        datetime in jst    
+    '''
+    utc = tconvert(date)
+    print dir(utc)
+    exit()
+    return utc 
+    
 
 
 def to_GPStime(gps):
