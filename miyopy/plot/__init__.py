@@ -11,3 +11,4 @@ from .bodeplot import bodeplot
 from .coherenceplot import coherenceplot
 from .asdplot import asdplot
 from .plottimeseries import plotBandPassTimeseries
+from ._plot import (plot_asd,plot_coherence,plot_spectrogram)
