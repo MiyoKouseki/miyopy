@@ -9,7 +9,8 @@ from scipy.signal import freqs_zpk,freqs,freqz,bilinear
 from control import matlab
 from miyopy.plot import bodeplot
 
-def H120QA(f):
+
+def tf120QA(f):
     from miyopy.utils.trillium import H_120QA
     from scipy import signal
     from miyopy.plot import bodeplot
