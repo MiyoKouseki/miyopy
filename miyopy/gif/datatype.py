@@ -131,9 +131,10 @@ class GifData(object):
         return data
 
     @classmethod
-    def findfiles(cls,start,tlen,chname,**kwargs):
+    def findfiles(cls,chname,start,end,**kwargs):
         '''
         '''
+        
         return findfiles(cls,start,tlen,chname,**kwargs)
     
     
