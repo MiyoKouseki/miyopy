@@ -9,13 +9,12 @@ from gwpy.timeseries import TimeSeries
 from gwpy.spectrogram import Spectrogram
 from gwpy.plot import Plot
 
-from miyopy.utils import trillium
+#from miyopy.utils import trillium
 
 from ..files import (get_timeseries,get_specgram,get_csd_specgram,
                    to_gwffname,to_pngfname,to_hdf5fname)
 
-from ..calibration import count2vel,vel2vel
-
+#from ..calibration import count2vel,vel2vel
 
 
 def plot_spectrogram(data,replot=False,fftlength=2**7,show=False,normlog=True,**kwargs):
