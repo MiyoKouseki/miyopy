@@ -8,7 +8,7 @@ from scipy.signal import zpk2sos,sosfilt,butter
 from scipy.signal import freqs_zpk,freqs,freqz,bilinear
 from control import matlab
 from miyopy.plot import bodeplot
-
+from scipy.interpolate import interp1d    
 
 def tf120QA(f):
     from miyopy.utils.trillium import H_120QA
@@ -189,6 +189,23 @@ def _V2Vel(data):
     plt.savefig('hoge.png')
     plt.close()
     return data
+
+
+
+def vel2vel(f,asd):
+    z,p,k = zpk_120qa()
+    num,den = zpk2tf(z,p,k)
+    w,h = freqs(num,den,worN=np.logspace(-4,5,1e2))
+    mag = abs(h)
+    _f = w/np.pi/2.0
+    func = interp1d(_f,mag)
+    if False:
+        plt.loglog(_f,abs(mag),'o-')
+        #plt.loglog(__f,_mag)
+        plt.savefig('hoge.png')
+    vel2v = func(f[1:])
+    asd = asd[1:]/vel2v*1202.5
+    return f[1:],asd
 
 
 #from miyopy.signal import bandpass
