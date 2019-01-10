@@ -12,7 +12,7 @@ from datetime import datetime,timedelta
 from gwpy.time import tconvert
 
 
-def findfiles(cls,start,end,chname,prefix='/Volumes/HDPF-UT/DATA/'):
+def findfiles(cls,chname,start,end,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     ''' Return file path
     
     Parameter
@@ -39,10 +39,11 @@ def findfiles(cls,start,end,chname,prefix='/Volumes/HDPF-UT/DATA/'):
     if isinstance(start,str):
         start_utc = tconvert(start) 
         end_utc = tconvert(end)
-        start = start_utc + 9*3600
-        end = end_utc + 9*3600
     else:
         pass
+
+    start = start + 9*3600
+    end = end + 9*3600
     
     _00sec = lambda gps: gps - (gps%60) + 18    
     _s = _00sec(start)
@@ -58,7 +59,7 @@ def findfiles(cls,start,end,chname,prefix='/Volumes/HDPF-UT/DATA/'):
             segments.append([])
     if not segments[-1]:
         segments.pop(-1)
-
+        
     return segments
 
 
