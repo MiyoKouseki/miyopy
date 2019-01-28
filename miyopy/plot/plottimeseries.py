@@ -90,6 +90,7 @@ def plotBandPassTimeseries(data,start,end,chname,
             ax[i].legend()    
             ax[i].grid(which='major',linestyle=':', linewidth=1)
         fname = '{0}TimeSeries_{1}_{2}_{3}.png'.format(imgdir,start,end,chname)
+        chname = chname.replace('_',' ')
         plotn1_Timeseries(fig,ax,fname=fname,
                           sidetext='GPS: {0}\nChannelName: {1}'.format(start,chname),
                           ylabel=ylabel,
