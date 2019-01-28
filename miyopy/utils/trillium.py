@@ -8,8 +8,9 @@ import numpy as np
 #from scipy.signal import freqs_zpk,freqs,freqz,bilinear
 #from control import matlab
 from miyopy.plot import bodeplot
+from scipy.interpolate import interp1d    
 
-def H120QA(f):
+def tf120QA(f):
     from miyopy.utils.trillium import H_120QA
     from scipy import signal
     from miyopy.plot import bodeplot
@@ -24,8 +25,7 @@ def H120QA(f):
     return mag
 
 
-
-def TRselfnoise(trillium='120QA',psd='ASD',acc='acc'):
+def selfnoise(trillium='120QA',psd='ASD',unit='acc'):
     '''
     
     Parameter
@@ -34,7 +34,7 @@ def TRselfnoise(trillium='120QA',psd='ASD',acc='acc'):
         model name of the trillium seismometer
     psd : str
         if PSD, return psd. if ASD, return asd. default is psd.
-    acc : str
+    unit : str
         if "acc", return acc. if "velo", return velocity, if "disp", 
         return displacement.
 
@@ -73,11 +73,11 @@ def TRselfnoise(trillium='120QA',psd='ASD',acc='acc'):
         f,selfnoise = data[:,0],data[:,1] # PSD Acceleration with dB
         selfnoise = 10**(selfnoise/10.0) # PSD Acceleration with Magnitude
         
-    if acc=='acc':
+    if unit=='acc':
         f, selfnoise = f, selfnoise
-    elif acc=='velo':
+    elif unit=='velo':
         f, selfnoise = f, selfnoise/(2.0*np.pi*f)**2
-    elif acc=='disp':
+    elif unit=='disp':
         f, selfnoise = f, selfnoise/(2.0*np.pi*f)**4
     else:
         raise ValueError('!')
@@ -90,6 +90,48 @@ def TRselfnoise(trillium='120QA',psd='ASD',acc='acc'):
         raise ValueError('psd {} didnt match PSD or ASD'.format(psd))        
         
     return f, selfnoise
+
+
+def zpk_120qa(flat=True):
+    ''' Trillium 120QA TransferFunction
+
+    Transfer function from Velocity to Voltage.
+
+    Retrun
+    ------
+    H : matlab.tf
+    
+    '''    
+    z = np.array([0,
+                  0,
+                 -31.63,
+                 -160,
+                 -350,
+                 -3177]) # rad/sec
+    p = np.array([-0.03661+0.037059j,
+                  -0.03661-0.037059j,
+                  -32.55,
+                  -142,
+                  -364+404j,
+                  -364-404j,
+                  -1260,
+                  -4900+5200j,
+                  -4900-5200j,
+                  -7100+1700j,
+                  -7100-1700j])# rad/sec
+    k = 8.31871*10e17  # f=1Hzで1202.5になるように規格化した。だめだけども。
+    S = 1202.5/9.99999845
+    if False:
+        z,p,k = trillium.zpk_120qa()
+        num,den = zpk2tf(z,p,k)
+        w,h = freqs(num,den,worN=np.logspace(-2,3,1e5))        
+        f=w/np.pi/2.0
+        df = f[1]-f[0]
+        idx = np.where(np.isclose(f,1.0,atol=df)==True)[0]
+        print abs(h[idx])
+        plt.loglog(f,abs(h))
+        plt.savefig('hoge.png')                
+    return z,p,k*S
 
 
 def H_120QA(flat=True):
@@ -149,6 +191,23 @@ def _V2Vel(data):
     return data
 
 
+
+def vel2vel(f,asd):
+    z,p,k = zpk_120qa()
+    num,den = zpk2tf(z,p,k)
+    w,h = freqs(num,den,worN=np.logspace(-4,5,1e2))
+    mag = abs(h)
+    _f = w/np.pi/2.0
+    func = interp1d(_f,mag)
+    if False:
+        plt.loglog(_f,abs(mag),'o-')
+        #plt.loglog(__f,_mag)
+        plt.savefig('hoge.png')
+    vel2v = func(f[1:])
+    asd = asd[1:]/vel2v*1202.5
+    return f[1:],asd
+
+
 #from miyopy.signal import bandpass
 
 class trillium120QA(object):
@@ -163,3 +222,4 @@ class trillium120QA(object):
     def bandpass(self,data,low,high,fs,order):
         data,_,_ = bandpass(data,low,high,fs,order)            
         return data
+
