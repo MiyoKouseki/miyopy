@@ -79,12 +79,15 @@ def trendcache(gst,get,basedir='/trend',cachelist=[]):
 
 
 if __name__ == '__main__':
-    gst = 1222354818 # UTC 2018-09-30T15:00:00
-    gst = 1219762818 # UTC 2018-08-31T15:00:00
-    get = 1224082818 # UTC 2018-10-20T15:00:00
+    #gst = 1222354818 # UTC 2018-09-30T15:00:00
+    #gst = 1219762818 # UTC 2018-08-31T15:00:00
+    gst = 1219795218 # Sep01
+    #get = 1224082818 # UTC 2018-10-20T15:00:00
+    get = 1225065618 # Nov01
     cachefile = './trend_Oct1-Oct21.cache'
+    cachefile = './full_Sep01-Nov01.cache'
     cachelist = fullcache(gst,get,basedir='/data/')
-    cachelist = trendcache(gst,get,basedir='/data/')
+    #cachelist = trendcache(gst,get,basedir='/data/')
     # 12220
     # 
     with open(cachefile,'w') as f:
