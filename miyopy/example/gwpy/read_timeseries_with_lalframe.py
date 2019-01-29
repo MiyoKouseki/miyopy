@@ -12,7 +12,11 @@ data = TimeSeries.read(source,chname,format='gwf.lalframe')
 print type(data)
 
 data.override_unit('um/s') # bugs when use lalframe reader
+<<<<<<< HEAD
 
+=======
+print(data)
+>>>>>>> 8b8d6b023f6556273536da86b3c7dd3873dfb6c2
 plot = data.plot()
 print type(plot)
 
