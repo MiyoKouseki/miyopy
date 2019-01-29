@@ -37,8 +37,8 @@ def findfiles(cls,chname,start,end,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     '''
     
     if isinstance(start,str):
-        start_utc = tconvert(start) 
-        end_utc = tconvert(end)
+        start = tconvert(start) 
+        end = tconvert(end)
     else:
         pass
 

@@ -108,7 +108,7 @@ class GifData(object):
         
         
     @classmethod
-    def read(cls,start,tlen,chname,**kwargs):
+    def read(cls,chname,start,end,**kwargs):
         ''' Read gif dataa
         
         Parameter
@@ -124,7 +124,7 @@ class GifData(object):
         -------
         data : `numpy.array`
         '''
-        fnames = findfiles(cls,start,tlen,chname,**kwargs)
+        fnames = findfiles(cls,chname,start,end,**kwargs)
         data = fromfiles(cls,fnames,chname)
         data = cliptime(data,start,tlen,cls(chname).fs)
         data = data*cls(chname).c2V
@@ -135,7 +135,7 @@ class GifData(object):
         '''
         '''
         
-        return findfiles(cls,start,tlen,chname,**kwargs)
+        return findfiles(cls,chname,start,end,**kwargs)
     
     
     @classmethod
@@ -184,10 +184,10 @@ class GifData(object):
         date_str = date.strftime('%Y/%m/%d/%H/%y%m%d%H%M')
         self.fname = fname_fmt[self.chname].replace('<fname>',date_str)        
 
-
         
 
-
-
-
-      
+if __name__ == '__main__':
+    chname = 'CALC_STRAIN'
+    start = '2019 Jan 04 00:00:00 JST'
+    end = '2019 Jan 04 00:00:00 JST'
+    data = GifData.findfiles(chname,start,end)
