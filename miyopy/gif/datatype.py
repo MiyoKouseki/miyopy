@@ -130,12 +130,11 @@ class GifData(object):
         data = data*cls(chname).c2V
         return data
 
-    @classmethod
-    def findfiles(cls,chname,start,end,**kwargs):
-        '''
-        '''
-        
-        return findfiles(cls,start,tlen,chname,**kwargs)
+    # @classmethod
+    # def findfiles(cls,chname,start,end,**kwargs):
+    #     '''
+    #     '''        
+    #     return findfiles(cls,start,tlen,chname,**kwargs)
     
     
     @classmethod
