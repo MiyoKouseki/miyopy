@@ -12,7 +12,7 @@ from datetime import datetime,timedelta
 from gwpy.time import tconvert
 
 
-def findfiles(cls,start,end,chname,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
+def findfiles(cls,chname,start,end,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     ''' Return file path
     
     Parameter
@@ -37,8 +37,8 @@ def findfiles(cls,start,end,chname,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     '''
     
     if isinstance(start,str):
-        start = tconvert(start) 
-        end = tconvert(end)
+        start_utc = tconvert(start) 
+        end_utc = tconvert(end)
     else:
         pass
 
@@ -53,7 +53,6 @@ def findfiles(cls,start,end,chname,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     segments = [[]]
     for gps in gps_filenames:
         path = cls.path_to_file(chname, gps, prefix)
-        print(path)
         if os.path.exists(path):
             segments[-1].append(path)
         else:

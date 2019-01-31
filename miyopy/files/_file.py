@@ -107,7 +107,7 @@ def get_timeseries(chname,**kwargs):
     fname = to_gwffname(chname,**kwargs)
 
     if os.path.exists(fname):
-        print('{0} exist.',format(fname))
+        print '{0} exist.',format(fname)
         print('Skip fetch from nds {0}'.format(fname))
         data = TimeSeries.read(fname,chname,start,end,
                                 format='gwf.lalframe',
@@ -125,9 +125,9 @@ def get_timeseries(chname,**kwargs):
         print('wrote data in '+fname)
         return data
     else:
-        print(nds)
-        print(os.path.exists(fname))
-        print(fname)
+        print nds
+        print os.path.exists(fname)
+        print fname
         raise ValueError('! Must use nds or load files')
         exit()
 
@@ -140,7 +140,7 @@ def to_gwffname(chname,**kwargs):
     try:
         fname = prefix + m.group(1).lower() + '.gwf'
     except Exception as e:
-        print(e)
+        print e
         exit()
     return fname
 
@@ -162,7 +162,7 @@ def to_hdf5fname(*args,**kwargs):
         try:
             fname = prefix + m.group(1).lower() + '.hdf5'
         except Exception as e:
-            print(e)
+            print e
     return fname
     
 
@@ -176,6 +176,6 @@ def to_pngfname(chname,ftype,prefix='./',**kwargs):
     try:
         fname = prefix + ftype + '_' + m.group(1).lower() + '.png'
     except Exception as e:
-        print(e)
+        print e
         exit()
     return fname

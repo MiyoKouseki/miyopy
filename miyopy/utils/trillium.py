@@ -10,8 +10,6 @@ import numpy as np
 from miyopy.plot import bodeplot
 from scipy.interpolate import interp1d    
 
-from gwpy.frequencyseries import FrequencySeries
-
 def tf120QA(f):
     from miyopy.utils.trillium import H_120QA
     from scipy import signal
@@ -130,7 +128,7 @@ def zpk_120qa(flat=True):
         f=w/np.pi/2.0
         df = f[1]-f[0]
         idx = np.where(np.isclose(f,1.0,atol=df)==True)[0]
-        print(abs(h[idx]))
+        print abs(h[idx])
         plt.loglog(f,abs(h))
         plt.savefig('hoge.png')                
     return z,p,k*S
@@ -194,7 +192,7 @@ def _V2Vel(data):
 
 
 
-def vel2vel(f,asd):    
+def vel2vel(f,asd):
     z,p,k = zpk_120qa()
     num,den = zpk2tf(z,p,k)
     w,h = freqs(num,den,worN=np.logspace(-4,5,1e2))
@@ -210,117 +208,18 @@ def vel2vel(f,asd):
     return f[1:],asd
 
 
-def _v2vel(args):
-    '''
-    args : f, asd
-
-    '''
-    n = len(args)
-    if n==2:
-        f, asd = args
-    else:
-        try:
-            f = args.frequencies.value
-            asd = args.value
-        except:
-            raise ValueError('!')
-
-    z,p,k = zpk_120qa()
-    num,den = zpk2tf(z,p,k)
-    w,h = freqs(num,den,worN=np.logspace(-4,5,1e2))
-    mag = abs(h)
-    _f = w/np.pi/2.0
-    func = interp1d(_f,mag)
-    if False:
-        plt.loglog(_f,abs(mag),'o-')
-        #plt.loglog(__f,_mag)
-        plt.savefig('hoge.png')
-    vel2v = func(f[1:])
-    asd = asd[1:]/vel2v#*1202.5
-    if n==2:
-        return f[1:],asd
-    else:
-        data = FrequencySeries(asd,frequencies=f[1:],unit='m/s')
-        return data
-
-
-def _selfnoise(trillium='120QA',psd='ASD',unit='m/s/s'):
-    '''
-    
-    Parameter
-    ---------
-    trillium : str
-        model name of the trillium seismometer
-    psd : str
-        if PSD, return psd. if ASD, return asd. default is psd.
-    unit : str
-        if "acc", return acc. if "velo", return velocity, if "disp", 
-        return displacement.
-
-    Return 
-    ------
-    f : np.array
-        Frequency
-    selfnoise : np.array
-        selfnoise spectrum. unit is depend what you choose.    
-    '''
-    if trillium=='compact':
-        data = np.array([[1e-3,-145], # Freq [Hz], PSD (m/s^2)^2/Hz [dB]
-                        [3e-3,-153],
-                        [4e-2,-169],
-                        [1e-1,-171],
-                        [1e0, -175],
-                        [3e0, -173],
-                        [1e1, -166],
-                        [2e1, -159],
-                        [5e1, -145],
-                        [5e2, -105]])
-        f,selfnoise = data[:,0],data[:,1]  # PSD Acceleration with dB
-        selfnoise     = 10**(selfnoise/10) # PSD Acceleration with Magnitude
-    elif trillium=='120QA':
-        data = np.array([[1e-3,-171.0], # Freq [Hz.0], PSD (m/s^2)^2/Hz [dB.0]
-                        [3e-3,-179.0],
-                        [1e-2,-184.0],
-                        [3e-2,-188.0],
-                        [1e-1,-189.0],
-                        [2e-1,-188.0],
-                        [1e0, -186.0],
-                        [3e0, -182.0],
-                        [1e1, -169.0],
-                        [2e1, -158.0],
-                        [2e2, -118.0]]) # fit 
-        f,selfnoise = data[:,0],data[:,1] # PSD Acceleration with dB
-        selfnoise = 10**(selfnoise/10.0) # PSD Acceleration with Magnitude
-        
-    if unit=='m/s/s':
-        f, selfnoise = f, selfnoise
-    elif unit=='m/s':
-        f, selfnoise = f, selfnoise/(2.0*np.pi*f)**2
-    elif unit=='m':
-        f, selfnoise = f, selfnoise/(2.0*np.pi*f)**4
-    else:
-        raise ValueError('!')
-        
-    if psd=='PSD':
-        f, selfnoise = f, selfnoise
-    elif psd=='ASD':
-        f, selfnoise = f, np.sqrt(selfnoise)
-    else:
-        raise ValueError('psd {} didnt match PSD or ASD'.format(psd))        
-    return FrequencySeries(selfnoise,frequencies=f)
-    
-
 #from miyopy.signal import bandpass
 
-class Trillium120q(object):
+class trillium120QA(object):
     def __init__(self):
         pass
 
     @classmethod
-    def v2vel(cls,data):
-        return _v2vel(data)        
+    def V2Vel(self,data):
+        return _V2Vel(data)        
 
     @classmethod
-    def selfnoise(cls):
-        return _selfnoise(trillium='120QA',psd='ASD',unit='m/s')
-    
+    def bandpass(self,data,low,high,fs,order):
+        data,_,_ = bandpass(data,low,high,fs,order)            
+        return data
+
