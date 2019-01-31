@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0,'/Users/miyo/Dropbox/Kagra/Git/gwpy/')
 from gwpy.timeseries import TimeSeries
 from astropy import units as u
-#from miyopy.gif import rotate2d,gps2datestr
+from miyopy.gif import rotate2d,gps2datestr
 from gwpy.time import tconvert
     
 class GoticStrain(object):
