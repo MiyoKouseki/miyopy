@@ -3,6 +3,7 @@
 
 #import miyopy.io.reader as reader
 import numpy as np
+from gwpy.timeseries import TimeSeries
 
 
 def clockwise_Zaxis(theta):
@@ -15,65 +16,27 @@ def clockwise_Zaxis(theta):
     return mat
 
 
-class Seismometer(object):
-    def __init__(self,t0,tlen,name='EX1',theta=0.0,plot=True,detrend=True,title='./tmp_'):        
-        self.name = name
-        self.start = t0
-        self.tlen = tlen
-        self._getEWNSZ(title)
-        if 'X1500_TR240' == self.name:
-            theta = -30+theta
-            self._rotate(theta)
-        else:
-            theta = 180+30+theta
-            self._rotate(theta)
-        
-    def _getEWNSZ(self,title):
-        if 'X1500_TR240' == self.name:
-            self.x = reader.gif.readGIFdata(self.start,
-                                            self.tlen,
-                                            'X1500_TR240velEW',
-                                            plot=False,detrend=True,
-                                            name='X1500_TR_X',
-                                            title=title,
-                                                )    
-            self.y = reader.gif.readGIFdata(self.start,
-                                            self.tlen,
-                                            'X1500_TR240velNS',
-                                            plot=False,detrend=True,
-                                            name='X1500_TR_Y',   
-                                            title=title,
-                                                )    
-            self.z = reader.gif.readGIFdata(self.start,
-                                            self.tlen,
-                                            'X1500_TR240velUD',
-                                            plot=False,detrend=True,
-                                            name='X1500_TR_Z',   
-                                            title=title,
-                                                )    
-        else:
-            channels = ['K1:PEM-{0}_SEIS_WE_SENSINF_OUT16'.format(self.name),
-                        'K1:PEM-{0}_SEIS_NS_SENSINF_OUT16'.format(self.name),
-                        'K1:PEM-{0}_SEIS_Z_SENSINF_OUT16'.format(self.name)]
-            self.x,self.y,self.z = reader.kagra.readKAGRAdata(self.start,
-                                                            self.tlen,
-                                                            channels,
-                                                            title=title,
-                                                                  )        
-        
-    def _rotate(self,theta=0.0):
+class SeismoMeter(object):
+    def __init__(self,ew,ns,ud):
+        self.ew = ew
+        self.ns = ns
+        self.ud = ud
+        self.theta = 0.0
+        self.dt = ns.dt
+        self.unit = ns.unit
+        self.t0 = ns.t0
+
+    def rotate(self,theta):
         '''
-        ex1_ns(theta=0) = y 
         '''
-        self._theta = theta
-        data = np.array([self.x.timeseries, self.y.timeseries, self.z.timeseries]).T
+        data = np.array([self.ew, self.ns, self.ud]).T
         data = np.dot(data,clockwise_Zaxis(theta))
-        self.x.timeseries = data[:,0]
-        self.x._name = self.name+'_'+'EW'
-        self.y.timeseries = data[:,1]
-        self.y._name = self.name+'_'+'NS'        
-        self.z.timeseries = data[:,2]
-        self.z._name = self.name+'_'+'Z'
+        self.x = TimeSeries(data[:,0],unit=self.unit,dt=self.dt,
+                            t0=self.t0,name=self.ew.name)#,channel=self.ew.channel)
+        self.y = TimeSeries(data[:,1],unit=self.unit,dt=self.dt,
+                            t0=self.t0,name=self.ns.name)#,channel=self.ns.channel)
+        self.z = TimeSeries(data[:,2],unit=self.unit,dt=self.dt,
+                            t0=self.t0,name=self.ud.name)#,channel=self.ud.channel)
         
     def __add__(self,value):
         self.x.timeseries += value
@@ -112,4 +75,40 @@ class Seismometer(object):
         self.x.bandpass(lowcut,highcut,order)
         self.y.bandpass(lowcut,highcut,order)
         self.z.bandpass(lowcut,highcut,order)
+        
+
+
+        
+def _getEWNSZ(self,title):
+    if 'X1500_TR240' == self.name:
+        self.x = reader.gif.readGIFdata(self.start,
+                                        self.tlen,
+                                        'X1500_TR240velEW',
+                                        plot=False,detrend=True,
+                                        name='X1500_TR_X',
+                                        title=title,
+                                            )    
+        self.y = reader.gif.readGIFdata(self.start,
+                                        self.tlen,
+                                        'X1500_TR240velNS',
+                                        plot=False,detrend=True,
+                                        name='X1500_TR_Y',   
+                                        title=title,
+                                            )    
+        self.z = reader.gif.readGIFdata(self.start,
+                                        self.tlen,
+                                        'X1500_TR240velUD',
+                                        plot=False,detrend=True,
+                                        name='X1500_TR_Z',   
+                                        title=title,
+                                            )    
+    else:
+        channels = ['K1:PEM-{0}_SEIS_WE_SENSINF_OUT16'.format(self.name),
+                        'K1:PEM-{0}_SEIS_NS_SENSINF_OUT16'.format(self.name),
+                        'K1:PEM-{0}_SEIS_Z_SENSINF_OUT16'.format(self.name)]
+        self.x,self.y,self.z = reader.kagra.readKAGRAdata(self.start,
+                                                          self.tlen,
+                                                          channels,
+                                                          title=title,
+                                                              )        
         
