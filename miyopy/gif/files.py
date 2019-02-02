@@ -41,9 +41,6 @@ def findfiles(cls,start,end,chname,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
         end = tconvert(end)
     else:
         pass
-
-    start = start + 9*3600
-    end = end + 9*3600
     
     _00sec = lambda gps: gps - (gps%60) + 18    
     _s = _00sec(start)
@@ -53,7 +50,6 @@ def findfiles(cls,start,end,chname,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
     segments = [[]]
     for gps in gps_filenames:
         path = cls.path_to_file(chname, gps, prefix)
-        print(path)
         if os.path.exists(path):
             segments[-1].append(path)
         else:

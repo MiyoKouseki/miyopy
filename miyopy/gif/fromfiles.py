@@ -2,6 +2,31 @@
 #! coding:utf-8
 import numpy as np
 
+def fromfile(cls,fname,chname):
+    ''' Read from one file
+    
+    Parameters
+    ----------
+    fname : str
+        file name
+    fs : int
+        sampling frequency
+
+    Returns
+    -------
+    data : numpy.array
+        1 minutes timeseries
+    '''
+    gdata = cls(chname)
+    try:
+        data = np.fromfile(fname,dtype=gdata.dtype)
+        data = data*gdata.c2V
+    except Exception as e:
+        print(e)
+        data = np.zeros([60*gdata.fs])
+        data[:] = np.nan
+    return data
+
 
 def fromfiles(cls,fnames,chname):
     ''' Read from files continuously.
@@ -20,9 +45,9 @@ def fromfiles(cls,fnames,chname):
     '''
     _check_filesize(cls,fnames,chname)
     gdata = cls(chname)
-    data = fromfile(fnames[0],gdata.fs,dtype=gdata.dtype)
+    data = _fromfile(fnames[0],gdata.fs,dtype=gdata.dtype)
     for fname in fnames[1:]:
-        data = np.r_[data,fromfile(fname,gdata.fs,dtype=gdata.dtype)]
+        data = np.r_[data,_fromfile(fname,gdata.fs,dtype=gdata.dtype)]
     data = _check_nan(data)        
     return data
 
@@ -59,7 +84,7 @@ def _check_filesize(cls,fnames,chname):
 
 
 
-def fromfile(fname,fs,dtype=None):
+def _fromfile(fname,fs,dtype=None):
     ''' Read from one file
     
     Parameters
@@ -80,6 +105,8 @@ def fromfile(fname,fs,dtype=None):
         data = np.zero([60*fs])
         data[:] = np.nan
     return data
+
+
 
 
 def _check_nan(data):

@@ -4,8 +4,7 @@ import logging
 import numpy as np
 
 from astropy import units as u
-
-from .fromfiles import fromfiles,cliptime
+from .fromfiles import fromfiles,fromfile,cliptime
 from .files import findfiles
 from ..time import to_JSTdatetime
 from gwpy.time import tconvert
@@ -21,9 +20,9 @@ datatype = {
     '/NAS/cRIO03_data/':[(200*Hz,4*byte), np.int32, 1.25e-6*u.Volt],
     '/NAS/PXI1_data/5000Hz/':[(5000*Hz,4*byte), np.int32, 5.525e-9*u.Volt],
     '/NAS/PXI1_data/50000Hz/':[(50000*Hz,4*byte), np.int32, 5.525e-9*u.Volt],
-    '/data1/PHASE/50000Hz/':[(200*Hz,8*byte),np.float64,1],
-    '/data2/CLIO/LIN/':[(200*Hz,8*byte), np.float64, 1],
-    '/data2/CLIO/SHR/':[(200*Hz,8*byte), np.float64, 1],
+    '/data1/PHASE/50000Hz/':[(200*Hz,8*byte),np.float64,1*u.dimensionless_unscaled],
+    '/data2/CLIO/LIN/':[(200*Hz,8*byte), np.float64, 1*u.dimensionless_unscaled],
+    '/data2/CLIO/SHR/':[(200*Hz,8*byte), np.float64, 1*u.dimensionless_unscaled],
     }
     
 fname_fmt={
@@ -129,12 +128,18 @@ class GifData(object):
         data = cliptime(data,start,tlen,cls(chname).fs)
         data = data*cls(chname).c2V
         return data
+    
+    @classmethod
+    def fromfiles(cls,fname,chname,**kwargs):
+        '''
+        '''        
+        return fromfiles(cls,fname,chname)
 
-    # @classmethod
-    # def findfiles(cls,chname,start,end,**kwargs):
-    #     '''
-    #     '''        
-    #     return findfiles(cls,start,tlen,chname,**kwargs)
+    @classmethod
+    def fromfile(cls,fname,chname,**kwargs):
+        '''
+        '''        
+        return fromfile(cls,fname,chname)
     
     
     @classmethod
