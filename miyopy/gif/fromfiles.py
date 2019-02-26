@@ -3,7 +3,7 @@
 import numpy as np
 
 def fromfile(cls,fname,chname):
-    ''' Read from one file
+    ''' Read from single file
     
     Parameters
     ----------
