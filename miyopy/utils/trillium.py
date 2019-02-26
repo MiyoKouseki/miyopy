@@ -273,6 +273,7 @@ def _v2vel(self, args):
         try:
             f = args.frequencies.value
             asd = args.value
+            name = args.name
         except:
             raise ValueError('!')
 
@@ -282,7 +283,8 @@ def _v2vel(self, args):
         z,p,k = zpk_120compact()        
     elif self.trillium == '240':
         z,p,k = zpk_240()
-        
+    else:
+        raise ValueError('Invalid trillium name')
     num,den = zpk2tf(z,p,k)
     w,h = freqs(num,den,worN=np.logspace(-4,5,1e2))
     mag = abs(h)
@@ -293,7 +295,7 @@ def _v2vel(self, args):
     if n==2:
         return f[1:],asd
     else:
-        data = FrequencySeries(asd,frequencies=f[1:],unit='m/s')
+        data = FrequencySeries(asd,frequencies=f[1:],unit='m/s',name=name)
         return data
 
 
