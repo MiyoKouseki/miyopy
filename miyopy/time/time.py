@@ -1,7 +1,7 @@
 
 from astropy.time import Time
 from datetime import datetime as dt
-from gwpy.time import tconvert
+#from gwpy.time import tconvert
 
 def _to_JSTdatetime(jst):
     if isinstance(jst,str):
@@ -32,13 +32,11 @@ def to_JSTdatetime(date):
         datetime in jst    
     '''
     utc = tconvert(date)
-    print dir(utc)
     exit()
     return utc 
     
 
 
 def to_GPStime(gps):
-    print gps
     gps = Time(gps).gps
     return int(gps)

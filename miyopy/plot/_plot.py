@@ -63,7 +63,7 @@ def plot_spectrogram(data,replot=False,fftlength=2**7,show=False,normlog=True,**
     else:
         plt.suptitle(chname.replace('_',' '),fontsize=30)
     plot.savefig(pngfname)
-    print 'plot in ', pngfname
+    print('plot in ', pngfname)
     #return plot
     
     
@@ -105,7 +105,7 @@ def plot_asd(data,replot=False,fftlength=2**7,show=False,**kwargs):
     ax.set_title(chname.replace('_',' '),fontsize=16)
     ax.legend(labels=['Selfnoise','Measurement'])
     plot.savefig(pngfname)
-    print 'plot in ',pngfname
+    print('plot in ',pngfname)
     return plot
     
 def plot_coherence(*args,**kwargs):
@@ -129,7 +129,7 @@ def plot_coherence(*args,**kwargs):
         ax_angle.set_ylabel('Phase [deg]')
         ax_angle.set_xlabel('Frequency [Hz]')
         plot.savefig('Coherence_with_cdsspectrogram.png')
-        print 'plot in csd_spectrogram'
+        print('plot in csd_spectrogram')
     elif N==2:
         chname1, chname2 = args
         timeseries1 = get_timeseries(chname1,from_nds=False,**kwargs)
@@ -153,4 +153,4 @@ def plot_coherence(*args,**kwargs):
         ax_angle.set_ylabel('Phase [deg]')
         ax_angle.set_xlabel('Frequency [Hz]')
         plot.savefig('Coherence_with_pure_coherenc.png')
-        print 'plot in csd_spectrogram'
+        print('plot in csd_spectrogram')
