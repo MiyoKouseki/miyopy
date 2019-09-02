@@ -27,7 +27,7 @@ def tf120QA(f):
     return mag
 
 
-def selfnoise(trillium='120QA',psd='ASD',unit='acc'):
+def selfnoise(trillium='120QA',psd='ASD',unit='vel'):
     '''
     
     Parameter
@@ -299,7 +299,7 @@ def _v2vel(self, args):
         return data
 
 
-def _selfnoise(self,psd='ASD',unit='m/s/s'):
+def _selfnoise(self,psd='ASD',unit='m/s',**kwargs):
     '''
     
     Parameter
@@ -362,9 +362,9 @@ def _selfnoise(self,psd='ASD',unit='m/s/s'):
         f,selfnoise = data[:,0],data[:,1] # PSD Acceleration with dB
         selfnoise = 10**(selfnoise/10.0) # PSD Acceleration with Magnitude
         
-    if unit=='m/s/s':
+    if unit=='m/sec/sec':
         f, selfnoise = f, selfnoise
-    elif unit=='m/s':
+    elif unit=='m/sec':
         f, selfnoise = f, selfnoise/(2.0*np.pi*f)**2
     elif unit=='m':
         f, selfnoise = f, selfnoise/(2.0*np.pi*f)**4
@@ -390,5 +390,5 @@ class Trillium(object):
     def v2vel(self,data):
         return _v2vel(self,data)
     
-    def selfnoise(self):
-        return _selfnoise(self,psd='ASD',unit='m/s')        
+    def selfnoise(self,**kwargs):
+        return _selfnoise(self,**kwargs)

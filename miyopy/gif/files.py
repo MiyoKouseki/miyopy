@@ -108,7 +108,7 @@ def path_to_file(chname,date,prefix='/Users/miyo/KagraData/gif/'):
 
 
 
-def findfiles(start,end,chname,prefix='/Users/miyo/KagraData/gif/'):
+def findfiles(cls,start,end,chname,**kwargs):
     ''' Return file path
     
     Parameter
@@ -131,6 +131,8 @@ def findfiles(start,end,chname,prefix='/Users/miyo/KagraData/gif/'):
     segment: list of list
         Segment contains only list of file path, which files are exist. 
     '''
+
+    prefix = kwargs.pop('prefix','/Users/miyo/KagraData/gif/')
     
     if isinstance(start,str):
         raise ValueError('Please not give `str` type',start)

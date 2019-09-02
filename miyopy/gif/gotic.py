@@ -4,7 +4,7 @@ from astropy.time import Time
 
 import sys
 sys.path.insert(0,'/Users/miyo/Dropbox/Kagra/Git/gwpy/')
-from gwpy.timeseries import TimeSeries
+#from gwpy.timeseries import TimeSeries # dont use to avoid import duplication.
 from astropy import units as u
 from miyopy.gif import rotate2d,gps2datestr
 from gwpy.time import tconvert
