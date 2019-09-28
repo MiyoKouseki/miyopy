@@ -46,4 +46,4 @@ def kagra_seis_now(start,end,fftlen=2**8,ovlp=2**7,axis='X'):
 if __name__ == '__main__':
     x = kagra_seis('X',90)
     y = kagra_seis('Y',90)
-    print kagra_seis('H',90)
+    #print kagra_seis('H',90)

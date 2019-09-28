@@ -89,9 +89,10 @@ def selfnoise(trillium='120QA',psd='ASD',unit='vel'):
     elif psd=='ASD':
         f, selfnoise = f, np.sqrt(selfnoise)
     else:
-        raise ValueError('psd {} didnt match PSD or ASD'.format(psd))        
-        
-    return f, selfnoise
+        raise ValueError('psd {} didnt match PSD or ASD'.format(psd))
+    #return f, selfnoise    
+    selfnoise = FrequencySeries(selfnoise,frequencies=f)
+    return selfnoise
 
         
 def zpk_120qa(flat=True):
