@@ -37,25 +37,88 @@ def filt_status(swstat):
         return 'NO_INPUT',on_filt(bin((swstat&mask_filt)))    
     else:
         pass
-    return bin(swstat)
+    return ','.join(bin(swstat))
 
 
 if __name__=='__main__':
+    import argparse   
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('hoge', help='hoge')    
+    args = parser.parse_args() 
+    hoge = args.hoge
+    # ----------------------------------------------
+    if hoge == 'sc1_0':
+        start = tconvert('Sep 06 2019 00:30:00 JST')
+    if hoge == 'sc1_1':
+        start = tconvert('Sep 06 2019 01:40:00 JST')
+    if hoge == 'sc1_2':
+        start = tconvert('Sep 06 2019 02:52:00 JST')
+    if hoge == 'sc1_3':
+        start = tconvert('Sep 06 2019 03:10:00 JST')
+    if hoge == 'sc1_4':
+        start = tconvert('Sep 06 2019 03:22:00 JST')
+    if hoge == 'sc1_5':
+        start = tconvert('Sep 06 2019 03:42:00 JST')
+    # ----------------------------------------------
+    if hoge == 'sc2_0':
+        start = tconvert('Sep 17 2019 05:26:00 JST')
+    if hoge == 'sc2_1':
+        start = tconvert('Sep 17 2019 05:39:00 JST')
+    # ----------------------------------------------
+    if hoge == 'sc3_0':
+        start = tconvert('Sep 23 2019 20:43:00 JST')
+    if hoge == 'sc3_1':
+        start = tconvert('Sep 23 2019 21:09:00 JST')
+    if hoge == 'sc3_2':
+        start = tconvert('Sep 23 2019 21:22:00 JST')
+    if hoge == 'sc3_3':
+        start = tconvert('Sep 23 2019 21:34:00 JST')
+    if hoge == 'sc3_4':
+        start = tconvert('Sep 23 2019 21:46:00 JST')
+    if hoge == 'sc3_5':
+        start = tconvert('Sep 23 2019 22:35:00 JST')
+    if hoge == 'sc3_6':
+        start = tconvert('Sep 23 2019 22:46:00 JST')
+    if hoge == 'sc3_7':
+        start = tconvert('Sep 23 2019 23:25:00 JST')
+    if hoge == 'sc3_8':
+        start = tconvert('Sep 23 2019 20:57:00 JST')
+    # ----------------------------------------------
+    if hoge == 'sc4_0':
+        start = tconvert('Sep 24 2019 21:55:00 JST')
+    if hoge == 'sc4_1':
+        start = tconvert('Sep 24 2019 23:20:00 JST')
+    if hoge == 'sc4_2':
+        start = tconvert('Sep 25 2019 00:11:00 JST')
+    if hoge == 'sc4_3':
+        start = tconvert('Sep 25 2019 00:53:00 JST')
+    if hoge == 'sc4_4':
+        start = tconvert('Sep 25 2019 01:25:00 JST')
+    if hoge == 'sc4_5':
+        start = tconvert('Sep 24 2019 22:08:00 JST')
+    if hoge == 'sc4_6':
+        start = tconvert('Sep 24 2019 22:42:00 JST')
+    #
+    end = start + 1
+    fname = './results/{0}.txt'.format(hoge)
+    #
     with open('./swstat.txt','r') as f:
         channels = map(lambda x:x.replace('\n',''),f.readlines())
-    
+
     from Kozapy.utils import filelist
-    start = tconvert('Sep 24 2019 22:42:00 JST')
-    end = tconvert('Sep 24 2019 22:42:01 JST')
-    source = filelist(start,end,trend='full',place='kamioka')
+    #
+    source = filelist(start,end,trend='full',place='kashiwa')
     data = TimeSeriesDict.read(source,channels=channels,nproc=2,format='gwf.lalframe')
-    for d in data.values():
-        _min = int(d.min().value)
-        _max = int(d.max().value)
-        if _min == _max:
-            print('{0:50s}: {1}'.format(d.name,filt_status(_min)))
-        else:
-            raise ValueError('Detect filter change!')
+    with open(fname, mode='w') as f:
+        for d in data.values():
+            _min = int(d.min().value)
+            _max = int(d.max().value)
+            if _min == _max:
+                txt = '{0:50s}: {1}'.format(d.name,filt_status(_min))
+                print(txt)
+                f.write(txt+'\n')
+            else:
+                raise ValueError('Detect filter change!')
    
     
 # MEMO
