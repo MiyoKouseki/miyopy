@@ -34,7 +34,7 @@
 	* OFFSET\_OUT | DEFAULT\_OUTにOFFSET\_OUTが追加。 
 	* NO\_OUT | OUTがOFF。つまり出力がない。
 	* binary | 上記以外の状態。直接バイナリを呼んで解読する必要あり。
-* Filter Number
+* Filter Number の意味
 	* FM1,FM2,FM3,FM4,FM5,FM6,FM7,FM8,FM9,FM10
 
 
