@@ -1,10 +1,6 @@
 import numpy as np
 from gwpy.timeseries import TimeSeriesDict
 from gwpy.time import tconvert
-start = tconvert('Sep 24 2019 21:55:00 JST')
-end = tconvert('Sep 24 2019 22:05:00 JST')
-#start = tconvert('Sep 25 2019 15:28:30 JST')
-#end = tconvert('Sep 25 2019 15:28:31 JST')
 
 def on_filt(swstat):
     is_on = lambda num,n:n+1 if int(num,0)>>n&1 else False
@@ -45,18 +41,19 @@ def filt_status(swstat):
 
 
 if __name__=='__main__':
-    with open('./k1visetmxtepics/swstat.txt','r') as f:
+    with open('./swstat.txt','r') as f:
         channels = map(lambda x:x.replace('\n',''),f.readlines())
     
     from Kozapy.utils import filelist
-    #source = filelist(start,end,trend='full',place='kamioka')
-    source = 'K-K1_C-1253435392-32.gwf'
-    data = TimeSeriesDict.read(source,channels=channels,nproc=2)    
+    start = tconvert('Sep 24 2019 22:42:00 JST')
+    end = tconvert('Sep 24 2019 22:42:01 JST')
+    source = filelist(start,end,trend='full',place='kamioka')
+    data = TimeSeriesDict.read(source,channels=channels,nproc=2,format='gwf.lalframe')
     for d in data.values():
         _min = int(d.min().value)
         _max = int(d.max().value)
         if _min == _max:
-            print '{0:50s}: {1}'.format(d.name,filt_status(_min))
+            print('{0:50s}: {1}'.format(d.name,filt_status(_min)))
         else:
             raise ValueError('Detect filter change!')
    

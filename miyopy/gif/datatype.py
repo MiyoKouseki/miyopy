@@ -6,7 +6,7 @@ import numpy as np
 from astropy import units as u
 from .fromfiles import fromfiles,fromfile,cliptime
 from .files import findfiles,fname_fmt
-from ..time import to_JSTdatetime
+#from ..time import to_JSTdatetime
 #from gwpy.time import tconvert
 from datetime import datetime
 

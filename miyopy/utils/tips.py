@@ -12,7 +12,7 @@ from scipy import signal, interpolate
 #from control import matlab
 #from trillium import selfnoise
 
-from miyopy.timeseries import TimeSeries as ts
+#from miyopy.timeseries import TimeSeries as ts
 
 try:
     import nds2
