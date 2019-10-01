@@ -1,6 +1,6 @@
 Universe       = vanilla 
 GetEnv         = True
-Initialdir     = /home/kouseki.miyo/miyopy/script/epicstool
+Initialdir     = /home/kouseki.miyo/miyopy/script/filtstatus
 Notification   = Never
 +Group         = "Xc"
 request_memory = 4 GB
