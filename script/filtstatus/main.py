@@ -22,9 +22,6 @@ def filt_status(swstat):
     default    = 0b01001010000000000
     limit      = 0b01011010000000000
     offset     = 0b01001110000000000    
-#                0b 1001110000000000
-#                0b 1001000000000000
-#                0b 1011110000000110
     if bin((swstat&mask_out)^default) == '0b0':
         return 'DEFAULT_OUT',on_filt(bin((swstat&mask_filt)))
     elif bin((swstat&mask_out)^limit) == '0b0':
@@ -113,8 +110,10 @@ if __name__=='__main__':
         for d in data.values():
             _min = int(d.min().value)
             _max = int(d.max().value)
+            name = d.name.replace('SWSTAT','GAIN')
+            gain = TimeSeries.read(source,name=chname,nproc=2,format='gwf.lalframe')
             if _min == _max:
-                txt = '{0:50s}: {1}'.format(d.name,filt_status(_min))
+                txt = '{0:50s}: {2}, {1}'.format(d.name,filt_status(_min),gain)
                 print(txt)
                 f.write(txt+'\n')
             else:
