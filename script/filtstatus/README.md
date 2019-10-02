@@ -1,4 +1,4 @@
-# FilterStatus
+# FiltStatus
 
 * check\_epics\_gwf.py
 	* 指定したStart時刻でのSWSTATの値を呼んで、フィルターの何が押されているか表示するスクリプト。
@@ -19,7 +19,7 @@
 ## 出力結果の読み方
 
 例) 
-> "Filter Name"　|　"STATUS", "Filter Number"
+> "Filter Name" | Gain,Offset,Limit,"STATUS", "Filter Number"
 
 1. K1:VIS-ETMX\_KALMAN\_KEST\_X2\_SWSTAT                 : ('DEFAULT\_OUT', [])
 2. K1:VIS-ETMX\_IP\_COILOUTF\_H1\_SWSTAT                 : ('LIMIT\_OUT', [1, 2, 3, 6, 7, 8])
