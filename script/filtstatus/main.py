@@ -1,5 +1,5 @@
 import numpy as np
-from gwpy.timeseries import TimeSeriesDict
+from gwpy.timeseries import TimeSeriesDict,TimeSeries
 from gwpy.time import tconvert
 
 def on_filt(swstat):
@@ -105,15 +105,22 @@ if __name__=='__main__':
     from Kozapy.utils import filelist
     #
     source = filelist(start,end,trend='full',place='kashiwa')
-    data = TimeSeriesDict.read(source,channels=channels,nproc=2,format='gwf.lalframe')
+    data = TimeSeriesDict.read(source,channels,start=start,end=end,nproc=2,format='gwf.lalframe')
     with open(fname, mode='w') as f:
         for d in data.values():
             _min = int(d.min().value)
             _max = int(d.max().value)
-            name = d.name.replace('SWSTAT','GAIN')
-            gain = TimeSeries.read(source,name=chname,nproc=2,format='gwf.lalframe')
+            chname = d.name.replace('SWSTAT','GAIN')
+            gain = TimeSeries.read(source,chname,start=start,end=end,nproc=2,format='gwf.lalframe')
+            gain = gain.mean()
+            chname = d.name.replace('SWSTAT','OFFSET')
+            offset = TimeSeries.read(source,chname,start=start,end=end,nproc=2,format='gwf.lalframe')
+            offset = offset.mean()
+            chname = d.name.replace('SWSTAT','LIMIT')
+            limit = TimeSeries.read(source,chname,start=start,end=end,nproc=2,format='gwf.lalframe')
+            limit = limit.mean()
             if _min == _max:
-                txt = '{0:50s}: {2}, {1}'.format(d.name,filt_status(_min),gain)
+                txt = '{0:50s}: {2},{3},{4} {1}'.format(d.name,filt_status(_min),gain,offset,limit)
                 print(txt)
                 f.write(txt+'\n')
             else:
