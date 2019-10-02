@@ -103,44 +103,43 @@ if __name__=='__main__':
     # 
     end = start + 1
 
-    # Read filter names
-    with open('./filtername.txt','r') as f:
-        channels = map(lambda x:x.replace('\n',''),f.readlines())
 
     # 
-    source = filelist(start,end,trend='full',place='kashiwa')
-    f = open('./results/{0}.txt'.format(hoge), mode='w')
-    f.write('# NAME,STATUS,[FILTER_NUMBER],GAIN,OFFSET,LIMIT'+'\n')
-    for name in channels:
-        names = [name+_suffix for _suffix in ['_SWSTAT','_GAIN','_OFFSET','_LIMIT']]
-        data = TimeSeriesDict.read(source,names,start=start,end=end,nproc=1,
+    filterbank = False
+    if filterbank:
+        # Read filter names
+        with open('./filtername.txt','r') as f:
+            channels = map(lambda x:x.replace('\n',''),f.readlines())
+        #
+        source = filelist(start,end,trend='full',place='kashiwa')
+        f = open('./results/{0}.txt'.format(hoge), mode='w')
+        f.write('# NAME,STATUS,[FILTER_NUMBER],GAIN,OFFSET,LIMIT'+'\n')
+        for name in channels:
+            names = [name+_suffix for _suffix in ['_SWSTAT','_GAIN','_OFFSET','_LIMIT']]
+            data = TimeSeriesDict.read(source,names,start=start,end=end,nproc=1,
+                                       format='gwf.lalframe')
+            swstat = int(data[name+'_SWSTAT'].mean())
+            gain = data[name+'_GAIN'].mean()
+            offset = data[name+'_OFFSET'].mean()
+            limit = data[name+'_LIMIT'].mean()
+            txt = '{0},{2:3.5e},{3:3.5e},{4:3.5e},{1}'.format(name,filt_status(swstat),
+                                                              gain,offset,limit)
+            print(txt)
+            f.write(txt+'\n')
+        f.close()
+    #
+    matrix = True
+    if matrix:
+        # Read filter names
+        names = np.loadtxt('matrixname.txt',dtype=np.str)
+        source = filelist(start,end,trend='full',place='kashiwa')
+        f = open('./results/{0}_matrix.txt'.format(hoge), mode='w')
+        f.write('# NAME,VALUE'+'\n')
+        for name in names:
+            data = TimeSeries.read(source,name,start=start,end=end,nproc=1,
                                    format='gwf.lalframe')
-        swstat = int(data[name+'_SWSTAT'].mean())
-        gain = data[name+'_GAIN'].mean()
-        offset = data[name+'_OFFSET'].mean()
-        limit = data[name+'_LIMIT'].mean()
-        txt = '{0},{2:3.5e},{3:3.5e},{4:3.5e},{1}'.format(name,filt_status(swstat),
-                                                          gain,offset,limit)
-        print(txt)
-        f.write(txt+'\n')
-    f.close()
-   
-    
-# MEMO
-# dont remove
-# -> FM1  :  0
-# -> FM2  :  1
-# -> FM3  :  2
-# -> FM4  :  3
-# -> FM5  :  4
-# -> FM6  :  5
-# -> FM7  :  6
-# -> FM8  :  7
-# -> FM9  :  8
-# -> FM10 :  9
-# -> IN1  : 10
-# -> OSET : 11
-# -> OUT  : 12
-# -> LIM  : 13
-# -> DEC  : 15
-# -> HOLD : 16
+            value = data.mean()
+            txt = '{0},{1}'.format(name,value)
+            print(txt)
+            f.write(txt+'\n')
+        f.close()        
