@@ -1,11 +1,16 @@
 import numpy as np
 from gwpy.timeseries import TimeSeriesDict,TimeSeries
 from gwpy.time import tconvert
+from Kozapy.utils import filelist
 
-def on_filt(swstat):
+def on_fm(swstat):
+    ''' return number of turned on filter.
+    '''
     is_on = lambda num,n:n+1 if int(num,0)>>n&1 else False
-    on_filter =  [is_on(swstat,i) for i in range(0,10)]
-    return filter(lambda x:x is not False,on_filter)
+    _on =  [is_on(swstat,i) for i in range(0,10)]
+    _on = filter(lambda x:x is not False,_on)
+    _on = map(str,_on)
+    return '['+','.join(_on)+']'
 
 def filt_status(swstat):
     '''
@@ -23,15 +28,15 @@ def filt_status(swstat):
     limit      = 0b01011010000000000
     offset     = 0b01001110000000000    
     if bin((swstat&mask_out)^default) == '0b0':
-        return 'DEFAULT_OUT',on_filt(bin((swstat&mask_filt)))
+        return 'DEFAULT_OUT,'+on_fm(bin((swstat&mask_filt)))
     elif bin((swstat&mask_out)^limit) == '0b0':
-        return 'LIMIT_OUT',on_filt(bin((swstat&mask_filt)))
+        return 'LIMIT_OUT,'+on_fm(bin((swstat&mask_filt)))
     elif bin((swstat&mask_out)^offset) == '0b0':
-        return 'OFFSET_OUT',on_filt(bin((swstat&mask_filt)))    
+        return 'OFFSET_OUT,'+on_fm(bin((swstat&mask_filt)))
     elif (~(swstat>>12)&1):
-        return 'NO_OUT',on_filt(bin((swstat&mask_filt)))
+        return 'NO_OUT,'+on_fm(bin((swstat&mask_filt)))
     elif (~(swstat>>10)&1):
-        return 'NO_INPUT',on_filt(bin((swstat&mask_filt)))    
+        return 'NO_INPUT,'+on_fm(bin((swstat&mask_filt)))
     else:
         pass
     return ','.join(bin(swstat))
@@ -95,36 +100,30 @@ if __name__=='__main__':
         start = tconvert('Sep 24 2019 22:08:00 JST')
     if hoge == 'sc4_6':
         start = tconvert('Sep 24 2019 22:42:00 JST')
-    #
+    # 
     end = start + 1
-    fname = './results/{0}.txt'.format(hoge)
-    #
-    with open('./swstat.txt','r') as f:
+
+    # Read filter names
+    with open('./filtername.txt','r') as f:
         channels = map(lambda x:x.replace('\n',''),f.readlines())
 
-    from Kozapy.utils import filelist
-    #
+    # 
     source = filelist(start,end,trend='full',place='kashiwa')
-    data = TimeSeriesDict.read(source,channels,start=start,end=end,nproc=2,format='gwf.lalframe')
-    with open(fname, mode='w') as f:
-        for d in data.values():
-            _min = int(d.min().value)
-            _max = int(d.max().value)
-            chname = d.name.replace('SWSTAT','GAIN')
-            gain = TimeSeries.read(source,chname,start=start,end=end,nproc=2,format='gwf.lalframe')
-            gain = gain.mean()
-            chname = d.name.replace('SWSTAT','OFFSET')
-            offset = TimeSeries.read(source,chname,start=start,end=end,nproc=2,format='gwf.lalframe')
-            offset = offset.mean()
-            chname = d.name.replace('SWSTAT','LIMIT')
-            limit = TimeSeries.read(source,chname,start=start,end=end,nproc=2,format='gwf.lalframe')
-            limit = limit.mean()
-            if _min == _max:
-                txt = '{0:50s}: {2},{3},{4} {1}'.format(d.name,filt_status(_min),gain,offset,limit)
-                print(txt)
-                f.write(txt+'\n')
-            else:
-                raise ValueError('Detect filter change!')
+    f = open('./results/{0}.txt'.format(hoge), mode='w')
+    f.write('# NAME,STATUS,[FILTER_NUMBER],GAIN,OFFSET,LIMIT'+'\n')
+    for name in channels:
+        names = [name+_suffix for _suffix in ['_SWSTAT','_GAIN','_OFFSET','_LIMIT']]
+        data = TimeSeriesDict.read(source,names,start=start,end=end,nproc=1,
+                                   format='gwf.lalframe')
+        swstat = int(data[name+'_SWSTAT'].mean())
+        gain = data[name+'_GAIN'].mean()
+        offset = data[name+'_OFFSET'].mean()
+        limit = data[name+'_LIMIT'].mean()
+        txt = '{0},{1},{2:3.5e},{3:3.5e},{4:3.5e}'.format(name,filt_status(swstat),
+                                                          gain,offset,limit)
+        print(txt)
+        f.write(txt+'\n')
+    f.close()
    
     
 # MEMO
