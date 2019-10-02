@@ -119,7 +119,7 @@ if __name__=='__main__':
         gain = data[name+'_GAIN'].mean()
         offset = data[name+'_OFFSET'].mean()
         limit = data[name+'_LIMIT'].mean()
-        txt = '{0},{1},{2:3.5e},{3:3.5e},{4:3.5e}'.format(name,filt_status(swstat),
+        txt = '{0},{2:3.5e},{3:3.5e},{4:3.5e},{1}'.format(name,filt_status(swstat),
                                                           gain,offset,limit)
         print(txt)
         f.write(txt+'\n')
