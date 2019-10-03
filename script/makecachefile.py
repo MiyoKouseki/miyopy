@@ -51,9 +51,9 @@ def fullcache(gst,get,basedir='/data',check_existance=False):
             warnings.warn("Existance is not checked!")
             cachelist.append(txt)            
                 
-    print 'Make full cache file'
-    print ' - Start : ',cachelist[0].split('file://')[1]
-    print ' - End   : ',cachelist[-1].split('file://')[1]
+    print('Make full cache file')
+    print(' - Start : ',cachelist[0].split('file://')[1])
+    print(' - End   : ',cachelist[-1].split('file://')[1])
     return cachelist
 
 
@@ -92,9 +92,9 @@ def trendcache(gst,get,basedir='/trend',check_existance=False):
             warnings.warn("Existance is not checked!")            
             cachelist.append(txt)            
 
-    print 'Make trend cache file'
-    print ' - Start : ',cachelist[0].split('file://')[1]
-    print ' - End   : ',cachelist[-1].split('file://')[1]            
+    print('Make trend cache file')
+    print(' - Start : ',cachelist[0].split('file://')[1])
+    print(' - End   : ',cachelist[-1].split('file://')[1])
     return cachelist
 
 
