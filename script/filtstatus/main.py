@@ -124,7 +124,7 @@ if __name__=='__main__':
     end = start + 1
 
     # 
-    filterbank = True
+    filterbank = False
     if filterbank:
         # Read filter names
         with open('./filtername.txt','r') as f:
@@ -155,10 +155,13 @@ if __name__=='__main__':
         f = open('./results/{0}_matrix.txt'.format(hoge), mode='w')
         f.write('# NAME,VALUE'+'\n')
         for name in names:
-            data = TimeSeries.read(source,name,start=start,end=end,nproc=1,
-                                   format='gwf.lalframe')
-            value = data.mean()
-            txt = '{0},{1}'.format(name,value)
+            try:
+                data = TimeSeries.read(source,name,start=start,end=end,nproc=1,
+                                       format='gwf.lalframe')
+                value = data.mean()
+                txt = '{0},{1}'.format(name,value)
+            except:
+                txt = '{0},{1}'.format(name,None)
             print(txt)
             f.write(txt+'\n')
         f.close()        
