@@ -48,64 +48,83 @@ if __name__=='__main__':
     parser.add_argument('hoge', help='hoge')    
     args = parser.parse_args() 
     hoge = args.hoge
-    # ----------------------------------------------
     if hoge == 'sc1_0':
         start = tconvert('Sep 06 2019 00:30:00 JST')
-    if hoge == 'sc1_1':
-        start = tconvert('Sep 06 2019 01:40:00 JST')
-    if hoge == 'sc1_2':
+        end   = tconvert('Sep 06 2019 01:30:00 JST')
+    elif hoge == 'sc1_1':
+        start = tconvert('Sep 06 2019 01:41:00 JST')
+        end   = tconvert('Sep 06 2019 02:41:00 JST')
+    elif hoge == 'sc1_2':
         start = tconvert('Sep 06 2019 02:52:00 JST')
-    if hoge == 'sc1_3':
+        end   = tconvert('Sep 06 2019 03:02:00 JST')
+    elif hoge == 'sc1_3':
         start = tconvert('Sep 06 2019 03:10:00 JST')
-    if hoge == 'sc1_4':
+        end   = tconvert('Sep 06 2019 03:20:00 JST')
+    elif hoge == 'sc1_4':
         start = tconvert('Sep 06 2019 03:22:00 JST')
-    if hoge == 'sc1_5':
-        start = tconvert('Sep 06 2019 03:42:00 JST')
-    # ----------------------------------------------
-    if hoge == 'sc2_0':
-        start = tconvert('Sep 17 2019 05:26:00 JST')
-    if hoge == 'sc2_1':
-        start = tconvert('Sep 17 2019 05:39:00 JST')
-    # ----------------------------------------------
-    if hoge == 'sc3_0':
-        start = tconvert('Sep 23 2019 20:43:00 JST')
-    if hoge == 'sc3_1':
-        start = tconvert('Sep 23 2019 21:09:00 JST')
-    if hoge == 'sc3_2':
-        start = tconvert('Sep 23 2019 21:22:00 JST')
-    if hoge == 'sc3_3':
-        start = tconvert('Sep 23 2019 21:34:00 JST')
-    if hoge == 'sc3_4':
-        start = tconvert('Sep 23 2019 21:46:00 JST')
-    if hoge == 'sc3_5':
-        start = tconvert('Sep 23 2019 22:35:00 JST')
-    if hoge == 'sc3_6':
-        start = tconvert('Sep 23 2019 22:46:00 JST')
-    if hoge == 'sc3_7':
-        start = tconvert('Sep 23 2019 23:25:00 JST')
-    if hoge == 'sc3_8':
-        start = tconvert('Sep 23 2019 20:57:00 JST')
-    # ----------------------------------------------
-    if hoge == 'sc4_0':
-        start = tconvert('Sep 24 2019 21:55:00 JST')
-    if hoge == 'sc4_1':
-        start = tconvert('Sep 24 2019 23:20:00 JST')
-    if hoge == 'sc4_2':
-        start = tconvert('Sep 25 2019 00:11:00 JST')
-    if hoge == 'sc4_3':
-        start = tconvert('Sep 25 2019 00:53:00 JST')
-    if hoge == 'sc4_4':
-        start = tconvert('Sep 25 2019 01:25:00 JST')
-    if hoge == 'sc4_5':
-        start = tconvert('Sep 24 2019 22:08:00 JST')
-    if hoge == 'sc4_6':
-        start = tconvert('Sep 24 2019 22:42:00 JST')
+        end   = tconvert('Sep 06 2019 04:00:00 JST')
+    elif hoge == 'sc1_5':
+        start = tconvert('Sep 06 2019 03:42:00 JST') 
+        end   = tconvert('Sep 06 2019 04:42:00 JST')
+    elif hoge == 'sc2_1': 
+        start = tconvert('Sep 17 2019 05:26:00 JST')  
+        end   = tconvert('Sep 17 2019 05:36:00 JST')
+    elif hoge == 'sc2_0':
+        start = tconvert('Sep 17 2019 05:39:00 JST')  
+        end   = tconvert('Sep 17 2019 05:49:00 JST')
+    elif hoge == 'sc3_0':
+        start = tconvert('Sep 23 2019 20:43:00 JST')  
+        end   = tconvert('Sep 23 2019 20:53:00 JST')
+    elif hoge == 'sc3_1':
+        start = tconvert('Sep 23 2019 21:09:00 JST')  
+        end   = tconvert('Sep 23 2019 21:19:00 JST')
+    elif hoge == 'sc3_2':
+        start = tconvert('Sep 23 2019 21:22:00 JST')  
+        end   = tconvert('Sep 23 2019 21:32:00 JST')
+    elif hoge == 'sc3_3':
+        start = tconvert('Sep 23 2019 21:34:00 JST')  
+        end   = tconvert('Sep 23 2019 21:44:00 JST')
+    elif hoge == 'sc3_4':
+        start = tconvert('Sep 23 2019 21:46:00 JST')  
+        end   = tconvert('Sep 23 2019 21:56:00 JST')
+    elif hoge == 'sc3_5':
+        start = tconvert('Sep 23 2019 22:35:00 JST')  
+        end   = tconvert('Sep 23 2019 22:45:00 JST')
+    elif hoge == 'sc3_6':
+        start = tconvert('Sep 23 2019 22:46:00 JST')  
+        end   = tconvert('Sep 23 2019 22:56:00 JST') 
+    elif hoge == 'sc3_7':
+        start = tconvert('Sep 23 2019 23:25:00 JST')  
+        end   = tconvert('Sep 23 2019 23:35:00 JST')     
+    elif hoge == 'sc3_8':
+        start = tconvert('Sep 23 2019 20:57:00 JST')  
+        end   = tconvert('Sep 23 2019 21:07:00 JST')    
+    elif hoge == 'sc4_0':
+        start = tconvert('Sep 24 2019 21:55:00 JST')  
+        end   = tconvert('Sep 24 2019 22:05:00 JST')
+    elif hoge == 'sc4_1':
+        start = tconvert('Sep 24 2019 23:20:00 JST')  
+        end   = tconvert('Sep 25 2019 00:10:00 JST')
+    elif hoge == 'sc4_2':
+        start = tconvert('Sep 25 2019 00:11:00 JST')  
+        end   = tconvert('Sep 25 2019 00:38:00 JST')
+    elif hoge == 'sc4_3':
+        start = tconvert('Sep 25 2019 00:53:00 JST')  
+        end   = tconvert('Sep 25 2019 01:03:00 JST')
+    elif hoge == 'sc4_4':
+        start = tconvert('Sep 25 2019 01:15:00 JST')
+        end   = tconvert('Sep 25 2019 01:40:00 JST')
+    elif hoge == 'sc4_5':
+        start = tconvert('Sep 24 2019 22:08:00 JST')  
+        end   = tconvert('Sep 24 2019 22:18:00 JST')
+    elif hoge == 'sc4_6':
+        start = tconvert('Sep 24 2019 22:42:00 JST')  
+        end   = tconvert('Sep 24 2019 22:52:00 JST')        
     # 
     end = start + 1
 
-
     # 
-    filterbank = False
+    filterbank = True
     if filterbank:
         # Read filter names
         with open('./filtername.txt','r') as f:
@@ -116,7 +135,7 @@ if __name__=='__main__':
         f.write('# NAME,STATUS,[FILTER_NUMBER],GAIN,OFFSET,LIMIT'+'\n')
         for name in channels:
             names = [name+_suffix for _suffix in ['_SWSTAT','_GAIN','_OFFSET','_LIMIT']]
-            data = TimeSeriesDict.read(source,names,start=start,end=end,nproc=1,
+            data = TimeSeriesDict.read(source,names,start=start,end=end,nproc=4,
                                        format='gwf.lalframe')
             swstat = int(data[name+'_SWSTAT'].mean())
             gain = data[name+'_GAIN'].mean()
