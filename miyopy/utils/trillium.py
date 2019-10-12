@@ -4,7 +4,7 @@
 
 import numpy as np
 from scipy.signal import lfilter,zpk2tf,butter,filtfilt
-from scipy.signal import zpk2sos,sosfilt,butter
+#from scipy.signal import zpk2sos,sosfilt,butter
 from scipy.signal import freqs_zpk,freqs,freqz,bilinear
 #from control import matlab
 #from miyopy.plot import bodeplot
