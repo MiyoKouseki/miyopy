@@ -300,7 +300,7 @@ def _v2vel(self, args):
         return data
 
 
-def _selfnoise(self,psd='ASD',unit='m/s',**kwargs):
+def _selfnoise(self,psd='ASD',unit='m/sec',**kwargs):
     '''
     
     Parameter
