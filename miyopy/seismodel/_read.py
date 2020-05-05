@@ -4,7 +4,7 @@ from gwpy.timeseries import TimeSeries
 
 def kagra_seis(axis='X',pctl=90):
     if axis in ['X','Y','Z']:
-        prefix = '/Users/miyo/Dropbox/Git/miyopy/miyopy/seismodel/JGW-T1910436-v5/'
+        prefix = '/Users/miyo/Git/miyopy/miyopy/seismodel/JGW-T1910436-v5/'
         fname = 'LongTerm_{axis}_{pctl}_VELO.txt'.format(axis=axis,pctl=pctl)
         vel_asd = FrequencySeries.read(prefix+fname)
         return vel_asd

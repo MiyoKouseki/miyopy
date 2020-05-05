@@ -4,7 +4,7 @@ import numpy as np
 from gwpy.frequencyseries import FrequencySeries
 from gwpy.types import Index
 
-prefix = '/Users/miyo/Dropbox/Git/miyopy/miyopy/utils'
+prefix = '/Users/miyo/Git/miyopy/miyopy/utils'
 _freq, f0gas, h1, h2, h3 = np.loadtxt(prefix+'/noise/LVDTnoiseETMX_disp.dat').T
 noise = np.sqrt(h1**2 + h2**2 + h3**2)
 df = 1./1024.0
