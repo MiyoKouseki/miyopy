@@ -9,6 +9,11 @@ from numpy import arange
 from datetime import datetime as dt
 from datetime import datetime,timedelta
 
+from lal import LIGOTimeGPS
+from gwpy.time import tconvert
+
+from numba import jit
+    
 fname_fmt={
     # ChannelName:Format,Mustreplace<fname>.
     'X500_TEMP':'/NAS/cRIO01_data/<fname>.AD00',
@@ -45,22 +50,38 @@ fname_fmt={
     'X1500_CMG3TposUD':'/NAS/cRIO03_data/<fname>.AD14',
     'X1500_15':'/NAS/cRIO03_data/<fname>.AD15',
     #
-    'PD_PWAVE_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD00',
-    'PD_SWAVE_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD01',
-    'PD_INPUTWAVE_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD02',
+    'PD_PPOL_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD00',
+    'PD_SPOL_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD01',
+    'PD_INPUT_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD02',
     'PD_ABSORP_PXI01_50k':'/NAS/PXI1_data/50000Hz/<fname>.AD03',
-    'PD_PWAVE_PXI01_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD00',
-    'PD_SWAVE_PXI01_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD01',
-    'PD_INPUTWAVE_PXI0_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD02',
+    'PD_PPOL_PXI01_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD00',
+    'PD_SPOL_PXI01_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD01',
+    'PD_INPUT_PXI0_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD02',
     'PD_ABSORP_PXI0_5k':'/NAS/PXI1_data/5000Hz/<fname>.AD03',
-    'CALC_PHASE':'/data1/PHASE/50000Hz/<fname>.PHASE',
     'CALC_STRAIN':'/data1/PHASE/50000Hz/<fname>.STRAIN',
-    'CALC_ZOBUN':'/data1/PHASE/50000Hz/<fname>.ZOBUN',
-    'CALC_SQRT':'/data1/PHASE/50000Hz/<fname>.SQRT',
     'CLIO_CALC_STRAIN_LIN':'/data2/CLIO/LIN/<fname>.LIN',
     'CLIO_CALC_STRAIN_SHR':'/data2/CLIO/SHR/<fname>.SHR',
+    #
+    'PD_PPOL_PXI01_5':'/PXI_DATA2/PXI1_data/5Hz/<fname>.AD00',
+    'PD_SPOL_PXI01_5':'/PXI_DATA2/PXI1_data/5Hz/<fname>.AD01',
+    'PD_INPUT_PXI01_5':'/PXI_DATA2/PXI1_data/5Hz/<fname>.AD02',
+    'PD_ABSORP_PXI01_5':'/PXI_DATA2/PXI1_data/5Hz/<fname>.AD03',    
     }
 
+
+def second_is_00(date):
+    '''
+    Parameters
+    ----------
+    date : datetime
+    
+    
+    if second is 0, return True, not if return False.
+    '''
+    if date.second == 0 :
+        return True
+    else:
+        return False   
 
 
 def path_to_file(chname,date,prefix='/Users/miyo/KagraData/gif/'):        
@@ -68,8 +89,9 @@ def path_to_file(chname,date,prefix='/Users/miyo/KagraData/gif/'):
     
     Parameter
     ---------
-    date: datetime
-    datetime. JST
+    date: 
+        gpstime(JST)
+
     prefix: str
     location where gif binary data is saved.
     
@@ -78,31 +100,9 @@ def path_to_file(chname,date,prefix='/Users/miyo/KagraData/gif/'):
     path : str
     path to file
     '''
-    from gwpy.time import tconvert
-    def second_is_00(date):
-        '''
-        Parameters
-        ----------
-        date : datetime
-        
-        
-        if second is 0, return True, not if return False.
-        '''
-        if date.second == 0 :
-            return True
-        else:
-            return False
-    date_fmt = '%Y/%m/%d/%H/%y%m%d%H%M'        
-    #
-    if not isinstance(date,datetime):
-        date = tconvert(date)
-        #raise ValueError('not datetime. {0}'.format(type(date)))
-    
-    if not second_is_00(date):
-        raise ValueError('Second is not 0!')
-    
-    # date is datetime    
-    date_str = date.strftime(date_fmt)
+    date = tconvert(date) # GPS(JST) -> JST
+    date = date + timedelta(hours=9) #UTC -> JST
+    date_str = date.strftime('%Y/%m/%d/%H/%y%m%d%H%M')
     path_to_file = prefix + fname_fmt[chname].replace('<fname>',date_str)
     return path_to_file
 
@@ -133,30 +133,23 @@ def findfiles(cls,start,end,chname,**kwargs):
     '''
 
     prefix = kwargs.pop('prefix','/Users/miyo/KagraData/gif/')
-    
-    if isinstance(start,str):
+
+    if isinstance(start,str) or isinstance(end,str):
         raise ValueError('Please not give `str` type',start)
+    elif isinstance(start,LIGOTimeGPS) and isinstance(end,LIGOTimeGPS):
+        start, end = int(start), int(end) 
     else:
         pass
 
-    start = start + 9*3600
-    end = end + 9*3600
+    start = start #+ 9*3600
+    end = end #+ 9*3600
     
     _00sec = lambda gps: gps - (gps%60) + 18    
     _s = _00sec(start)
     _e = _00sec(end)
-    gps_filenames = arange(_s,_e+60,60)
-
-    segments = [[]]
-    for gps in gps_filenames:
-        path = path_to_file(chname, gps, prefix)
-        if os.path.exists(path):
-            segments[-1].append(path)
-        else:
-            segments.append([])
-    if not segments[-1]:
-        segments.pop(-1)
-        
+    #gps_filenames = arange(_s,_e+60,60)
+    gps_filenames = arange(_s,_e,60)    
+    segments = [path_to_file(chname,gps,prefix) for gps in gps_filenames]
     return segments
 
 

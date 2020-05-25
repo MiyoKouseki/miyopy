@@ -23,6 +23,7 @@ datatype = {
     '/data1/PHASE/50000Hz/':[(200*Hz,8*byte),np.float64,1*u.dimensionless_unscaled],
     '/data2/CLIO/LIN/':[(200*Hz,8*byte), np.float64, 1*u.dimensionless_unscaled],
     '/data2/CLIO/SHR/':[(200*Hz,8*byte), np.float64, 1*u.dimensionless_unscaled],
+    '/PXI_DATA2/PXI1_data/5Hz/':[(5*Hz,4*byte), np.int32, 5.525e-9*u.Volt],        
     }
     
 def second_is_00(date):
@@ -53,15 +54,15 @@ class GifData(object):
         
         
     @classmethod
-    def read(cls,start,tlen,chname,**kwargs):
+    def read(cls,start,end,chname,**kwargs):
         ''' Read gif dataa
         
         Parameter
         ---------
         start : `int`
             start start time.
-        tlen : int
-            time length.
+        end : int
+            end.
         chname : `str`
             channel name.            
 
@@ -69,9 +70,10 @@ class GifData(object):
         -------
         data : `numpy.array`
         '''
-        fnames = findfiles(cls,start,tlen,chname,**kwargs)
-        data = fromfiles(cls,fnames,chname)
-        data = cliptime(data,start,tlen,cls(chname).fs)
+        fnames = findfiles(cls,start,end,chname,**kwargs)
+        fnames = fnames[0] # ignore segment
+        data = fromfiles(cls,fnames,chname)        
+        data = cliptime(data,start,end,cls(chname).fs)
         data = data*cls(chname).c2V
         return data
     
@@ -93,7 +95,7 @@ class GifData(object):
         return findfiles(cls,start,end,chname,**kwargs)
     
     @classmethod
-    def path_to_file(cls,chname,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):    
+    def path_to_file(cls,chname,date,prefix='/Users/miyo/Dropbox/KagraData/gif/'):
         ''' Return path to file
         
         Parameter

@@ -1,6 +1,7 @@
 #
 #! coding:utf-8
 import numpy as np
+from lal import LIGOTimeGPS
 
 def fromfile(cls,fname,chname):
     ''' Read from single file
@@ -22,9 +23,8 @@ def fromfile(cls,fname,chname):
         data = np.fromfile(fname,dtype=gdata.dtype)
         data = data*gdata.c2V
     except Exception as e:
-        print(e)
-        data = np.zeros([60*gdata.fs])
-        data[:] = np.nan
+        #print(e)
+        data = np.zeros([60*gdata.fs])*gdata.c2V
     return data
 
 
@@ -134,7 +134,7 @@ def _check_nan(data):
 
 
 
-def cliptime(data,start,tlen,fs):
+def cliptime(data,start,end,fs):
     ''' Clip data 
     
     Parameters
@@ -143,8 +143,8 @@ def cliptime(data,start,tlen,fs):
         time series data.
     start : int
         start gps time.second
-    tlen : int
-        time length. second
+    end : int
+        end. second
     fs : int
         sampling frequency.
 
@@ -153,10 +153,18 @@ def cliptime(data,start,tlen,fs):
     data : numpy.array
         cliped data
     '''
-    _s = 60*(start/60)+18 
-    _e = 60*((start+tlen)/60)+18
-    idx = [(start-_s)*fs,(start+tlen-_s)*fs]
+    if isinstance(start,str) or isinstance(end,str):
+        raise ValueError('Please not give `str` type',start)
+    elif isinstance(start,LIGOTimeGPS) and isinstance(end,LIGOTimeGPS):
+        start, end = int(start), int(end) 
+    else:
+        pass
+    
+    _s = 60*(start/60)#+18
+    _e = 60*(end/60)#+18
+    idx = [int(start-_s)*fs,int(end-_s)*fs]
     data = data[idx[0]:idx[1]]
+    
     return data
 
 
