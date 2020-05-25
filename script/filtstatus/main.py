@@ -1,6 +1,7 @@
 import numpy as np
 from gwpy.timeseries import TimeSeriesDict,TimeSeries
 from gwpy.time import tconvert
+
 from Kozapy.utils import filelist
 
 def on_fm(swstat):
@@ -119,18 +120,20 @@ if __name__=='__main__':
         end   = tconvert('Sep 24 2019 22:18:00 JST')
     elif hoge == 'sc4_6':
         start = tconvert('Sep 24 2019 22:42:00 JST')  
-        end   = tconvert('Sep 24 2019 22:52:00 JST')        
+        end   = tconvert('Sep 24 2019 22:52:00 JST')
+    else:
+        start = int(hoge)
     # 
     end = start + 1
 
     # 
-    filterbank = False
+    filterbank = True
     if filterbank:
         # Read filter names
         with open('./filtername.txt','r') as f:
             channels = map(lambda x:x.replace('\n',''),f.readlines())
         #
-        source = filelist(start,end,trend='full',place='kashiwa')
+        source = filelist(start,end,trend='full',place='kamioka')
         f = open('./results/{0}.txt'.format(hoge), mode='w')
         f.write('# NAME,STATUS,[FILTER_NUMBER],GAIN,OFFSET,LIMIT'+'\n')
         for name in channels:
@@ -147,7 +150,7 @@ if __name__=='__main__':
             f.write(txt+'\n')
         f.close()
     #
-    matrix = True
+    matrix = False
     if matrix:
         # Read filter names
         names = np.loadtxt('matrixname.txt',dtype=np.str)

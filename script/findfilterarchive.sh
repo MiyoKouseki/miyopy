@@ -55,6 +55,18 @@ if [ ${#2} -ne 10 ];then
 fi
 # main
 PREFIX=/opt/rtcds/kamioka/k1/chans/filter_archive/$MODELNAME/
+if test -d ${PREFIX}
+then
 ls $PREFIX\
     | awk -v GPS=$GPSTIME -v PF=$PREFIX -F'[_.]' '$2>GPS && NF==3 {print PF$0}' \
     | head -n1
+else
+    echo "nothing"
+fi
+# if test "${FILE}" = "" 
+# then
+#     echo "nothing"
+# else
+#     echo ${FILE}
+# fi
+
