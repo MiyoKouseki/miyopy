@@ -9,10 +9,8 @@ from numpy import arange
 from datetime import datetime as dt
 from datetime import datetime,timedelta
 
-from lal import LIGOTimeGPS
+from ligotimegps import LIGOTimeGPS
 from gwpy.time import tconvert
-
-from numba import jit
     
 fname_fmt={
     # ChannelName:Format,Mustreplace<fname>.

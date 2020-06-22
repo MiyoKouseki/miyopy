@@ -1,7 +1,7 @@
 #
 #! coding:utf-8
 import numpy as np
-from lal import LIGOTimeGPS
+from ligotimegps import LIGOTimeGPS
 
 def fromfile(cls,fname,chname):
     ''' Read from single file
